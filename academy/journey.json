@@ -1,0 +1,1910 @@
+{
+  "version": 2,
+  "tracks": [
+    {
+      "id": "python",
+      "title": "Python & problem solving",
+      "subtitle": "From your first instruction to reliable software",
+      "hours": 240,
+      "prerequisite": "No programming experience. Start with the first module.",
+      "resource": "https://docs.python.org/3/tutorial/",
+      "modules": [
+        {
+          "id": "p01",
+          "title": "Speak to the computer",
+          "topics": [
+            "instructions",
+            "values",
+            "print",
+            "errors",
+            "terminal"
+          ],
+          "lab": "py-first",
+          "phase": "Foundations",
+          "prerequisites": [],
+          "concept": "A program is a sequence of precise instructions. Python evaluates the expression inside print, then displays the result. Quotes preserve text literally; an unquoted name asks Python to find a value. An error is evidence about the instruction Python could not finish. Read the last line of a traceback, find the referenced line, and change one thing at a time.",
+          "example": "print(\"2 + 3\") displays 2 + 3. print(2 + 3) displays 5. In print(greeting), Python must first look up greeting. If it has not been assigned, execution stops with NameError. Earlier output is not undone.",
+          "activities": [
+            {
+              "id": "p01-0",
+              "type": "Predict & trace",
+              "prompt": "Predict the three outputs: print(\"Hello\"), print(7 + 2), print(\"7\" + \"2\"). Explain each before running.",
+              "criteria": "Hello, 9, and 72, in order. Text concatenation differs from arithmetic."
+            },
+            {
+              "id": "p01-1",
+              "type": "Build from a blank page",
+              "prompt": "Write a three-line introduction and a minutes-to-seconds calculator. Change the input and predict the new result.",
+              "criteria": "Two runnable scripts, a second input example, and expected versus actual output."
+            },
+            {
+              "id": "p01-2",
+              "type": "Break & repair",
+              "prompt": "Repair print(Hello), then repair print(\"Hello). Record the different error messages and their causes.",
+              "criteria": "NameError requires quotes or a defined name; the missing closing quote is a SyntaxError."
+            },
+            {
+              "id": "p01-3",
+              "type": "Transfer & explain",
+              "prompt": "Write instructions for making tea. Identify two ambiguities a computer could not resolve; replace them with explicit decisions.",
+              "criteria": "Separate input, decisions, and output. An instruction such as “until ready” needs a measurable condition."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p02",
+          "title": "Model values and decisions",
+          "topics": [
+            "types",
+            "strings",
+            "input conversion",
+            "slicing",
+            "booleans",
+            "if"
+          ],
+          "lab": "py-values",
+          "phase": "Foundations",
+          "prerequisites": [
+            "p01"
+          ],
+          "concept": "A variable is a name referring to a value. input returns text, even when the user types digits. Convert at a deliberate boundary and decide what invalid input means. Conditions evaluate to True or False; an if/elif chain chooses the first matching branch. Test boundaries because most rules change there.",
+          "example": "For age >= 18, age 17 is false and age 18 is true. In \"python\"[1:4], indices 1, 2 and 3 produce yth; the stop index is excluded. int(\"18\") is 18, but int(\"eighteen\") raises ValueError.",
+          "activities": [
+            {
+              "id": "p02-0",
+              "type": "Predict & trace",
+              "prompt": "Trace a discount rule: 10% for total >= 100, otherwise 0%. Try 99, 100, 101 and write the branch taken.",
+              "criteria": "99 gets no discount; 100 and 101 qualify. Include the resulting prices."
+            },
+            {
+              "id": "p02-1",
+              "type": "Build from a blank page",
+              "prompt": "Build a temperature converter and a ticket-pricing function with child, adult and senior bands.",
+              "criteria": "State units, conversions, age boundaries and the response to invalid input."
+            },
+            {
+              "id": "p02-2",
+              "type": "Break & repair",
+              "prompt": "Find the bug in if age > 18 for a rule that permits people aged 18 or older. Add the missing boundary test.",
+              "criteria": "Use >=; tests cover 17, 18 and 19."
+            },
+            {
+              "id": "p02-3",
+              "type": "Transfer & explain",
+              "prompt": "Design a password feedback tool that explains which rules fail without printing or saving the password.",
+              "criteria": "Check length and chosen rules; feedback names failed conditions, never the entered secret."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p03",
+          "title": "Reason about repetition",
+          "topics": [
+            "for",
+            "while",
+            "range",
+            "accumulators",
+            "loop invariants"
+          ],
+          "lab": "py-loops",
+          "phase": "Foundations",
+          "prerequisites": [
+            "p02"
+          ],
+          "concept": "A loop repeats a block while its state changes. An accumulator summarizes what has been visited so far. Write that meaning before writing the loop. A while loop also needs progress toward termination. Dry-run a small input with columns for iteration, current value and accumulator.",
+          "example": "For [2, 4, 1], total starts at 0 and becomes 2, 6, 7. The invariant is: total equals the sum of items already visited. Returning inside the loop would stop after the first item.",
+          "activities": [
+            {
+              "id": "p03-0",
+              "type": "Predict & trace",
+              "prompt": "Trace sum_to(4) on paper and include the state before the first iteration.",
+              "criteria": "Accumulator values 0, 1, 3, 6, 10; range(1,5) has four iterations."
+            },
+            {
+              "id": "p03-1",
+              "type": "Build from a blank page",
+              "prompt": "Write separate programs to count vowels, compute a multiplication table, and find the largest value without max.",
+              "criteria": "Test empty text, mixed case and a list containing only negative numbers. Decide what empty maximum means."
+            },
+            {
+              "id": "p03-2",
+              "type": "Break & repair",
+              "prompt": "Repair a while loop whose counter never changes. Then repair an accumulator reset inside the loop.",
+              "criteria": "Show why each original fails and a regression test for each repair."
+            },
+            {
+              "id": "p03-3",
+              "type": "Transfer & explain",
+              "prompt": "Build a guessing game with a limited number of attempts and explicit win, loss and invalid-input behavior.",
+              "criteria": "Attempts always decrease for valid guesses; winning stops immediately; explain invalid-input handling."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p04",
+          "title": "Design small useful functions",
+          "topics": [
+            "parameters",
+            "return",
+            "scope",
+            "contracts",
+            "decomposition"
+          ],
+          "lab": "py-functions",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "p03"
+          ],
+          "concept": "Functions separate a rule from the place it is used. State the input, return value and error behavior. print is a side effect and returns None; return passes a value to the caller. Prefer a small calculation you can test without asking for keyboard input. Scope explains where a name can be found.",
+          "example": "def double(x): return 2*x lets a caller compute double(3)+1 = 7. A version using only print(2*x) displays 6 but returns None, so adding 1 fails. Tests should verify returned values.",
+          "activities": [
+            {
+              "id": "p04-0",
+              "type": "Predict & trace",
+              "prompt": "Trace a caller that stores a function result, then prints it. Compare a return version with a print-only version.",
+              "criteria": "Distinguish printed output from returned value; explain the None result."
+            },
+            {
+              "id": "p04-1",
+              "type": "Build from a blank page",
+              "prompt": "Extract pure functions from your ticket calculator; add docstrings and tests for each pricing boundary.",
+              "criteria": "Each function has one responsibility and can run with no interactive input."
+            },
+            {
+              "id": "p04-2",
+              "type": "Break & repair",
+              "prompt": "Repair a function that reads an unrelated global variable instead of its argument. Call it twice with different arguments.",
+              "criteria": "Different inputs influence the result independently of global state."
+            },
+            {
+              "id": "p04-3",
+              "type": "Transfer & explain",
+              "prompt": "Split an expense report into parse, validate, calculate and display functions. Draw the flow of values.",
+              "criteria": "Calculation can be tested in isolation; invalid input is handled at a stated boundary."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p05",
+          "title": "Choose collections deliberately",
+          "topics": [
+            "lists",
+            "tuples",
+            "sets",
+            "dicts",
+            "Counter",
+            "deque",
+            "mutability"
+          ],
+          "lab": "py-collections",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "p04"
+          ],
+          "concept": "Choose data structures from the operations needed. Lists preserve position; sets answer membership and uniqueness; dictionaries connect keys to values; deque supports efficient operations at both ends. Assigning b = a creates another reference, not a copy. A shallow copy still shares nested objects.",
+          "example": "a = [[1]]; b = a.copy(); b[0].append(2) changes the shared inner list, so a is [[1,2]]. For counting words, counts[word] = counts.get(word,0)+1 handles the first and later occurrences.",
+          "activities": [
+            {
+              "id": "p05-0",
+              "type": "Predict & trace",
+              "prompt": "Draw object arrows for a nested list, an alias, a shallow copy and an independent deep copy.",
+              "criteria": "Show which outer and inner objects are shared; predict mutation results correctly."
+            },
+            {
+              "id": "p05-1",
+              "type": "Build from a blank page",
+              "prompt": "Build a word-frequency report and a contact lookup; define case normalization and duplicate-name behavior.",
+              "criteria": "Use empty input, repeats and missing keys as tests."
+            },
+            {
+              "id": "p05-2",
+              "type": "Break & repair",
+              "prompt": "Fix a function with a mutable default argument that retains earlier calls. Demonstrate the failure first.",
+              "criteria": "Use None as the default and create fresh state per call; two calls remain independent."
+            },
+            {
+              "id": "p05-3",
+              "type": "Transfer & explain",
+              "prompt": "Choose structures for a waiting queue, unique visitors and ordered transactions. Explain each trade-off.",
+              "criteria": "Queue uses deque; uniqueness uses a set; explain whether transaction order or lookup is primary."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p06",
+          "title": "Build maintainable Python",
+          "topics": [
+            "classes",
+            "dataclasses",
+            "composition",
+            "exceptions",
+            "iterators",
+            "generators",
+            "decorators",
+            "packages",
+            "typing"
+          ],
+          "lab": "py-engineering",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "p05"
+          ],
+          "concept": "Objects combine related state with behavior; use a class when it protects a useful invariant. Composition connects smaller objects without forcing an inheritance hierarchy. Iterators yield items on demand; generators allow a pipeline to process one item at a time. Exceptions should describe failed contracts and be caught where recovery is possible. Modules give code a boundary and a name.",
+          "example": "A BankAccount.withdraw method validates the amount before changing balance. A generator reading lines uses memory proportional to the current item, while list(generator) materializes every item. A context manager closes a resource even when an exception interrupts the block.",
+          "activities": [
+            {
+              "id": "p06-0",
+              "type": "Predict & trace",
+              "prompt": "Compare a list comprehension and a generator expression over a million records. Explain when each does work.",
+              "criteria": "A generator is lazy; materializing it loses the memory benefit. Both still process all consumed records."
+            },
+            {
+              "id": "p06-1",
+              "type": "Build from a blank page",
+              "prompt": "Build a dataclass-based task tracker with stable IDs, add/complete operations and JSON persistence in a separate module.",
+              "criteria": "IDs survive save/load; domain rules are independent of the terminal UI."
+            },
+            {
+              "id": "p06-2",
+              "type": "Break & repair",
+              "prompt": "Introduce a malformed JSON file and a missing file. Handle them differently without hiding unexpected errors.",
+              "criteria": "Preserve evidence of corruption; a missing first-run file may initialize an empty store."
+            },
+            {
+              "id": "p06-3",
+              "type": "Transfer & explain",
+              "prompt": "Add type hints and a context-managed file reader. Explain why inheritance is or is not needed in this design.",
+              "criteria": "State resource lifetime and iterator behavior; type hints do not automatically validate external data."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p07",
+          "title": "Analyze before optimizing",
+          "topics": [
+            "problem contracts",
+            "dry runs",
+            "invariants",
+            "Big O",
+            "amortization",
+            "math",
+            "binary"
+          ],
+          "lab": "py-search",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "p06"
+          ],
+          "concept": "Start with examples, a simple correct approach, and a statement of what stays true. Complexity describes growth as input increases, not elapsed seconds on one machine. Nested loops are not automatically quadratic: count actual iterations. Space includes auxiliary structures and recursive stack frames. Modular arithmetic, powers of two and induction help explain common algorithms.",
+          "example": "Scanning n values is O(n). Repeatedly halving an ordered range takes O(log n) comparisons. In two nested loops where the inner loop always runs three times, work is 3n, hence O(n), not O(n²).",
+          "activities": [
+            {
+              "id": "p07-0",
+              "type": "Predict & trace",
+              "prompt": "Count iterations for a scan, a triangular nested loop and repeated halving. Compare n=8 with n=16.",
+              "criteria": "Scan doubles; triangular work is n(n-1)/2; halving adds roughly one step."
+            },
+            {
+              "id": "p07-1",
+              "type": "Build from a blank page",
+              "prompt": "Implement a brute-force duplicate detector and a set-based version. Benchmark multiple input sizes after checking correctness.",
+              "criteria": "Record time and extra space; sets trade memory for expected faster membership."
+            },
+            {
+              "id": "p07-2",
+              "type": "Break & repair",
+              "prompt": "Find a claimed O(1)-space algorithm that copies its entire input. Correct its analysis.",
+              "criteria": "A size-n copy requires O(n) extra space."
+            },
+            {
+              "id": "p07-3",
+              "type": "Transfer & explain",
+              "prompt": "Explain why appending to a dynamic array can be amortized O(1) despite an occasional resize.",
+              "criteria": "Occasional copying cost is spread over many appends; distinguish amortized from worst-case single operation."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p08",
+          "title": "Solve sequence problems",
+          "topics": [
+            "prefix sums",
+            "two pointers",
+            "sliding windows",
+            "hash maps"
+          ],
+          "lab": "py-patterns",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p07"
+          ],
+          "concept": "Patterns work because an invariant lets you avoid repeated work. Prefix sums answer range totals after preprocessing. Two pointers discard positions using a known property such as sorted order. Sliding windows maintain an aggregate while a contiguous range moves. Before choosing a pattern, explain why discarded candidates cannot contain a better answer.",
+          "example": "For [3,1,4], prefix=[0,3,4,8]. The sum over indices [1,3) is prefix[3]-prefix[1]=5. For a fixed-size window, subtract the departing element before adding the new one.",
+          "activities": [
+            {
+              "id": "p08-0",
+              "type": "Predict & trace",
+              "prompt": "Trace a size-3 window over [2,1,5,1,3,2], recording each sum.",
+              "criteria": "Window sums are 8, 7, 9 and 6."
+            },
+            {
+              "id": "p08-1",
+              "type": "Build from a blank page",
+              "prompt": "Solve range-sum queries, sorted two-sum and longest substring without repeated characters.",
+              "criteria": "State invariants and test empty inputs, duplicates and windows as long as the array."
+            },
+            {
+              "id": "p08-2",
+              "type": "Break & repair",
+              "prompt": "Show why a positive-only shrinking-window algorithm may fail when negative values are allowed.",
+              "criteria": "Give a concrete counterexample; shrinking is not monotonic when removing negative numbers can increase sums."
+            },
+            {
+              "id": "p08-3",
+              "type": "Transfer & explain",
+              "prompt": "Choose a pattern for unsorted pair lookup and explain why sorted two pointers cannot be applied unchanged.",
+              "criteria": "Use a complement lookup or sort with explicit index handling and complexity costs."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p09",
+          "title": "Search and order with proof",
+          "topics": [
+            "binary-search bounds",
+            "search on answer",
+            "insertion",
+            "merge",
+            "quick",
+            "heap",
+            "counting sort",
+            "stability"
+          ],
+          "lab": "py-sort",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p08"
+          ],
+          "concept": "Binary search requires a monotonic decision, not necessarily a literal sorted array. Specify whether you want any match, the first match or an insertion point. Sorting algorithms trade memory, worst-case behavior and stability. Production code usually uses built-in sorting, but implementing simpler sorts teaches loop invariants and partition boundaries.",
+          "example": "For [1,2,2,4], the first index whose value is >=2 is 1; the first >2 is 3. Their difference counts matches. Stable sorting keeps equal-key records in their original relative order.",
+          "activities": [
+            {
+              "id": "p09-0",
+              "type": "Predict & trace",
+              "prompt": "Trace lower and upper bounds for target 2, then target 3, in [1,2,2,4].",
+              "criteria": "For 2: bounds 1 and 3. For 3: both 3. State the half-open search interval."
+            },
+            {
+              "id": "p09-1",
+              "type": "Build from a blank page",
+              "prompt": "Implement insertion sort and merge sort; compare with sorted on empty, reversed and duplicate-heavy inputs.",
+              "criteria": "Do not mutate input unless the contract says so; measure memory as well as comparisons."
+            },
+            {
+              "id": "p09-2",
+              "type": "Break & repair",
+              "prompt": "Repair binary search that uses low=mid and can loop forever on a two-element range.",
+              "criteria": "Every branch must shrink the interval; test absent values and two-item cases."
+            },
+            {
+              "id": "p09-3",
+              "type": "Transfer & explain",
+              "prompt": "Sort transactions by amount, preserving original order on ties. Explain when counting sort would be inappropriate.",
+              "criteria": "Use a stable method; counting sort is impractical when the key range is huge relative to n."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p10",
+          "title": "Manage links and deferred work",
+          "topics": [
+            "linked lists",
+            "stack",
+            "queue",
+            "monotonic stack",
+            "hashing"
+          ],
+          "lab": "py-stack",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p09"
+          ],
+          "concept": "Linked-list operations change references, so preserve access to the remainder before overwriting a link. A stack handles newest-first work; a queue handles oldest-first work. A monotonic stack removes candidates made obsolete by the current item. Each item can be pushed and popped at most once, giving linear total work.",
+          "example": "To reverse a list, save next_node before setting current.next=previous. For next-greater values in [2,1,3], a stack keeps unresolved indices; 3 resolves both earlier entries.",
+          "activities": [
+            {
+              "id": "p10-0",
+              "type": "Predict & trace",
+              "prompt": "Draw each pointer change while reversing a three-node linked list.",
+              "criteria": "Preserve the rest of the chain before rewriting each next pointer."
+            },
+            {
+              "id": "p10-1",
+              "type": "Build from a blank page",
+              "prompt": "Implement balanced brackets for (), [] and {}, and a queue using deque.",
+              "criteria": "Reject ([)] and unmatched closers; verify FIFO with interleaved inserts and removals."
+            },
+            {
+              "id": "p10-2",
+              "type": "Break & repair",
+              "prompt": "Repair a cycle detector that dereferences fast.next without checking for the end of the list.",
+              "criteria": "Cover empty, one-node, acyclic and cyclic lists."
+            },
+            {
+              "id": "p10-3",
+              "type": "Transfer & explain",
+              "prompt": "Solve next-greater-element with a stack and explain its total operation count.",
+              "criteria": "Each index is pushed once and popped at most once; total O(n), not O(n²)."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p11",
+          "title": "Explore recursively",
+          "topics": [
+            "call frames",
+            "base cases",
+            "memoization",
+            "divide and conquer",
+            "backtracking"
+          ],
+          "lab": "py-stack",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p10"
+          ],
+          "concept": "Each recursive call gets its own local state. State a base case and a measure that decreases. Backtracking explores choices, then undoes their effects before trying alternatives. Memoization reuses answers for identical states; it is valid only when that state fully determines the remaining problem.",
+          "example": "Subsets of [A,B] branch on include/exclude for A and B. The four leaves are [], [B], [A], [A,B]. Storing the same mutable path object at every leaf makes later changes corrupt earlier answers; copy the path.",
+          "activities": [
+            {
+              "id": "p11-0",
+              "type": "Predict & trace",
+              "prompt": "Draw the call tree for factorial(4), showing values returned upward.",
+              "criteria": "Base case yields 1; return chain is 1, 2, 6, 24 for the relevant calls."
+            },
+            {
+              "id": "p11-1",
+              "type": "Build from a blank page",
+              "prompt": "Generate subsets and permutations, then add a constraint such as a target sum.",
+              "criteria": "Specify duplicate-input behavior; tests count results for tiny examples."
+            },
+            {
+              "id": "p11-2",
+              "type": "Break & repair",
+              "prompt": "Repair backtracking that forgets to undo a choice or stores a shared mutable path.",
+              "criteria": "Each branch starts with restored state; saved results are independent copies."
+            },
+            {
+              "id": "p11-3",
+              "type": "Transfer & explain",
+              "prompt": "Compare plain recursive Fibonacci with memoization. Identify state, repeated work and memory cost.",
+              "criteria": "State is n; memoization reduces repeated computation to O(n) states, with O(n) storage/stack."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p12",
+          "title": "Organize hierarchical information",
+          "topics": [
+            "tree traversals",
+            "BST",
+            "heap",
+            "trie",
+            "LCA"
+          ],
+          "lab": "py-graphs",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p11"
+          ],
+          "concept": "A tree gives each node a recursive subproblem. Decide what a function returns to its parent before coding. A BST stores an ordering invariant; a heap guarantees an extreme value at its root but does not globally sort its contents. A trie shares prefixes and is useful for autocomplete. Balanced and skewed shapes can have very different heights.",
+          "example": "A height function returns 0 for an empty tree and 1+max(left,right) otherwise. A min-heap built from [4,1,3] exposes 1 first, but iterating its internal array does not promise sorted order.",
+          "activities": [
+            {
+              "id": "p12-0",
+              "type": "Predict & trace",
+              "prompt": "Trace preorder, inorder and postorder for a tree with root 2 and children 1 and 3.",
+              "criteria": "Preorder 2,1,3; inorder 1,2,3; postorder 1,3,2."
+            },
+            {
+              "id": "p12-1",
+              "type": "Build from a blank page",
+              "prompt": "Implement tree height, BST lookup and top-k selection with a heap.",
+              "criteria": "Cover skewed trees and k values 0 and larger than the input."
+            },
+            {
+              "id": "p12-2",
+              "type": "Break & repair",
+              "prompt": "Repair a BST validator that checks only direct children, missing an invalid descendant.",
+              "criteria": "Carry valid lower/upper bounds through the entire subtree; state duplicate policy."
+            },
+            {
+              "id": "p12-3",
+              "type": "Transfer & explain",
+              "prompt": "Build trie autocomplete and compare its memory use with scanning a small word list.",
+              "criteria": "Demonstrate prefix search and explain why extra nodes may not pay off for a tiny dataset."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p13",
+          "title": "Navigate connected systems",
+          "topics": [
+            "BFS",
+            "DFS",
+            "topological order",
+            "shortest paths",
+            "union-find",
+            "MST",
+            "SCC"
+          ],
+          "lab": "py-graphs",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p12"
+          ],
+          "concept": "Choose the graph model before the algorithm: directed or undirected, weighted or unweighted. BFS finds shortest edge-count paths; Dijkstra assumes nonnegative weights. A dependency order exists only for a directed acyclic graph. Union-find tracks components efficiently, while strongly connected components describe mutual reachability in directed graphs.",
+          "example": "If A-B costs 10 but A-C-B costs 2+2, BFS can find fewer edges yet a worse weighted route. Dijkstra compares accumulated costs. A cycle A→B→A makes a strict prerequisite order impossible.",
+          "activities": [
+            {
+              "id": "p13-0",
+              "type": "Predict & trace",
+              "prompt": "Trace BFS and Dijkstra on a graph where fewest edges differs from cheapest path.",
+              "criteria": "Separate queue layers from priority-queue distances; give both resulting paths."
+            },
+            {
+              "id": "p13-1",
+              "type": "Build from a blank page",
+              "prompt": "Build route search with predecessor reconstruction; add disconnected vertices and multiple routes.",
+              "criteria": "Return an explicit unreachable result and verify every reconstructed edge."
+            },
+            {
+              "id": "p13-2",
+              "type": "Break & repair",
+              "prompt": "Repair graph traversal that marks vertices visited too late and repeatedly enqueues them.",
+              "criteria": "Mark at enqueue for BFS; each reachable vertex should enter the queue once."
+            },
+            {
+              "id": "p13-3",
+              "type": "Transfer & explain",
+              "prompt": "Implement a dependency scheduler with cycle detection; explain when union-find or SCC analysis answers a different question.",
+              "criteria": "Either produce a valid topological order or report a cycle; distinguish undirected connectivity from directed mutual reachability."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p14",
+          "title": "Choose greedy or dynamic programming",
+          "topics": [
+            "greedy proof",
+            "1D DP",
+            "grids",
+            "knapsack",
+            "strings",
+            "intervals",
+            "tree DP",
+            "bitmasks"
+          ],
+          "lab": "py-dp",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p13"
+          ],
+          "concept": "A greedy decision needs a reason it cannot harm the final solution. Dynamic programming names the state, transition and base cases, then reuses subproblem answers. The state must retain everything the future depends on. Optimize memory only after the full table is understood. Bitmasks represent subsets, but 2^n states still grow exponentially.",
+          "example": "With coins [1,3,4], greedy chooses 4+1+1 for amount 6; 3+3 is better. A DP state best[a] means the fewest coins for amount a; best[0]=0, and unreachable amounts begin at infinity.",
+          "activities": [
+            {
+              "id": "p14-0",
+              "type": "Predict & trace",
+              "prompt": "Fill the minimum-coin table for amounts 0 through 6 with coins [1,3,4].",
+              "criteria": "Table 0,1,2,1,1,2,2; greedy is not universally optimal."
+            },
+            {
+              "id": "p14-1",
+              "type": "Build from a blank page",
+              "prompt": "Solve stairs, grid paths, 0/1 knapsack and longest common subsequence; write state meaning before code.",
+              "criteria": "Test base cases and compare against brute force on tiny inputs."
+            },
+            {
+              "id": "p14-2",
+              "type": "Break & repair",
+              "prompt": "Repair 0/1 knapsack that updates one-dimensional capacities upward and accidentally reuses the same item.",
+              "criteria": "Descending capacity updates prevent reuse in the same item iteration."
+            },
+            {
+              "id": "p14-3",
+              "type": "Transfer & explain",
+              "prompt": "Compare an interval DP and a subset-mask DP: define one example state for each and estimate the state count.",
+              "criteria": "Interval states can number O(n²); subset states number 2^n before additional dimensions."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p15",
+          "title": "Ship tested software",
+          "topics": [
+            "pytest",
+            "files",
+            "SQL",
+            "HTTP",
+            "API design",
+            "logging",
+            "Git",
+            "async",
+            "threads",
+            "processes"
+          ],
+          "lab": "py-engineering",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p14"
+          ],
+          "concept": "Separate business rules from storage, network and presentation. Validate external data, use timeouts, and test failures. A mock isolates a boundary but cannot replace an integration test of that boundary. Concurrency introduces ordering and ownership problems: async helps waiting on I/O; CPU-heavy work requires a separate performance decision.",
+          "example": "A task API validates a request, writes through a repository, and returns a response. A retried POST can create duplicates unless the request has a deliberate idempotency strategy. Logs should help diagnose the request without recording secrets.",
+          "activities": [
+            {
+              "id": "p15-0",
+              "type": "Predict & trace",
+              "prompt": "Trace a request from JSON through validation, domain logic, SQL transaction and response.",
+              "criteria": "Name each boundary and failure mode; validation is not delegated blindly to type hints."
+            },
+            {
+              "id": "p15-1",
+              "type": "Build from a blank page",
+              "prompt": "Package your task tracker; add unit tests, persistence integration tests and structured error messages.",
+              "criteria": "A clean environment can install and test it from documented commands."
+            },
+            {
+              "id": "p15-2",
+              "type": "Break & repair",
+              "prompt": "Inject a timeout and a partial write. Verify failure behavior without losing existing records.",
+              "criteria": "Tests reproduce the failure and prove atomicity or a deliberate recovery path."
+            },
+            {
+              "id": "p15-3",
+              "type": "Transfer & explain",
+              "prompt": "Build a small API client with timeouts and bounded retries, then explain which operations are safe to retry.",
+              "criteria": "Do not blindly retry non-idempotent actions; distinguish I/O waiting from CPU work."
+            }
+          ],
+          "hours": 15
+        },
+        {
+          "id": "p16",
+          "title": "Defend a production-style capstone",
+          "topics": [
+            "requirements",
+            "architecture",
+            "benchmarks",
+            "observability",
+            "interviews",
+            "maintenance"
+          ],
+          "lab": "py-engineering",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "p15"
+          ],
+          "concept": "A capstone is evidence of decisions across the whole system. Start with user stories and constraints, then choose a small architecture. Measure against a baseline, document failure modes, and practice explaining the design without the code open. Interview preparation adds mixed unfamiliar problems and communication; it does not replace engineering work.",
+          "example": "A route planner needs input validation, graph construction, a stated cost model, path search, tests and a way to explain unreachable results. “Fast” becomes measurable only after you specify graph sizes and an acceptable response time.",
+          "activities": [
+            {
+              "id": "p16-0",
+              "type": "Predict & trace",
+              "prompt": "Write acceptance criteria for a route planner, task backend or searchable document index.",
+              "criteria": "Criteria are observable and bounded; identify out-of-scope features."
+            },
+            {
+              "id": "p16-1",
+              "type": "Build from a blank page",
+              "prompt": "Deliver one capstone with installation instructions, a test suite, sample data and a demo.",
+              "criteria": "A second person can reproduce the demo from a clean checkout."
+            },
+            {
+              "id": "p16-2",
+              "type": "Break & repair",
+              "prompt": "Run a failure drill: corrupted input, unavailable storage or a slow dependency; record detection and recovery.",
+              "criteria": "Include a timeline, root cause, repair and a regression test."
+            },
+            {
+              "id": "p16-3",
+              "type": "Transfer & explain",
+              "prompt": "Hold three 45-minute mock reviews: solve an unfamiliar problem, defend a trade-off, and explain a postmortem.",
+              "criteria": "Keep feedback and a revised solution; describe complexity and limitations honestly."
+            }
+          ],
+          "hours": 15
+        }
+      ]
+    },
+    {
+      "id": "mysql",
+      "title": "MySQL & data systems",
+      "subtitle": "From asking questions to operating a database",
+      "hours": 160,
+      "prerequisite": "No SQL required. Basic files and terminal skills help with the external labs.",
+      "resource": "https://dev.mysql.com/doc/refman/8.4/en/",
+      "modules": [
+        {
+          "id": "m01",
+          "title": "Think in rows and relationships",
+          "topics": [
+            "database",
+            "table",
+            "row",
+            "column",
+            "keys",
+            "query lifecycle"
+          ],
+          "lab": "sql-first",
+          "phase": "Foundations",
+          "prerequisites": [],
+          "concept": "A database stores facts under rules. A row represents one thing at a chosen grain; a primary key identifies it. A foreign key links to a related fact. A query asks for a result rather than prescribing every execution step. Start by stating what one result row means.",
+          "example": "Customers and orders are different entities. One customer can have many orders. Copying the customer address into every order may intentionally preserve a shipping snapshot, but it is not a substitute for deciding which facts can change.",
+          "activities": [
+            {
+              "id": "m01-0",
+              "type": "Predict & trace",
+              "prompt": "Sketch customers and orders with three sample rows each; identify every relationship.",
+              "criteria": "Label primary/foreign keys and one-to-many cardinality."
+            },
+            {
+              "id": "m01-1",
+              "type": "Build from a blank page",
+              "prompt": "Write SELECT queries returning customer names and order IDs, with a deterministic ORDER BY.",
+              "criteria": "Predict exact columns and rows before running."
+            },
+            {
+              "id": "m01-2",
+              "type": "Break & repair",
+              "prompt": "Find the ambiguity when a customer name is used as a key and two people share that name.",
+              "criteria": "Use a stable identifier and demonstrate duplicate names remain representable."
+            },
+            {
+              "id": "m01-3",
+              "type": "Transfer & explain",
+              "prompt": "Explain the journey from SQL text through parsing, planning, execution and returned rows.",
+              "criteria": "Distinguish logical query meaning from the physical access plan."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m02",
+          "title": "Design a schema that protects facts",
+          "topics": [
+            "ER models",
+            "normalization",
+            "constraints",
+            "types",
+            "NULL",
+            "collation",
+            "time"
+          ],
+          "lab": "sql-keys",
+          "phase": "Foundations",
+          "prerequisites": [
+            "m01"
+          ],
+          "concept": "Schema design expresses business rules. Normalize repeated facts so updates do not leave contradictory copies. Constraints enforce rules even when application code fails. NULL means missing or unknown, not zero or an empty string. Money, time zones and case comparison need explicit models.",
+          "example": "An order_items table represents one product line per order. A composite uniqueness rule can prevent duplicate product lines if that is the chosen business rule. A quantity CHECK rejects negative quantities, while a foreign key prevents an item referencing an absent order.",
+          "activities": [
+            {
+              "id": "m02-0",
+              "type": "Predict & trace",
+              "prompt": "Draw a commerce ER diagram and state the grain of customers, orders, products and order_items.",
+              "criteria": "Show cardinality and optional relationships."
+            },
+            {
+              "id": "m02-1",
+              "type": "Build from a blank page",
+              "prompt": "Write DDL with primary keys, foreign keys, uniqueness and quantity checks. Choose DECIMAL for monetary amounts.",
+              "criteria": "Provide valid inserts and at least one failing insert per constraint."
+            },
+            {
+              "id": "m02-2",
+              "type": "Break & repair",
+              "prompt": "Test invalid foreign keys, duplicate keys and NULL values; record which constraints reject each row.",
+              "criteria": "Document nullable columns deliberately; use IS NULL rather than = NULL."
+            },
+            {
+              "id": "m02-3",
+              "type": "Transfer & explain",
+              "prompt": "Split a table with repeated customer details into normalized tables. Identify one justified denormalized snapshot.",
+              "criteria": "Explain the update anomaly removed and how snapshot consistency is maintained."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m03",
+          "title": "Set up a safe database lab",
+          "topics": [
+            "MySQL server",
+            "client",
+            "sessions",
+            "DDL",
+            "DML",
+            "autocommit"
+          ],
+          "lab": "sql-transaction",
+          "phase": "Foundations",
+          "prerequisites": [
+            "m02"
+          ],
+          "concept": "The browser SQL lab uses SQLite for basic query practice. MySQL-specific transactions, grants, locks and administration need a separate MySQL server. Use a disposable local database and record SELECT VERSION(). DDL can implicitly commit in MySQL, so do not assume ROLLBACK protects schema changes.",
+          "example": "An UPDATE with no WHERE can modify every row. First SELECT the intended rows, execute in an explicit transaction where supported, inspect affected rows, and choose COMMIT or ROLLBACK. Never use a production dataset for these drills.",
+          "activities": [
+            {
+              "id": "m03-0",
+              "type": "Predict & trace",
+              "prompt": "Compare a client connection with the server process; identify which owns the data.",
+              "criteria": "One server can serve many client sessions; closing the client does not delete persistent tables."
+            },
+            {
+              "id": "m03-1",
+              "type": "Build from a blank page",
+              "prompt": "Create a disposable MySQL database, load small fake data, and save version and connection instructions.",
+              "criteria": "A second person can recreate the lab; credentials are not committed."
+            },
+            {
+              "id": "m03-2",
+              "type": "Break & repair",
+              "prompt": "Practice an incorrect UPDATE inside a transaction and roll it back; separately document the DDL implicit-commit limitation.",
+              "criteria": "Verify before/after rows; do not claim DDL is universally rollback-safe."
+            },
+            {
+              "id": "m03-3",
+              "type": "Transfer & explain",
+              "prompt": "Write a migration rehearsal with backup, verification and recovery steps.",
+              "criteria": "Include a way to recover both schema and data in a disposable environment."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m04",
+          "title": "Ask precise questions",
+          "topics": [
+            "WHERE",
+            "CASE",
+            "LIKE",
+            "ORDER BY",
+            "pagination",
+            "functions"
+          ],
+          "lab": "sql-filter",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "m03"
+          ],
+          "concept": "SQL has three-valued logic when NULL is involved. Filtering retains true predicates; unknown is not true. Define ordering explicitly before using LIMIT. Keyset pagination can avoid shifting offset pages as data grows. CASE turns conditions into a value and must cover intended fallback behavior.",
+          "example": "WHERE phone = NULL does not find missing phones; use IS NULL. ORDER BY created_at, id supplies a unique tie-breaker. A CASE expression with no matching branch and no ELSE returns NULL.",
+          "activities": [
+            {
+              "id": "m04-0",
+              "type": "Predict & trace",
+              "prompt": "Predict filters over values 0, NULL and 5 using =0, <>0 and IS NULL.",
+              "criteria": "Only IS NULL selects the missing value; <>0 does not select NULL."
+            },
+            {
+              "id": "m04-1",
+              "type": "Build from a blank page",
+              "prompt": "Write reports for recent orders, price bands and missing contact fields.",
+              "criteria": "Show expected rows and include boundary timestamps and NULL cases."
+            },
+            {
+              "id": "m04-2",
+              "type": "Break & repair",
+              "prompt": "Repair pagination ordered only by a nonunique timestamp; construct ties to reproduce the problem.",
+              "criteria": "Use a stable tie-breaker such as id."
+            },
+            {
+              "id": "m04-3",
+              "type": "Transfer & explain",
+              "prompt": "Compare offset and keyset pagination and describe the cursor fields.",
+              "criteria": "Cursor includes all ordering keys; explain inserts and deletes between page requests."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m05",
+          "title": "Join without inventing data",
+          "topics": [
+            "inner",
+            "left",
+            "cross",
+            "self joins",
+            "EXISTS",
+            "anti joins"
+          ],
+          "lab": "sql-join",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "m04"
+          ],
+          "concept": "A join combines matches and may multiply rows. Count the relationship cardinality before interpreting totals. LEFT JOIN preserves unmatched left rows only until a later filter removes them. EXISTS asks whether a match exists without needing to produce every matching pair.",
+          "example": "A customer with three orders produces three joined rows. COUNT(*) then counts orders, not unique customers. A filter on the right table in WHERE can remove the NULL-extended rows of a LEFT JOIN.",
+          "activities": [
+            {
+              "id": "m05-0",
+              "type": "Predict & trace",
+              "prompt": "Predict row counts when two customers have three and zero orders respectively under INNER and LEFT JOIN.",
+              "criteria": "INNER gives three rows; LEFT gives four including one unmatched row."
+            },
+            {
+              "id": "m05-1",
+              "type": "Build from a blank page",
+              "prompt": "Write customers-without-orders, customers-with-orders and order-line-detail queries.",
+              "criteria": "Use a dataset including unmatched and multiply matched records."
+            },
+            {
+              "id": "m05-2",
+              "type": "Break & repair",
+              "prompt": "Repair a revenue report multiplied by joining both order items and payments.",
+              "criteria": "Preaggregate at the required grain or redesign the joins; verify sums manually."
+            },
+            {
+              "id": "m05-3",
+              "type": "Transfer & explain",
+              "prompt": "Choose EXISTS or a join for checking whether a customer has any late order; justify the grain.",
+              "criteria": "EXISTS preserves one output row per customer when used as a filter."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m06",
+          "title": "Build trustworthy reports",
+          "topics": [
+            "GROUP BY",
+            "HAVING",
+            "aggregates",
+            "subqueries",
+            "CTEs",
+            "windows"
+          ],
+          "lab": "sql-window",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "m05"
+          ],
+          "concept": "Aggregation collapses rows to a chosen grouping grain. Window functions compute across related rows while preserving individual rows. WHERE filters before aggregation; HAVING filters groups. CTEs name intermediate results and improve reasoning, but are not automatically a performance improvement.",
+          "example": "COUNT(*) counts rows; COUNT(phone) counts non-NULL phone values. ROW_NUMBER assigns a unique sequence within a partition using an explicit ordering. SUM(amount) OVER (...) can show a running total without collapsing orders.",
+          "activities": [
+            {
+              "id": "m06-0",
+              "type": "Predict & trace",
+              "prompt": "Compare COUNT(*), COUNT(phone), SUM and AVG on rows that include NULL.",
+              "criteria": "State which aggregates ignore NULL and what empty input returns."
+            },
+            {
+              "id": "m06-1",
+              "type": "Build from a blank page",
+              "prompt": "Write monthly revenue, top three products per category and a running order total.",
+              "criteria": "Explain result grain, window partition and frame; include tied values."
+            },
+            {
+              "id": "m06-2",
+              "type": "Break & repair",
+              "prompt": "Repair a report using WHERE SUM(amount)>100; then fix a nondeterministic window order.",
+              "criteria": "Use HAVING for grouped totals and a stable tie-breaker for ranking."
+            },
+            {
+              "id": "m06-3",
+              "type": "Transfer & explain",
+              "prompt": "Write a recursive employee hierarchy CTE with a stopping rule and discuss cycles.",
+              "criteria": "Bound or prevent cycles; distinguish a hierarchy traversal from a simple flat join."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m07",
+          "title": "Make concurrent writes correct",
+          "topics": [
+            "ACID",
+            "MVCC",
+            "isolation",
+            "locks",
+            "deadlocks",
+            "idempotency"
+          ],
+          "lab": "sql-transaction",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "m06"
+          ],
+          "concept": "Transactions protect a unit of work, but the isolation level determines what concurrent sessions can observe. InnoDB uses versions and locks for different operations. A deadlock is a cycle of waiting and can require retrying the entire transaction. A retry must not duplicate an external side effect.",
+          "example": "Two sessions both read stock=1. If both later write stock=0 and create an order, two items were sold. An atomic conditional decrement with affected-row checking or a correctly locked transaction can enforce the invariant.",
+          "activities": [
+            {
+              "id": "m07-0",
+              "type": "Predict & trace",
+              "prompt": "Draw a two-session timeline for a lost update and identify the violated stock invariant.",
+              "criteria": "Show reads, writes and commits in time order."
+            },
+            {
+              "id": "m07-1",
+              "type": "Build from a blank page",
+              "prompt": "In disposable MySQL, implement stock reservation with a conditional UPDATE and inspect affected rows.",
+              "criteria": "Exactly one of two competing reservations succeeds when stock is one."
+            },
+            {
+              "id": "m07-2",
+              "type": "Break & repair",
+              "prompt": "Create a deadlock by locking two rows in opposite orders; capture diagnostics and implement bounded transaction retry.",
+              "criteria": "Retry the whole transaction; explain ordering and backoff."
+            },
+            {
+              "id": "m07-3",
+              "type": "Transfer & explain",
+              "prompt": "Design idempotency for repeated payment callbacks without storing payment credentials.",
+              "criteria": "Use a unique request/event key and an atomic outcome record; repeated delivery cannot double-apply the change."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m08",
+          "title": "Measure and improve query plans",
+          "topics": [
+            "B-tree",
+            "composite indexes",
+            "covering",
+            "EXPLAIN",
+            "statistics",
+            "buffer pool"
+          ],
+          "lab": "sql-index",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "m07"
+          ],
+          "concept": "An index is an alternate access structure with write and storage costs. Composite ordering affects which predicates can narrow a range. Read plans in the context of data distribution and real workload. EXPLAIN estimates; EXPLAIN ANALYZE executes the statement and reports observed behavior, so use it deliberately in a safe lab.",
+          "example": "For WHERE customer_id=? ORDER BY created_at, an index on (customer_id, created_at) may support filtering and ordering. Adding every column to every index increases maintenance cost and can be worse for writes.",
+          "activities": [
+            {
+              "id": "m08-0",
+              "type": "Predict & trace",
+              "prompt": "Sketch a B-tree lookup and compare it with scanning every row.",
+              "criteria": "Explain approximate logarithmic lookup plus matching-row work; do not promise universal speedups."
+            },
+            {
+              "id": "m08-1",
+              "type": "Build from a blank page",
+              "prompt": "Benchmark three queries before and after a candidate composite index using representative data.",
+              "criteria": "Record plans, timings, row counts and index size, including a write benchmark."
+            },
+            {
+              "id": "m08-2",
+              "type": "Break & repair",
+              "prompt": "Find a function-wrapped predicate that prevents a useful index range; rewrite it while preserving semantics.",
+              "criteria": "Verify equivalent results at boundaries; some functional indexes may be an alternative."
+            },
+            {
+              "id": "m08-3",
+              "type": "Transfer & explain",
+              "prompt": "Explain clustered storage, undo, redo and buffer pool roles in a slow-query diagnosis.",
+              "criteria": "Separate caching, recovery and historical row versions instead of treating them as interchangeable logs."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m09",
+          "title": "Build database abstractions and integrations",
+          "topics": [
+            "views",
+            "procedures",
+            "triggers",
+            "events",
+            "generated columns",
+            "connectors",
+            "pools"
+          ],
+          "lab": "sql-capstone",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "m08"
+          ],
+          "concept": "Abstractions can centralize rules but also hide side effects. Views store query definitions; stored routines run logic in the server; triggers execute with data changes. Application connectors must parameterize values and define transaction boundaries. Connection pooling reuses sessions, so session state must be managed deliberately.",
+          "example": "A parameterized WHERE email = ? treats input as data. Concatenating input into SQL can change the query itself. A connection returned to a pool with an open transaction can affect the next caller.",
+          "activities": [
+            {
+              "id": "m09-0",
+              "type": "Predict & trace",
+              "prompt": "Trace a write that activates a trigger and list all changed tables.",
+              "criteria": "Include hidden writes in the transaction and test their effects."
+            },
+            {
+              "id": "m09-1",
+              "type": "Build from a blank page",
+              "prompt": "Build a Python query client with parameters, bounded pool use and explicit commit/rollback.",
+              "criteria": "Use malicious-looking strings as data tests; never concatenate them into executable SQL."
+            },
+            {
+              "id": "m09-2",
+              "type": "Break & repair",
+              "prompt": "Repair a failed operation that returns a dirty connection to the pool.",
+              "criteria": "Always end the transaction and release the connection, including error paths."
+            },
+            {
+              "id": "m09-3",
+              "type": "Transfer & explain",
+              "prompt": "Choose between application logic, a view and a stored routine for a monthly report; document ownership and tests.",
+              "criteria": "Explain permissions, portability, deployment and debugging trade-offs."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m10",
+          "title": "Protect and recover data",
+          "topics": [
+            "roles",
+            "TLS",
+            "secrets",
+            "backups",
+            "binlogs",
+            "PITR",
+            "restore drills"
+          ],
+          "lab": "sql-security",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "m09"
+          ],
+          "concept": "Access should match the task: reporting needs less permission than migrations. Protect transport and keep credentials out of source control. A backup is useful only when restoration has been tested. Recovery point objective describes tolerable data loss; recovery time objective describes tolerable downtime. Binary logs can support recovery beyond a base backup.",
+          "example": "A daily backup can lose nearly a day of changes if no later logs are retained. A successful backup command proves an artifact was created; restoring it into a fresh lab and checking data is stronger evidence.",
+          "activities": [
+            {
+              "id": "m10-0",
+              "type": "Predict & trace",
+              "prompt": "Create an access matrix for API, reporting, migrations and monitoring roles.",
+              "criteria": "Grant only operations needed; test denied operations as well as permitted ones."
+            },
+            {
+              "id": "m10-1",
+              "type": "Build from a blank page",
+              "prompt": "Take and restore a backup of a disposable dataset into a new database; verify counts and selected checksums.",
+              "criteria": "Measure restoration time and verify application-level invariants."
+            },
+            {
+              "id": "m10-2",
+              "type": "Break & repair",
+              "prompt": "Simulate deletion in a lab and write a point-in-time recovery timeline using retained logs.",
+              "criteria": "Identify base backup, log range and stopping point; keep the original evidence intact."
+            },
+            {
+              "id": "m10-3",
+              "type": "Transfer & explain",
+              "prompt": "Rotate a lab credential and record how clients recover without exposing it in logs.",
+              "criteria": "Record steps and failure behavior, never secret values."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m11",
+          "title": "Operate and evolve a database",
+          "topics": [
+            "replication",
+            "GTIDs",
+            "quorum",
+            "lag",
+            "capacity",
+            "partitioning",
+            "migrations",
+            "observability"
+          ],
+          "lab": "sql-capstone",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "m10"
+          ],
+          "concept": "A replica can lag behind its source; it is not automatically a backup or a safe failover target. Promotion needs a plan for preventing conflicting writers. Capacity planning uses workload measurements. Expand-and-contract migrations separate adding compatible structures, moving clients/data, and removing obsolete structures.",
+          "example": "Add a nullable column, deploy code that tolerates both shapes, backfill in bounded batches, verify, then enforce the final constraint. Dropping the old column before old clients stop using it can break running applications.",
+          "activities": [
+            {
+              "id": "m11-0",
+              "type": "Predict & trace",
+              "prompt": "Draw source/replica traffic and explain stale reads after a write.",
+              "criteria": "Explain consistency requirements and which reads must use the source."
+            },
+            {
+              "id": "m11-1",
+              "type": "Build from a blank page",
+              "prompt": "Create an expand-and-contract migration plan with a resumable backfill and verification queries.",
+              "criteria": "Old and new application versions coexist during the transition."
+            },
+            {
+              "id": "m11-2",
+              "type": "Break & repair",
+              "prompt": "Write a runbook for replica lag or too many connections using logs, Performance Schema and workload evidence.",
+              "criteria": "Start with observations and bounded mitigations; do not blindly increase limits."
+            },
+            {
+              "id": "m11-3",
+              "type": "Transfer & explain",
+              "prompt": "Compare read replicas, caching, partitioning and sharding for a concrete growth scenario; include failure costs.",
+              "criteria": "State workload assumptions; partitioning is not equivalent to distributing across machines."
+            }
+          ],
+          "hours": 13
+        },
+        {
+          "id": "m12",
+          "title": "Deliver a database portfolio",
+          "topics": [
+            "design review",
+            "75-query progression",
+            "benchmarks",
+            "recovery",
+            "operations"
+          ],
+          "lab": "sql-capstone",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "m11"
+          ],
+          "concept": "A professional portfolio demonstrates correctness, performance and recovery together. Keep query answers reproducible with seed data and expected results. Work through 25 basic queries, 25 joins/aggregates and 25 advanced variations over time; these are practice targets, not an automatic competency score. Review mistakes by category and revisit weak areas.",
+          "example": "A commerce capstone combines constraints, reporting, stock reservation, least-privilege accounts, query tuning and restoration. A dashboard that shows totals is incomplete if concurrency can corrupt those totals.",
+          "activities": [
+            {
+              "id": "m12-0",
+              "type": "Predict & trace",
+              "prompt": "Specify commerce-system invariants and acceptance queries before implementation.",
+              "criteria": "Include money, quantity, identity and referential-integrity rules."
+            },
+            {
+              "id": "m12-1",
+              "type": "Build from a blank page",
+              "prompt": "Deliver schema, seed data, query notebook, application integration and automated regression checks.",
+              "criteria": "Another learner can recreate the database and check expected results."
+            },
+            {
+              "id": "m12-2",
+              "type": "Break & repair",
+              "prompt": "Run a concurrent-stock test and a restore drill; include exact reproduction steps and observations.",
+              "criteria": "No negative stock or duplicate reservations; restore meets your stated test objectives."
+            },
+            {
+              "id": "m12-3",
+              "type": "Transfer & explain",
+              "prompt": "Defend two index choices, one migration and one recovery decision in a design review.",
+              "criteria": "Support decisions with measured workload and acknowledge remaining limitations."
+            }
+          ],
+          "hours": 13
+        }
+      ]
+    },
+    {
+      "id": "salesforce",
+      "title": "Salesforce release engineering",
+      "subtitle": "From Git basics to recoverable releases",
+      "hours": 100,
+      "prerequisite": "Start with Git here. Use a disposable Developer Edition org for external labs.",
+      "resource": "https://developer.salesforce.com/docs/platform/salesforce-cli/overview",
+      "modules": [
+        {
+          "id": "s01",
+          "title": "Understand a release end to end",
+          "topics": [
+            "org",
+            "metadata",
+            "data",
+            "CLI",
+            "CI",
+            "CD",
+            "environments"
+          ],
+          "lab": "sf-map",
+          "phase": "Foundations",
+          "prerequisites": [],
+          "concept": "Salesforce metadata describes application structure and behavior; business records are data. Git tracks the chosen metadata files. CI validates a proposed change; deployment applies accepted changes to a target org. Start with a disposable learning org and a clearly named target.",
+          "example": "Changing a field definition is metadata work. Changing one customer record is data work. A validation may test a proposed deployment without applying the change; a passing check is not proof the target was actually updated.",
+          "activities": [
+            {
+              "id": "s01-0",
+              "type": "Predict & trace",
+              "prompt": "Draw feature branch → pull request → validation → approval → merge → deployment → verification.",
+              "criteria": "Distinguish review, validation and deployment boundaries."
+            },
+            {
+              "id": "s01-1",
+              "type": "Build from a blank page",
+              "prompt": "Inventory a sample object, field, Apex class and permission set; label dependencies and intended target.",
+              "criteria": "Keep org identity explicit and use fake business data."
+            },
+            {
+              "id": "s01-2",
+              "type": "Break & repair",
+              "prompt": "Explain why a green validation does not prove a field exists in the production org.",
+              "criteria": "Validation and deployment are different actions against stated targets."
+            },
+            {
+              "id": "s01-3",
+              "type": "Transfer & explain",
+              "prompt": "Write a release acceptance checklist including a post-deployment functional check.",
+              "criteria": "Verify behavior and permissions after deployment, not only job status."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s02",
+          "title": "Use Git as an audit trail",
+          "topics": [
+            "working tree",
+            "staging",
+            "commits",
+            "branches",
+            "PRs",
+            "conflicts"
+          ],
+          "lab": "sf-git",
+          "phase": "Foundations",
+          "prerequisites": [
+            "s01"
+          ],
+          "concept": "A commit records a snapshot with a parent history. Branches name moving points in that history. A pull request proposes a merge and collects checks and review. Small changes make both review and failure diagnosis easier. Conflict resolution must preserve intended behavior, not simply remove conflict markers.",
+          "example": "Two branches change the same permission set. Git may detect a textual conflict, but a clean merge can still create a semantic conflict such as unintentionally broad access. Review the resulting metadata and test behavior.",
+          "activities": [
+            {
+              "id": "s02-0",
+              "type": "Predict & trace",
+              "prompt": "Draw a main branch and two feature branches, then a merge commit.",
+              "criteria": "Identify parent relationships and compare the correct revisions."
+            },
+            {
+              "id": "s02-1",
+              "type": "Build from a blank page",
+              "prompt": "Create a small local repo; make two independent commits and inspect each diff before committing.",
+              "criteria": "Commits are focused, messages explain intent, and no credentials are tracked."
+            },
+            {
+              "id": "s02-2",
+              "type": "Break & repair",
+              "prompt": "Resolve a deliberate conflict in a disposable branch and document the intended combined result.",
+              "criteria": "Test the merged behavior rather than only accepting one side."
+            },
+            {
+              "id": "s02-3",
+              "type": "Transfer & explain",
+              "prompt": "Write a pull-request description with problem, behavior, tests and risk for a field change.",
+              "criteria": "Reviewer can assess the change without private conversational context."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s03",
+          "title": "Structure reproducible metadata work",
+          "topics": [
+            "project layout",
+            "manifest",
+            "retrieve",
+            "dependencies",
+            "destructive changes"
+          ],
+          "lab": "sf-files",
+          "phase": "Foundations",
+          "prerequisites": [
+            "s02"
+          ],
+          "concept": "A reproducible project declares what is tracked and how tools run. Metadata components depend on one another, so deployment units need more than changed filenames. Deletions require explicit handling; removing a file from Git alone does not guarantee removal in an org.",
+          "example": "A new field used by Apex needs both components and appropriate permissions. A destructive change should target a disposable component, prove dependency impact, and include recovery or reconstruction steps.",
+          "activities": [
+            {
+              "id": "s03-0",
+              "type": "Predict & trace",
+              "prompt": "Map a sample field, class and permission set to project files and dependencies.",
+              "criteria": "Explain why the deployment unit may contain more than one changed file."
+            },
+            {
+              "id": "s03-1",
+              "type": "Build from a blank page",
+              "prompt": "Retrieve one harmless metadata component into a disposable project and inspect the diff.",
+              "criteria": "Record org identity, tool versions and reproducible steps; keep tokens out of output."
+            },
+            {
+              "id": "s03-2",
+              "type": "Break & repair",
+              "prompt": "Design a validation case for a missing dependency and explain the error evidence you expect.",
+              "criteria": "Relate the error to the missing metadata instead of changing unrelated permissions."
+            },
+            {
+              "id": "s03-3",
+              "type": "Transfer & explain",
+              "prompt": "Plan a deletion rehearsal with explicit approval, dependency checks and post-deletion verification.",
+              "criteria": "Use a throwaway component and a reconstructable definition; do not experiment on production."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s04",
+          "title": "Construct a CI workflow",
+          "topics": [
+            "events",
+            "jobs",
+            "steps",
+            "runners",
+            "YAML",
+            "artifacts",
+            "exit codes"
+          ],
+          "lab": "sf-ci",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "s03"
+          ],
+          "concept": "A workflow connects triggers to jobs and steps. A nonzero exit should fail a required check; swallowing it can create a falsely green pipeline. Untrusted pull-request code must not automatically receive privileged credentials. Tool versions and workflow dependencies influence reproducibility.",
+          "example": "Checkout → install pinned tools → analyze → authenticate when permitted → validate → upload reports. Reports help diagnose failure, but uploading a report must not convert a failed validation into a successful required check.",
+          "activities": [
+            {
+              "id": "s04-0",
+              "type": "Predict & trace",
+              "prompt": "Trace which jobs run for a pull request and for a push to the protected branch.",
+              "criteria": "A pull request validates; accepted changes deploy through a separate authorized path."
+            },
+            {
+              "id": "s04-1",
+              "type": "Build from a blank page",
+              "prompt": "Write a workflow outline with distinct validation and deployment responsibilities.",
+              "criteria": "Declare events, dependencies, permissions and report artifacts."
+            },
+            {
+              "id": "s04-2",
+              "type": "Break & repair",
+              "prompt": "Find a shell step that masks an error with an unconditional success; repair its exit behavior.",
+              "criteria": "Required failure propagates; diagnostic upload may still run safely."
+            },
+            {
+              "id": "s04-3",
+              "type": "Transfer & explain",
+              "prompt": "Explain handling of forked contributions and why privileged secrets cannot be exposed to arbitrary code.",
+              "criteria": "Separate trust boundaries; do not use a privileged trigger to execute unchecked contributor code."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s05",
+          "title": "Authenticate with least privilege",
+          "topics": [
+            "JWT",
+            "External Client App",
+            "integration user",
+            "certificates",
+            "rotation"
+          ],
+          "lab": "sf-auth",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "s04"
+          ],
+          "concept": "Machine authentication establishes an identity; authorization determines its allowed actions. JWT signing uses a private key that must never enter a repository or logs. The connected application configuration, certificate, user approval and target URL must agree. The exact platform setup is version-sensitive, so verify current official instructions before connecting a live org.",
+          "example": "A valid signature can still fail because the user is not authorized or the audience targets the wrong login service. Giving the integration user administrator access may conceal the actual configuration issue while expanding risk.",
+          "activities": [
+            {
+              "id": "s05-0",
+              "type": "Predict & trace",
+              "prompt": "Draw the trust flow from runner to signing key, application configuration and target org.",
+              "criteria": "Identify private versus public material and where each belongs."
+            },
+            {
+              "id": "s05-1",
+              "type": "Build from a blank page",
+              "prompt": "Write an authentication checklist with placeholders only and a minimal integration-user permission plan.",
+              "criteria": "No real key or token appears in files; permissions correspond to required operations."
+            },
+            {
+              "id": "s05-2",
+              "type": "Break & repair",
+              "prompt": "Diagnose three cases: expired certificate, wrong target and unauthorized integration user.",
+              "criteria": "Use the specific error and identity/target evidence rather than blanket permission escalation."
+            },
+            {
+              "id": "s05-3",
+              "type": "Transfer & explain",
+              "prompt": "Plan certificate rotation with overlap, validation and revocation of the old key.",
+              "criteria": "A failed rotation has a recovery path; old material is retired after verification."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s06",
+          "title": "Protect credentials and enforce reviews",
+          "topics": [
+            "secret storage",
+            "log hygiene",
+            "CODEOWNERS",
+            "required checks",
+            "approvals"
+          ],
+          "lab": "sf-secrets",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "s05"
+          ],
+          "concept": "A policy written in a file is different from a policy enforced by repository or environment settings. CODEOWNERS identifies reviewers; required review enforcement depends on configured rules and plan capabilities. Scope credentials narrowly and avoid printing them while debugging. Treat accidental exposure as a revocation problem, not only a file-removal problem.",
+          "example": "Deleting a committed key from the latest file does not remove it from prior Git history. Rotate or revoke the credential first, then coordinate history cleanup and investigate usage. A secret-shaped test string can safely demonstrate scanner behavior.",
+          "activities": [
+            {
+              "id": "s06-0",
+              "type": "Predict & trace",
+              "prompt": "Create a matrix of which workflow and environment may read each placeholder secret.",
+              "criteria": "Least privilege is explicit for both identities and execution contexts."
+            },
+            {
+              "id": "s06-1",
+              "type": "Build from a blank page",
+              "prompt": "Define review and required-check rules, including stale approval after new commits.",
+              "criteria": "Distinguish file declarations from platform-enforced rules."
+            },
+            {
+              "id": "s06-2",
+              "type": "Break & repair",
+              "prompt": "Rehearse a leaked-placeholder incident: detection, revocation plan, investigation and cleanup.",
+              "criteria": "No real credentials are used; removal from the newest commit alone is insufficient."
+            },
+            {
+              "id": "s06-3",
+              "type": "Transfer & explain",
+              "prompt": "Explain how to verify protections actually prevent an unauthorized merge in your chosen hosting plan.",
+              "criteria": "Record an attempted blocked action and observed behavior; do not assume unavailable paid features exist."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s07",
+          "title": "Compute and validate a safe delta",
+          "topics": [
+            "merge base",
+            "commit ranges",
+            "delta packages",
+            "deletions",
+            "artifacts"
+          ],
+          "lab": "sf-delta",
+          "phase": "Applied practice",
+          "prerequisites": [
+            "s06"
+          ],
+          "concept": "A delta represents differences between two selected revisions. The correct base depends on the release process and last successful deployment, not simply the previous commit. Missing history or the wrong comparison can omit necessary changes. Empty deltas and destructive changes need explicit handling.",
+          "example": "If deployment of commit B failed and C later succeeds, comparing only B→C may omit changes introduced at B. Comparing the last successfully deployed baseline A→C captures the intended cumulative change.",
+          "activities": [
+            {
+              "id": "s07-0",
+              "type": "Predict & trace",
+              "prompt": "Draw A→B→C with failed deployment B; identify the correct release baseline.",
+              "criteria": "Use last successful target baseline A when that is the process contract."
+            },
+            {
+              "id": "s07-1",
+              "type": "Build from a blank page",
+              "prompt": "Create a disposable Git example with additions, modifications and deletions; inspect the generated change set.",
+              "criteria": "Account for deletions and dependencies, not just added files."
+            },
+            {
+              "id": "s07-2",
+              "type": "Break & repair",
+              "prompt": "Diagnose an empty or incomplete delta caused by shallow history or a wrong base.",
+              "criteria": "Verify fetched revisions and comparison semantics before rerunning deployment."
+            },
+            {
+              "id": "s07-3",
+              "type": "Transfer & explain",
+              "prompt": "Design an immutable deployment artifact that records source revision, baseline, manifest and validation result.",
+              "criteria": "The approved artifact and deployed artifact can be tied to the same source revision."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s08",
+          "title": "Make quality gates meaningful",
+          "topics": [
+            "Code Analyzer",
+            "Apex tests",
+            "coverage",
+            "test levels",
+            "failure triage"
+          ],
+          "lab": "sf-tests",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "s07"
+          ],
+          "concept": "Tests need assertions about behavior, not merely executed lines. Static analysis finds certain classes of issues without running the program; it complements tests. Test level and coverage requirements depend on deployment context. Preserve test reports and classify failures before retrying.",
+          "example": "A test that creates a record but asserts nothing can execute code while missing a regression. A useful test states expected behavior and includes bulk and negative cases where relevant to Apex limits and contracts.",
+          "activities": [
+            {
+              "id": "s08-0",
+              "type": "Predict & trace",
+              "prompt": "Compare line coverage with a behavioral assertion and describe what each proves.",
+              "criteria": "High coverage alone does not demonstrate correctness."
+            },
+            {
+              "id": "s08-1",
+              "type": "Build from a blank page",
+              "prompt": "Write a test plan for an Apex change including bulk inputs, permissions and expected failures.",
+              "criteria": "Each scenario has an expected outcome and reproducible setup."
+            },
+            {
+              "id": "s08-2",
+              "type": "Break & repair",
+              "prompt": "Classify a failed run into syntax, analyzer finding, assertion failure, limits or target configuration.",
+              "criteria": "Choose the next investigation step using the report evidence."
+            },
+            {
+              "id": "s08-3",
+              "type": "Transfer & explain",
+              "prompt": "Define a gate policy including report retention and justified handling of flaky tests.",
+              "criteria": "Do not silently ignore failures or rerun indefinitely until green."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s09",
+          "title": "Release, observe and recover",
+          "topics": [
+            "protected merge",
+            "environment approval",
+            "deployment status",
+            "verification",
+            "rollback"
+          ],
+          "lab": "sf-release",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "s08"
+          ],
+          "concept": "A release must target the intended environment and the reviewed revision. Prevent overlapping deployments from racing when the process cannot safely handle them. Record what was deployed and verify behavior afterward. Rollback is not automatically a complete reversal: schema, dependencies and data changes may require forward repair.",
+          "example": "A deployment succeeds but users cannot access a new field. The release check needs permissions and a user-level smoke test. Re-deploying older metadata may not reconstruct deleted business data.",
+          "activities": [
+            {
+              "id": "s09-0",
+              "type": "Predict & trace",
+              "prompt": "Create a release timeline from accepted revision to target verification with responsibility at each step.",
+              "criteria": "Keep revision, target, approval and job identifiers together."
+            },
+            {
+              "id": "s09-1",
+              "type": "Build from a blank page",
+              "prompt": "Write a runbook for deploying one harmless field to a disposable org and checking access as a representative user.",
+              "criteria": "Verify actual behavior and permission expectations beyond the job status."
+            },
+            {
+              "id": "s09-2",
+              "type": "Break & repair",
+              "prompt": "Simulate a post-release permission failure and choose rollback versus forward repair with reasoning.",
+              "criteria": "State what can and cannot be reversed; protect data separately."
+            },
+            {
+              "id": "s09-3",
+              "type": "Transfer & explain",
+              "prompt": "Design concurrency control and a deployment ledger so the next release knows the target baseline.",
+              "criteria": "A failed or canceled run never advances the successful baseline."
+            }
+          ],
+          "hours": 10
+        },
+        {
+          "id": "s10",
+          "title": "Operate a multi-environment delivery system",
+          "topics": [
+            "dev",
+            "test",
+            "UAT",
+            "production",
+            "promotion",
+            "drift",
+            "audit",
+            "incidents"
+          ],
+          "lab": "sf-capstone",
+          "phase": "Professional practice",
+          "prerequisites": [
+            "s09"
+          ],
+          "concept": "Promote an identified change through environments with explicit gates. Environment-specific credentials and configuration must not be copied blindly. Drift happens when org changes escape the declared source process. Operate the pipeline with evidence: cycle time, failure categories, recovery time and a record of decisions.",
+          "example": "Build once and promote an identified artifact where the toolchain permits, with target-specific configuration applied deliberately. If an administrator changes metadata directly, detect and reconcile the drift before the next release overwrites it.",
+          "activities": [
+            {
+              "id": "s10-0",
+              "type": "Predict & trace",
+              "prompt": "Draw a dev→test→UAT→production path with distinct identities and approvals.",
+              "criteria": "Each transition has a condition and an accountable decision."
+            },
+            {
+              "id": "s10-1",
+              "type": "Build from a blank page",
+              "prompt": "Deliver a demonstration repository, workflow, test report, deployment ledger and operator guide using a disposable org.",
+              "criteria": "A second learner can reproduce the demo; no credentials are included."
+            },
+            {
+              "id": "s10-2",
+              "type": "Break & repair",
+              "prompt": "Run three incident drills: authentication failure, failed Apex test and incorrect delta baseline.",
+              "criteria": "For each drill capture symptom, first useful evidence, repair and prevention."
+            },
+            {
+              "id": "s10-3",
+              "type": "Transfer & explain",
+              "prompt": "Present a release review explaining traceability, least privilege, recovery limits and the next improvement.",
+              "criteria": "Support claims with artifacts and identify features dependent on the chosen hosting plan."
+            }
+          ],
+          "hours": 10
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-1",
+      "track": "python",
+      "title": "Starter toolbox",
+      "brief": "A converter, guessing game and ticket calculator sharing tested validation functions.",
+      "after": "p04",
+      "rubric": [
+        "Boundary cases are documented and tested",
+        "Calculation works without interactive input",
+        "A short demo explains one repaired bug"
+      ]
+    },
+    {
+      "id": "project-2",
+      "track": "python",
+      "title": "Personal task desk",
+      "brief": "A packaged CLI task tracker with stable IDs, JSON persistence and recovery from malformed input.",
+      "after": "p06",
+      "rubric": [
+        "Save and reload preserves IDs and state",
+        "Tests cover missing and malformed files",
+        "README reproduces a clean installation"
+      ]
+    },
+    {
+      "id": "project-3",
+      "track": "python",
+      "title": "Route planning service",
+      "brief": "A tested route planner with path reconstruction, an API boundary and measured performance.",
+      "after": "p16",
+      "rubric": [
+        "Weighted and unreachable routes have tests",
+        "Timeout and invalid-input behavior are explicit",
+        "Benchmark and design review explain trade-offs"
+      ]
+    },
+    {
+      "id": "project-4",
+      "track": "mysql",
+      "title": "Commerce data model",
+      "brief": "An ER diagram, schema, seed data and constraint tests for a fictional shop.",
+      "after": "m03",
+      "rubric": [
+        "Each table has a declared grain",
+        "Invalid rows are rejected by constraints",
+        "A fresh database can be recreated"
+      ]
+    },
+    {
+      "id": "project-5",
+      "track": "mysql",
+      "title": "Analyst notebook",
+      "brief": "A reproducible reporting portfolio with joins, ranking, windows and expected results.",
+      "after": "m06",
+      "rubric": [
+        "Totals are checked by hand on a small dataset",
+        "NULLs, ties and unmatched rows are covered",
+        "Every query states output grain"
+      ]
+    },
+    {
+      "id": "project-6",
+      "track": "mysql",
+      "title": "Reliable order system",
+      "brief": "Concurrent stock reservation, least-privilege access, query benchmarks and a restore rehearsal.",
+      "after": "m12",
+      "rubric": [
+        "Competing reservations never oversell",
+        "Before/after plans support index choices",
+        "Restore is timed and invariants verified"
+      ]
+    },
+    {
+      "id": "project-7",
+      "track": "salesforce",
+      "title": "Reviewed metadata change",
+      "brief": "A small metadata change with a focused diff, dependency map and review checklist.",
+      "after": "s03",
+      "rubric": [
+        "Change and target are unambiguous",
+        "Dependencies and permissions are reviewed",
+        "Deletion/recovery implications are recorded"
+      ]
+    },
+    {
+      "id": "project-8",
+      "track": "salesforce",
+      "title": "Validation pipeline",
+      "brief": "A demonstration CI pipeline with analysis, authentication boundaries and actionable reports.",
+      "after": "s08",
+      "rubric": [
+        "Failed tests produce a failed required check",
+        "Credentials are isolated from untrusted changes",
+        "Reports identify the tested revision"
+      ]
+    },
+    {
+      "id": "project-9",
+      "track": "salesforce",
+      "title": "Release operations portfolio",
+      "brief": "A disposable-org release with baseline tracking, verification and three incident drills.",
+      "after": "s10",
+      "rubric": [
+        "Approved revision matches deployed revision",
+        "Target and successful baseline are recorded",
+        "Recovery limits and incident evidence are documented"
+      ]
+    }
+  ],
+  "learningCycle": [
+    "Understand with an example",
+    "Predict before running",
+    "Build without copying",
+    "Break and repair deliberately",
+    "Explain the trade-off",
+    "Retrieve after a delay"
+  ],
+  "reviewDays": [
+    1,
+    3,
+    7,
+    14,
+    30
+  ]
+}
