@@ -4,7 +4,7 @@ const seed=`PRAGMA foreign_keys = ON;
 CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT NOT NULL, city TEXT);
 CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER REFERENCES customers(id), total INTEGER NOT NULL, status TEXT NOT NULL);
 CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL, stock INTEGER NOT NULL);
-INSERT INTO customers VALUES(1,'Asha','Patna'),(2,'Ravi','Bengaluru'),(3,'Meera','Chennai'),(4,'Kabir',NULL);
+INSERT INTO customers VALUES(1,'Asha','Jaipur'),(2,'Ravi','Bengaluru'),(3,'Meera','Chennai'),(4,'Kabir',NULL);
 INSERT INTO orders VALUES(101,1,120,'paid'),(102,2,80,'paid'),(103,1,200,'pending'),(104,3,300,'paid');
 INSERT INTO products VALUES(1,'Notebook',80,30),(2,'Keyboard',1200,8),(3,'Mouse',500,0),(4,'Pen',20,100);`;
 async function init(type){
@@ -57,4 +57,3 @@ self.onmessage=async({data})=>{
   }
  }catch(e){self.postMessage({id,error:e.message||String(e)});}
 };
-

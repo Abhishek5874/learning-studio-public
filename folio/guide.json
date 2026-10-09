@@ -1,0 +1,50 @@
+[
+  {
+    "id": "overview",
+    "label": "Give me the short version",
+    "keywords": "overview intro about story summary who abhishek introduction",
+    "answer": "Abhishek Kumar is a PwC Associate with a computer-science background. His professional experience includes Salesforce Developer training and Azure DevOps support. His personal projects explore software learning, release engineering, Python and machine learning. He is a Sathyabama gold medalist and an IEEE conference-paper coauthor.",
+    "link": "#experience",
+    "linkLabel": "Explore the experience"
+  },
+  {
+    "id": "work",
+    "label": "What does he work on?",
+    "keywords": "work role current pwc experience job salesforce azure devops professional",
+    "answer": "The current professional scope is Salesforce Developer training and administrative/support work in an existing Azure DevOps environment. The Salesforce delivery simulator and deeper CI/CD experiments are personal learning projects. This portfolio keeps those contexts distinct.",
+    "link": "#experience",
+    "linkLabel": "Read the career timeline"
+  },
+  {
+    "id": "projects",
+    "label": "Show me something I can try",
+    "keywords": "project demo live build try product studio learning website",
+    "answer": "Learning Studio is a live personal project. It includes 38 roadmap modules, executable Python and SQL foundation labs, release simulations, project briefs and delayed recall. Device profiles work now. Cloud account integration is prepared but is not activated yet.",
+    "link": "learn.html",
+    "linkLabel": "Open Learning Studio"
+  },
+  {
+    "id": "research",
+    "label": "Tell me about the research",
+    "keywords": "research publication ieee paper security cicd ci/cd conference author",
+    "answer": "Abhishek coauthored “Multilayered Security approach for CI/CD Pipeline with Web Application Development,” published in the 2025 ICCPCT proceedings. The research explores security across software delivery. This portfolio links to the publication and does not attribute an undocumented individual contribution or performance result.",
+    "link": "#research",
+    "linkLabel": "View the publication"
+  },
+  {
+    "id": "skills",
+    "label": "Where are the strongest connections?",
+    "keywords": "skills technology stack python tools learn strengths programming",
+    "answer": "The clearest connections are Salesforce training and Azure DevOps support, Python application/data projects, and personal CI/CD learning. The portfolio links these areas to concrete projects instead of giving skills percentage scores. AR/VR, cloud and generative AI are additional learning interests.",
+    "link": "#capabilities",
+    "linkLabel": "Explore capabilities and context"
+  },
+  {
+    "id": "contact",
+    "label": "How can I connect?",
+    "keywords": "contact email phone mobile number connect linkedin hire resume cv brief",
+    "answer": "LinkedIn is the public contact route. The professional brief summarizes experience, education, projects and research, and can be printed or saved as a PDF. Private contact details are not distributed by this guide.",
+    "link": "https://www.linkedin.com/in/abhishek-kumar-047b45229/",
+    "linkLabel": "Connect on LinkedIn"
+  }
+]
