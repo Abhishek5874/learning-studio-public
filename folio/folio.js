@@ -17,7 +17,7 @@
  const panels={
   build:{kicker:'TURN QUESTIONS INTO SOFTWARE',title:'Small ideas.\nWorking examples.',text:'Python applications, product ideas and a learning workspace you can try for yourself.',href:'#work',label:'See the selected projects ↗'},
   deliver:{kicker:'UNDERSTAND THE WHOLE RELEASE',title:'Every check\nneeds a reason.',text:'Salesforce training, Azure DevOps support and personal experiments in how software gets validated and delivered.',href:'#experience',label:'Explore the professional context ↗'},
-  learn:{kicker:'LEARNING THROUGH PRACTICE',title:'Try it. Explain it.\nCome back to it.',text:'A personal learning studio with executable foundations, deeper assignments, project briefs and delayed recall.',href:'learn.html',label:'Enter the Learning Studio ↗'}
+  learn:{kicker:'LEARNING THROUGH PRACTICE',title:'Try it. Explain it.\nCome back to it.',text:'Start with a two-line example, follow each step, then try the browser practice. The full roadmap is there when you are ready.',href:'learn.html#python/py-first',label:'Try the first Python activity ↗'}
  };
  $$('[data-focus]').forEach(button=>button.onclick=()=>{
   const p=panels[button.dataset.focus];$$('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
