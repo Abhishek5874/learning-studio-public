@@ -19,6 +19,7 @@ window.LearningJourney = (()=>{
  function open(which='roadmap'){section=which;selected=null;history.replaceState(null,'','#roadmap');api.activate();if(window.LearnerStore.canEdit())render();}
  function render(){if(selected){modulePage(getModule(selected));return;}if(section==='today')today();else if(section==='projects')projects();else roadmap();}
  function roadmap(){
+  if(track().id==='salesforce'&&window.SalesforceProject?.hasData()){SalesforceProject.open();return;}
   const t=track(),done=t.modules.filter(evidenceReady).length;
   const levels=t.levels.map((level,index)=>{
    const items=level.modules.map(getModule).filter(Boolean);
