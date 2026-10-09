@@ -1,0 +1,1062 @@
+{
+  "title": "Build the School Help Desk",
+  "project": "One app for fictional equipment-support requests. Build, test, release and explain it; no real school data.",
+  "units": [
+    {
+      "id": "sfp01",
+      "title": "Understand the problem before building",
+      "phase": "Discovery & Architecture",
+      "minutes": 40,
+      "requires": [],
+      "outcome": "Describe who needs help, what a request records and how someone knows it is finished.",
+      "explain": [
+        "Imagine a projector stops working. A teacher tells one person, another person writes a note, and nobody knows whether it was fixed. A help desk app keeps each request, its current status and the person handling it in one place. Salesforce is a platform for building this kind of business app. CRM means keeping useful records about people and the work connected to them.",
+        "We will build one fictional School Help Desk throughout this path. You will add fields, connect records, design screens, set permissions and add automation before writing code. Each unit builds on the previous one. A concept quiz checks understanding; the build checklist asks you to test the real app in a free practice org."
+      ],
+      "terms": [
+        {
+          "word": "CRM (Customer Relationship Management)",
+          "meaning": "A centralized software platform designed to manage relationships, service requests, operational processes, and relational records across an organization."
+        },
+        {
+          "word": "Custom Object",
+          "meaning": "A tailored database table created by administrators or developers within Salesforce to store organization-specific data beyond standard system entities."
+        },
+        {
+          "word": "Synthetic Data",
+          "meaning": "Fictitious, realistic data generated strictly for development and testing purposes that contains zero personally identifiable or real-world private information."
+        }
+      ],
+      "example": "At Beacon Academy, an instructor finds that Lab 202's science projector bulb has failed. Instead of emailing an IT staff member's personal inbox, the instructor drafts a Help Desk Request record with Category 'Audio/Visual', Priority 'High', and Status 'New', linking the issue directly to the Science Department.",
+      "build": [
+        "Draft a domain model on paper or in a text editor defining the core 'Help Desk Request' entity with five required attributes: Subject, Description, Category, Priority, and Status.",
+        "Identify the primary organizational entities connected to support tickets: the Requester (Staff/Teacher contact) and the School Asset (classroom device or equipment).",
+        "Map the complete 5-stage lifecycle state machine for requests: New -> Triaged -> In Progress -> Resolved -> Closed.",
+        "Create a synthetic test table with three fictional records representing Hardware, Software, and Facilities issues using synthetic room numbers (e.g., Room 101, Lab 202, Library A) and synthetic staff aliases."
+      ],
+      "checks": [
+        "Your paper plan contains Subject, Description, Category, Priority and Status for each request.",
+        "Trace one fictional request from New to Closed, naming who handles each step and when resolution notes are recorded.",
+        "Your three example requests contain fictional names and rooms only; no real student, staff or school contact data."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Uncertainty whether 'Room Location' should be a separate object or a simple text field on the request.",
+          "fix": "Keep the initial architecture lean: model Room Location as a simple Text field first. Only split locations into a standalone custom object if you must track complex building hierarchies and floor plans."
+        },
+        {
+          "symptom": "Over-designing the lifecycle with dozens of granular intermediate approval states.",
+          "fix": "Consolidate the workflow down to five fundamental states: New, Triaged, In Progress, Resolved, and Closed. Additional intermediate sub-states can be added later if operational needs dictate."
+        }
+      ],
+      "variation": "Adapt the model to support equipment loaner checkouts by adding an 'Anticipated Return Date' date field and a 'Loaner Device' category to the lifecycle draft.",
+      "evidencePrompt": "Submit your written domain model specification outlining the Help Desk Request attributes, lifecycle states, and three synthetic sample records.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/platform-development-basics",
+      "question": {
+        "prompt": "Why is storing school maintenance tickets in a relational CRM object superior to tracking them in shared email inboxes?",
+        "options": [
+          "It enforces consistent fields, lifecycle statuses, and centralized team visibility across all departments.",
+          "It automatically purchases hardware replacement parts without requiring staff approval.",
+          "It deletes aging tickets after forty-eight hours so backlogs never accumulate."
+        ],
+        "correct": 0,
+        "explain": "A relational CRM provides structured schema, controlled picklists, and auditable statuses so support tasks cannot get buried or lost across personal inboxes."
+      }
+    },
+    {
+      "id": "sfp02",
+      "title": "Set up your free practice org",
+      "phase": "Environment Provisioning",
+      "minutes": 40,
+      "requires": [
+        "sfp01"
+      ],
+      "outcome": "Provision, configure, and secure a zero-cost Trailhead Playground developer instance with custom domain access and known admin credentials.",
+      "explain": [
+        "Salesforce provides free, fully-functional developer sandboxes called Trailhead Playgrounds and Developer Edition orgs. These environments come equipped with platform features, standard objects, and developer tools at an absolute cost of INR 0. No credit card, corporate agreement, or school billing account is required. Because these orgs are isolated from real-world school systems, they provide an ideal, safe sandbox where beginners can build data schemas, deploy custom code, and test automations without risking data loss or service disruption.",
+        "When your playground is first created, Salesforce provisions a unique cloud tenant with an active 'My Domain' URL (for example, `creative-badger-123456-dev-ed.trailblaze.my.salesforce.com`). By default, your administrator user account is authenticated via browser session tokens, meaning you do not initially possess a permanent alphanumeric password. To use professional desktop tools and command-line interfaces later in this course, you must immediately reset your administrator password via the Setup menu and record your assigned username."
+      ],
+      "terms": [
+        {
+          "word": "Trailhead Playground",
+          "meaning": "A free, isolated developer edition Salesforce instance provided for practice, experimentation, and testing configurations without financial cost."
+        },
+        {
+          "word": "My Domain",
+          "meaning": "A dedicated, customer-specific URL subdomain for your Salesforce org that enables custom Lightning components and modern single sign-on authentication."
+        },
+        {
+          "word": "System Administrator",
+          "meaning": "The superuser profile in Salesforce possessing full administrative privileges to customize schema, assign security permissions, and manage user accounts."
+        }
+      ],
+      "example": "A student developer creates a fresh playground named 'BeaconHelpDesk-Dev', navigates to Setup > Users, locates the assigned username `admin@brave-racoon-7890.net`, and initiates a password reset to establish a permanent desktop login credential.",
+      "build": [
+        "Log into your free Trailhead account, navigate to the Hands-on Orgs menu, and click 'Create Playground', labeling it 'BeaconHelpDesk-Dev'.",
+        "Launch the newly created playground and navigate to Setup > Users > Users to locate your active System Administrator account.",
+        "Find your Playground username using the official Get Your Login Credentials instructions. Keep login details in a password manager outside this website; never put them in your workbook.",
+        "Use the 'Get Your Login Credentials' tab in the playground or click 'Reset Password' on your user record, then follow the emailed link to set a secure, memorable password.",
+        "Navigate to Setup > Company Information to confirm that your organization edition displays as 'Developer Edition' with active user licenses available."
+      ],
+      "checks": [
+        "Positive check: Successfully log out of the browser and log back in at login.salesforce.com using your explicit Playground username and newly established password.",
+        "Launch Setup in your Playground and identify Object Manager and the App Launcher; explain how Setup differs from using a finished app.",
+        "Negative check: Confirm that no personal credit card or billing details were supplied, maintaining an absolute zero-cost (INR 0) learning environment."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "The password reset email does not arrive after several minutes.",
+          "fix": "Check your spam/junk folder. If missing, check Setup > Users on your admin user record to ensure the email address matches your active personal inbox, correct it if necessary, and re-trigger the reset."
+        },
+        {
+          "symptom": "Browser redirects in an infinite login loop when accessing the playground.",
+          "fix": "Open an Incognito or Private browser window and log in directly using your specific My Domain URL instead of the generic login page, or clear cached third-party cookies."
+        }
+      ],
+      "variation": "Navigate to Setup > Company Information and update the Organization Name to 'Beacon Academy' while setting your local timezone and currency.",
+      "evidencePrompt": "Submit a sanitized screenshot of your Company Information page showing your Developer Edition status and organization name without revealing sensitive account IDs or private emails.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/trailhead_playground_management",
+      "question": {
+        "prompt": "Why must you establish an explicit password for your Trailhead Playground administrator account?",
+        "options": [
+          "To authenticate external developer tools like the Salesforce CLI from your desktop terminal.",
+          "To prevent Salesforce from deleting your playground after three days.",
+          "To convert your free developer org into a paid commercial production org."
+        ],
+        "correct": 0,
+        "explain": "External desktop developer tools and CLIs cannot rely on interactive web sessions and require an authenticated user with a known username and password."
+      }
+    },
+    {
+      "id": "sfp03",
+      "title": "Create requests and useful fields",
+      "phase": "Data Architecture",
+      "minutes": 45,
+      "requires": [
+        "sfp02"
+      ],
+      "outcome": "Build the core custom object 'Help Desk Request' (`Help_Request__c`) with structured picklist, date, and text fields in Object Manager.",
+      "explain": [
+        "With a secure developer org ready, we transition from conceptual planning into concrete Salesforce data architecture. Standard Salesforce objects like Account and Contact represent traditional business entities, but specialized educational operations require custom objects. When you create a custom object in Salesforce, the platform generates underlying database tables, standard metadata fields (such as `Id`, `CreatedDate`, and `OwnerId`), and automatically appends the suffix `__c` to its developer API Name.",
+        "Field types define the integrity of the data collected by your application. Relying exclusively on freeform text fields causes data corruption: users introduce typos, misspell department names, and format dates inconsistently. Salesforce provides strongly typed fields: Picklists restrict entries to controlled lists of values (Priority: Low, Medium, High, Critical; Status: New, Triaged, In Progress, Resolved, Closed); Long Text Areas accommodate comprehensive diagnostic logs without truncating text; and Auto-Number fields generate uniform ticket identifiers (such as `REQ-0001`)."
+      ],
+      "terms": [
+        {
+          "word": "API Name",
+          "meaning": "The unique programmatic identifier for objects, fields, and components in Salesforce, suffixed with '__c' for custom schema elements."
+        },
+        {
+          "word": "Auto-Number Field",
+          "meaning": "A system-managed read-only field that automatically increments a sequential numeric or formatted alphanumeric ID whenever a new record is created."
+        },
+        {
+          "word": "Picklist",
+          "meaning": "A predefined selection field that restricts user inputs to an authorized list of specific values, preserving clean data categorization."
+        }
+      ],
+      "example": "Creating the custom field `Priority__c` with values 'Low', 'Medium', 'High', and 'Critical', defaulting to 'Medium'. This guarantees that downstream reports will never suffer from variations like 'urgent', 'Urgent!', or 'asap'.",
+      "build": [
+        "In Setup, open Object Manager, click 'Create' > 'Custom Object', set Label to 'Help Desk Request', Plural Label to 'Help Desk Requests', and Record Name to Auto-Number with Display Format 'REQ-{0000}' starting at 1. Set Object Name explicitly to Help_Request (the full API name becomes Help_Request__c).",
+        "Under Optional Features, check 'Allow Reports' and 'Track Field History', then save the object. Choose Launch New Custom Tab Wizard, create the Help Desk Requests tab and keep it available in the App Launcher.",
+        "In Fields & Relationships, create a Picklist field labeled 'Priority' (API Name: `Priority__c`) with values 'Low', 'Medium', 'High', 'Critical', setting 'Medium' as default.",
+        "Create a Picklist field labeled 'Status' (API Name: `Status__c`) with values 'New', 'Triaged', 'In Progress', 'Resolved', 'Closed', setting 'New' as default.",
+        "Create a Picklist field labeled 'Category' (API Name: `Category__c`) with values 'Hardware', 'Software', 'Network', 'Audio/Visual', 'Facilities'.",
+        "Create a Text field labeled 'Subject' (`Subject__c`, 100 characters, marked Required) and a Long Text Area labeled 'Description' (`Description__c`, 32,000 characters, 4 lines visible)."
+      ],
+      "checks": [
+        "Open the Help Desk Requests tab and save one fictional request. Check that an auto-number is assigned, Status defaults to New and Priority defaults to Medium; do not depend on the exact sequence number.",
+        "Boundary check: Attempt to save a new Help Desk Request leaving the Subject field blank; verify that the platform blocks record creation with an explicit field requirement validation error.",
+        "Negative check: Confirm in Object Manager that the API names for your custom fields contain single sets of double-underscores (e.g., `Priority__c`, not `Priority__c__c`)."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Help Desk Requests does not appear in App Launcher search results.",
+          "fix": "Navigate to Setup > Tabs, click 'New' under Custom Object Tabs, select 'Help Desk Request', pick a tab style (such as Desk or Wrench), and save with visibility for all profiles."
+        },
+        {
+          "symptom": "The Auto-Number format generates numbers like '1' instead of 'REQ-0001'.",
+          "fix": "Edit the custom object definition in Object Manager, check the Record Name field properties, and ensure Display Format is set precisely to 'REQ-{0000}'."
+        }
+      ],
+      "variation": "Add a Checkbox custom field labeled 'Requires Emergency Escalation' (`Requires_Emergency_Escalation__c`), defaulted to Unchecked, intended for campus-wide outages.",
+      "evidencePrompt": "Submit a screenshot of Object Manager > Help Desk Request > Fields & Relationships showing your custom fields, their data types, and API names.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/data_modeling",
+      "question": {
+        "prompt": "What is the primary architectural purpose of configuring the 'Status' field as a Picklist rather than a standard Text field?",
+        "options": [
+          "To constrain data input to authorized lifecycle states and prevent erratic entries from corrupting automation.",
+          "To allow users to upload binary file attachments directly into the status cell.",
+          "To automatically convert status labels into different international languages."
+        ],
+        "correct": 0,
+        "explain": "Picklists maintain strict data integrity by enforcing a controlled set of allowed values, which is essential for consistent reporting and business automation."
+      }
+    },
+    {
+      "id": "sfp04",
+      "title": "Connect requesters and equipment",
+      "phase": "Data Architecture",
+      "minutes": 40,
+      "requires": [
+        "sfp03"
+      ],
+      "outcome": "Establish relational integrity by connecting help tickets to standard Contacts and custom School Assets via Lookup relationships.",
+      "explain": [
+        "A flat database table where all requester information and equipment details are typed repeatedly into every single ticket is inefficient and error-prone. If an instructor changes classrooms or an asset moves buildings, flat records require hundreds of manual edits. In relational database architecture, entities are separated into distinct objects and interconnected using relationships. This allows records to reference one another without duplicating data.",
+        "Salesforce provides two primary data relationship models: Lookup Relationships and Master-Detail Relationships. A Master-Detail relationship creates tight coupling: child records inherit security directly from the parent, and deleting the parent automatically cascade-deletes all child records. In contrast, a Lookup Relationship creates loose coupling: records reference each other, but child records can exist independently. For a school help desk, deleting a staff member's Contact record should never erase historical maintenance tickets. Therefore, Lookup relationships are the correct architectural choice here."
+      ],
+      "terms": [
+        {
+          "word": "Lookup Relationship",
+          "meaning": "A loose relational link between two objects where child records reference a parent record without inheriting strict ownership or cascade-deletion."
+        },
+        {
+          "word": "Master-Detail Relationship",
+          "meaning": "A tightly coupled parent-child relationship where the child record inherits security from the parent and is deleted if the parent is deleted."
+        },
+        {
+          "word": "Related List",
+          "meaning": "A user interface component on a parent record page displaying a table of linked child records from a relationship field."
+        }
+      ],
+      "example": "A Lookup field `School_Asset__c` on `Help_Request__c` links ticket `REQ-0002` to asset `AST-0105` (Dell Latitude 3310). When technicians inspect `AST-0105`, they see its entire maintenance history in one place.",
+      "build": [
+        "In Object Manager, create a new Custom Object labeled 'School Asset' (Plural: 'School Assets', API Name: `School_Asset__c`) with Auto-Number name 'AST-{0000}'.",
+        "Add custom fields to School Asset: 'Asset Name' (Text 80), 'Serial Number' (Text 50), and 'Location' (Text 50). Create a custom tab for School Assets.",
+        "Navigate back to Object Manager > Help Desk Request > Fields & Relationships and click 'New'.",
+        "Select 'Lookup Relationship', choose 'Contact' as the related object, set Label to 'Requester' (API Name: `Requester__c`), and set the Related List label to 'Submitted Help Requests'.",
+        "Create a second 'Lookup Relationship' on Help Desk Request pointing to 'School Asset', set Label to 'School Asset' (API Name: `School_Asset__c`), and set the Related List label to 'Maintenance History'."
+      ],
+      "checks": [
+        "Positive check: Create a synthetic Contact named 'Pat Chen' (Science Teacher) and a School Asset 'AST-0001' (Lab Microscope); create a Help Desk Request linking both, and verify the links appear on the ticket.",
+        "Boundary check: Open synthetic Contact 'Pat Chen' and inspect the 'Submitted Help Requests' related list; verify that the linked ticket `REQ-0001` is visible directly from the Contact record.",
+        "Create a separate disposable test request linked to the fictional Contact and Asset. Delete only that test request in your practice org; confirm the Contact, Asset and original request still exist."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "The 'Submitted Help Requests' related list does not appear when viewing a Contact record.",
+          "fix": "Open Object Manager > Contact > Page Layouts, open the Contact Layout, scroll to Related Lists, drag 'Submitted Help Requests' onto the layout canvas, and save."
+        },
+        {
+          "symptom": "Accidentally created a Master-Detail relationship instead of a Lookup relationship.",
+          "fix": "In Fields & Relationships on Help Desk Request, locate the field, click Edit, click 'Change Field Type', convert it to Lookup Relationship, and save."
+        }
+      ],
+      "variation": "Add a synthetic 'Warranty Expiration Date' date field to School Asset to help technicians verify if repair costs are covered under manufacturer warranty.",
+      "evidencePrompt": "Submit a screenshot of a completed synthetic Help Desk Request record showing both the populated Requester Contact lookup link and School Asset lookup link.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/data_modeling",
+      "question": {
+        "prompt": "Why is a Lookup relationship architecturally preferable over Master-Detail when linking Help Desk Requests to Staff Contacts?",
+        "options": [
+          "Deleting a staff Contact record should not cascade-delete their historical support requests from school records.",
+          "Standard Contact records are technically unable to support Master-Detail relationships in Salesforce.",
+          "Lookup relationships automatically trigger SMS text messages to staff members."
+        ],
+        "correct": 0,
+        "explain": "Lookup relationships loosely link records without cascade-deletion, preserving historical maintenance records even if an employee leaves the school."
+      }
+    },
+    {
+      "id": "sfp05",
+      "title": "Make one usable Help Desk app",
+      "phase": "User Interface",
+      "minutes": 40,
+      "requires": [
+        "sfp04"
+      ],
+      "outcome": "Assemble a customized Lightning App with dedicated navigation tabs and build an ergonomic Lightning Record Page in Lightning App Builder.",
+      "explain": [
+        "A relational data model needs an intuitive user interface so staff can navigate efficiently. Salesforce Lightning Experience provides a modern, responsive user experience composed of Lightning Apps and customizable Lightning Pages. Without a dedicated application, school technicians would be forced to navigate through irrelevant corporate sales objects like Leads, Opportunities, and Campaigns.",
+        "A Lightning App functions as a curated workspace. It bundles specific navigation tabs, custom branding, and specialized record layouts tailored to a particular job role. For the Beacon Academy IT team, creating a dedicated 'School Help Desk' app provides one-click access to Help Desk Requests, School Assets, Staff Contacts, and operational Reports, establishing a focused support environment."
+      ],
+      "terms": [
+        {
+          "word": "Lightning App",
+          "meaning": "A branded collection of navigation tabs, utilities, and items in Lightning Experience designed to support a specific business role or workflow."
+        },
+        {
+          "word": "Lightning App Builder",
+          "meaning": "A point-and-click administrative design tool used to customize dynamic Lightning Record Pages, App Pages, and Home Pages."
+        },
+        {
+          "word": "Highlights Panel",
+          "meaning": "A prominent header component positioned at the top of a record page that displays up to six critical summary fields for rapid review."
+        }
+      ],
+      "example": "Configuring the School Help Desk app with an indigo theme, a support wrench icon, and a navigation bar displaying tabs for Help Desk Requests, School Assets, Contacts, and Reports in order.",
+      "build": [
+        "In Setup, search for 'App Manager' and click 'New Lightning App'.",
+        "Set App Name to 'School Help Desk', Developer Name to `School_Help_Desk`, Description to 'Beacon Academy IT and Facilities Portal', and choose an Indigo theme color.",
+        "Set Navigation Style to Standard Navigation, target form factors to Desktop and Phone, and add navigation items: 'Help Desk Requests', 'School Assets', 'Contacts', and 'Reports'.",
+        "Under User Profiles, assign the app to 'System Administrator' (and 'Standard User') and click Save & Finish.",
+        "Open Object Manager > Help Desk Request > Lightning Record Pages, click 'New', select 'Record Page', name it 'Help Desk Request Record Page', choose 'Header and Right Sidebar' template, drag a Highlights Panel to the header, Details and Related Lists tabs to the main area, and activate the page as Org Default. Configure the object compact layout with Name, Status, Priority and Requester so the Highlights Panel has those fields."
+      ],
+      "checks": [
+        "Positive check: Open the App Launcher, select 'School Help Desk', and verify that the custom indigo navigation bar displays the four configured tabs in order.",
+        "Boundary check: Open an existing Help Desk Request record; verify that the Highlights Panel renders cleanly at the top displaying the Request Name, Status, Priority, and Requester.",
+        "Negative check: Verify that non-operational standard objects (such as Opportunities and Leads) do not appear in the School Help Desk navigation bar."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "The new Lightning Record Page layout does not appear when opening ticket records.",
+          "fix": "Open the page in Lightning App Builder, click the 'Activation' button in the upper right, and ensure it is activated as the Org Default or assigned as the App Default for the School Help Desk app."
+        },
+        {
+          "symptom": "The custom app does not appear in the App Launcher dropdown menu.",
+          "fix": "Navigate to Setup > App Manager, edit 'School Help Desk', check 'User Profiles', and verify that your current administrator profile is in the Selected Profiles column."
+        }
+      ],
+      "variation": "Configure a dynamic Path component on the Help Desk Request record page mapped to the Status picklist, enabling technicians to advance ticket stages with a single click.",
+      "evidencePrompt": "Submit a screenshot showing the School Help Desk app open in your browser, highlighting the custom navigation items and the structured record page layout.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "What is the primary operational benefit of creating a dedicated Lightning App for the School Help Desk team?",
+        "options": [
+          "It restricts the navigation bar to relevant support tabs, eliminating distractions from unrelated objects like Leads and Opportunities.",
+          "It automatically encrypts the entire underlying database using hardware security modules.",
+          "It disables all validation rules when administrators are logged into the system."
+        ],
+        "correct": 0,
+        "explain": "A dedicated Lightning App provides a focused workspace tailored to a team's workflow by displaying only the tabs and tools they need to do their jobs."
+      }
+    },
+    {
+      "id": "sfp06",
+      "title": "Add rules that stop bad data",
+      "phase": "Business Logic",
+      "minutes": 45,
+      "requires": [
+        "sfp05"
+      ],
+      "outcome": "Implement automated calculation formula fields and declarative validation rules that enforce school operational policies and data quality.",
+      "explain": [
+        "Collecting support tickets is only valuable if data quality remains consistent. If technicians can mark tickets as 'Resolved' or 'Closed' without explaining what repairs took place, school leadership cannot identify recurring defects or justify hardware replacements. Declarative business logic tools—specifically Formula Fields and Validation Rules—allow you to enforce operational policies automatically without writing a single line of procedural code.",
+        "Formula Fields are read-only calculated fields that compute dynamic values on the fly using expressions. Similar to spreadsheet formulas, they can calculate numerical differences, manipulate text strings, or inspect date timestamps. For instance, calculating the exact age of a ticket (`NOW() - CreatedDate`) gives support supervisors immediate visibility into aging backlogs without requiring manual date math."
+      ],
+      "terms": [
+        {
+          "word": "Formula Field",
+          "meaning": "A read-only custom field whose value is automatically evaluated and dynamically derived from an underlying mathematical or logical expression."
+        },
+        {
+          "word": "Validation Rule",
+          "meaning": "A business logic rule that evaluates an expression upon record save; if evaluated to TRUE, the save is rejected and an error message is displayed."
+        },
+        {
+          "word": "ISPICKVAL",
+          "meaning": "A built-in formula function used in Salesforce to evaluate whether a picklist field contains a specific literal text value."
+        }
+      ],
+      "example": "A New request may have no resolution notes. A Closed request with blank notes must be rejected. A Closed request with a short explanation should save.",
+      "build": [
+        "Create Resolution Notes as a Text Area field (255 characters), API name Resolution_Notes__c. Use this short field for the beginner validation rule.",
+        "Create Ticket Age in Days as a Number formula with 0 decimal places: FLOOR(NOW() - CreatedDate). This counts completed 24-hour periods, not calendar dates.",
+        "Navigate to Validation Rules on Help Desk Request and click 'New'.",
+        "Set Rule Name to `Require_Resolution_Notes_On_Closure`, Description to 'Prevents marking a ticket resolved or closed without resolution documentation'.",
+        "Use error condition AND(OR(ISPICKVAL(Status__c, \"Resolved\"), ISPICKVAL(Status__c, \"Closed\")), ISBLANK(Resolution_Notes__c)). Add the message \"Enter resolution notes before finishing a request\" and activate the rule."
+      ],
+      "checks": [
+        "Positive check: Edit a Help Desk Request, set Status to 'Resolved', enter 'Replaced projector bulb with spare from supply cabinet' into Resolution Notes, and verify the record saves cleanly.",
+        "Boundary check: Edit an existing ticket, change Status to 'Resolved' while leaving Resolution Notes completely empty; verify that the save is blocked and your custom error message displays.",
+        "Negative check: Edit an existing ticket with Status set to 'In Progress' with Resolution Notes left empty; verify that the record saves successfully without triggering the closure validation rule."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Validation rule formula displays syntax error: 'Incorrect parameter type for operator ='.",
+          "fix": "Remember that picklist fields cannot be evaluated using direct equality (`Status__c = 'Resolved'`). You must use the `ISPICKVAL(Status__c, 'Resolved')` function."
+        },
+        {
+          "symptom": "Validation rule triggers unexpectedly on newly created tickets with Status 'New'.",
+          "fix": "Double-check formula logic: ensure your `OR()` statement strictly checks for 'Resolved' and 'Closed' states and is wrapped properly within the outer `AND()` condition."
+        }
+      ],
+      "variation": "Add a validation rule requiring that any ticket flagged with Priority 'Critical' must have a non-blank Description of at least 20 characters.",
+      "evidencePrompt": "Submit a screenshot showing the validation rule successfully blocking a record save and displaying your custom error message when Resolution Notes are omitted on a Resolved ticket.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/point_click_business_logic",
+      "question": {
+        "prompt": "When does a Salesforce Validation Rule interrupt a save transaction and present an error message to the user?",
+        "options": [
+          "When the Error Condition Formula evaluates to TRUE.",
+          "When the Error Condition Formula evaluates to FALSE.",
+          "Only when an external database server goes offline."
+        ],
+        "correct": 0,
+        "explain": "Validation rules evaluate upon record save; if the formula evaluates to TRUE, the transaction is rolled back and the error message is displayed."
+      }
+    },
+    {
+      "id": "sfp07",
+      "requires": [
+        "sfp06"
+      ],
+      "title": "Decide who can see and change records",
+      "phase": "Security & Access",
+      "minutes": 40,
+      "outcome": "Separate a reader from a staff member and test the effective permissions, not just a checkbox.",
+      "explain": [
+        "An object permission controls actions such as reading or editing requests. Field access controls which parts of a request can be read or changed. Record sharing controls which individual requests a user can reach. These checks work together; being able to open the app does not mean a person can edit every field.",
+        "Permission sets add access. They do not remove access already granted by a profile or another set. Your administrator account is therefore not a valid test of a restricted reader. In this dedicated practice org, use a separate test user with an available free licence and a minimal baseline. If none is available, record the role test as blocked rather than claiming it passed; do not buy a licence."
+      ],
+      "terms": [
+        {
+          "word": "Permission Set",
+          "meaning": "A collection of settings and permissions that extends user access without altering their underlying profile."
+        },
+        {
+          "word": "Field-Level Security",
+          "meaning": "Controls whether a user can see and edit a specific field on an object."
+        },
+        {
+          "word": "Additive Permissions",
+          "meaning": "Security model rule where permissions can only grant access, never subtract existing access."
+        }
+      ],
+      "example": "Student IT assistants use standard profiles with read-only access to records, but receive a Permission Set to edit Resolution Notes on Help Requests.",
+      "build": [
+        "Write a permission matrix: Help Desk Reader can read requests; Help Desk Staff can read, create and edit requests. Neither needs delete or Modify All for this exercise.",
+        "Create permission sets Help_Desk_Reader and Help_Desk_Staff. Configure object and field permissions from the matrix; the formula field remains read-only. Keep baseline profiles minimal and check their existing grants.",
+        "Review Sharing Settings for Help_Request__c in this dedicated practice org. Choose Private, and share the test record only with the test user who needs it. Avoid changing any employer or school org.",
+        "Using an available free practice licence, configure a separate test user and assign the reader set. Test read and denied edit, then assign the staff set and test allowed edit. If a second user is unavailable, document this test as blocked."
+      ],
+      "checks": [
+        "A separately logged-in reader can read the shared test record but cannot edit its resolution notes.",
+        "That same test user with the staff set can edit the shared record; verify that profile or other set grants did not already provide the edit access.",
+        "A different unshared request remains inaccessible to the test user. Record the permissions and sharing conditions used."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Cannot assign permission set due to license limit error.",
+          "fix": "Ensure the Permission Set license is set to None or matches an available active user license in your Playground."
+        },
+        {
+          "symptom": "Field remains hidden despite assignment.",
+          "fix": "Verify that Field-Level Security in Object Settings has Read Access explicitly checked."
+        }
+      ],
+      "variation": "Create an additional Permission Set granting Delete permission only to team leads.",
+      "evidencePrompt": "Explain how permission sets layer on top of profiles and why they cannot remove existing access.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "What happens if a user's profile grants Edit access to a field, but their assigned Permission Set does not mention that field?",
+        "options": [
+          "The user retains Edit access because permission sets can only add access, never revoke it.",
+          "The user loses Edit access because permission sets override profile settings.",
+          "The record is locked until the permission set explicitly grants Edit access."
+        ],
+        "correct": 0,
+        "explain": "Permission sets are strictly additive and cannot revoke access granted by a user's profile."
+      }
+    },
+    {
+      "id": "sfp08",
+      "requires": [
+        "sfp07"
+      ],
+      "title": "Automate one small decision",
+      "phase": "Process Automation",
+      "minutes": 40,
+      "outcome": "Use a before-save Flow to raise a Low-priority Network request to Medium.",
+      "explain": [
+        "Flows allow administrators to build business logic visually without writing code. A Record-Triggered Flow runs automatically in the background when a record is created or updated, evaluating conditions and updating fields before or after saving.",
+        "Fast Field Updates (before-save flows) execute immediately before the record commits to the database, making them the most efficient way to update fields on the triggering record itself without triggering unnecessary system recursion."
+      ],
+      "terms": [
+        {
+          "word": "Record-Triggered Flow",
+          "meaning": "An automated visual workflow launched whenever a record is created, updated, or deleted."
+        },
+        {
+          "word": "Fast Field Updates",
+          "meaning": "An optimization setting that updates record fields before saving to optimize performance."
+        },
+        {
+          "word": "Decision Element",
+          "meaning": "A flow node that evaluates branching conditions to direct record execution."
+        }
+      ],
+      "example": "For this exercise only, Network + Low becomes Medium. A High priority stays High. Other categories keep the selected priority.",
+      "build": [
+        "Create a record-triggered Flow on Help_Request__c for a record being created, optimized for Fast Field Updates.",
+        "Add a Decision whose matching outcome requires Category__c = Network AND Priority__c = Low.",
+        "On that branch use an Assignment to set $Record.Priority__c to Medium. Leave the default branch unchanged; do not add a second Update Records action in this before-save exercise.",
+        "Save as School_Help_Desk_Priority, Debug with fictional data and activate the reviewed version."
+      ],
+      "checks": [
+        "A new Network request explicitly set to Low saves as Medium.",
+        "A new Network request set to High remains High, and a Hardware request set to Low remains Low.",
+        "A request missing the required Subject is still rejected. The Flow does not bypass validation."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Flow does not run during test record creation.",
+          "fix": "Confirm that the Flow status is Active in the Flow Builder header."
+        },
+        {
+          "symptom": "Field value does not update as expected.",
+          "fix": "Check the decision criteria path to ensure field API names and picklist values match exactly."
+        }
+      ],
+      "variation": "Extend the Flow to set Status__c to 'Triaged' automatically when a technician takes ownership.",
+      "evidencePrompt": "Describe why a before-save Fast Field Update is preferred over an after-save update for triggering record fields.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/flow-basics",
+      "question": {
+        "prompt": "When should you select 'Fast Field Updates' in a Record-Triggered Flow?",
+        "options": [
+          "When you only need to update fields on the record that launched the flow.",
+          "When you need to send an email alert or update related child records.",
+          "When you need to run asynchronous jobs that take several minutes."
+        ],
+        "correct": 0,
+        "explain": "Fast Field Updates run before the database save and are designed specifically for updating fields on the triggering record."
+      }
+    },
+    {
+      "id": "sfp09",
+      "requires": [
+        "sfp08"
+      ],
+      "title": "Turn requests into useful reports",
+      "phase": "Analytics & Reporting",
+      "minutes": 40,
+      "outcome": "Build summary reports showing ticket volume grouped by status, category, and average ticket age.",
+      "explain": [
+        "Salesforce reports summarize and visualize data stored across standard and custom objects. A custom report type gives reporting tools access to Help Request fields, including calculated metrics like Ticket_Age_Days__c.",
+        "Groupings transform tabular lists into summary reports. Grouping by Status or Category helps school administrators spot bottlenecks, track resolution velocity, and allocate repair resources where they are needed most."
+      ],
+      "terms": [
+        {
+          "word": "Report Type",
+          "meaning": "A template that defines the set of records and fields available for reporting."
+        },
+        {
+          "word": "Summary Report",
+          "meaning": "A report that groups rows of data to calculate subtotals and display charts."
+        },
+        {
+          "word": "Dashboard Component",
+          "meaning": "A visual widget such as a bar chart or gauge backed by a source report."
+        }
+      ],
+      "example": "The principal views a weekly dashboard chart showing 14 open tickets grouped by lab room asset to see which classroom hardware fails most often.",
+      "build": [
+        "In Setup, open Report Types, create a new Custom Report Type with Primary Object 'Help Requests', and mark it Deployed.",
+        "Click the Reports tab in the App Launcher, select New Report, and choose the Help Requests report type.",
+        "Add columns: Subject, Requester, Category, Status, and Ticket_Age_Days__c.",
+        "Group by Status, check the date filter includes your fictional records, add a chart and save in a private School Help Desk Practice folder. Share that folder only with the authorized reviewer when needed."
+      ],
+      "checks": [
+        "The report displays grouped counts matching the actual number of Help Request records in your org.",
+        "Negative check: Setting the filter to 'Status equals Resolved' excludes all open and in-progress tickets.",
+        "Adding a record in the app immediately reflects in the report upon clicking Refresh."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Help Requests does not appear in the Report Type selector.",
+          "fix": "Verify that Deployment Status is set to 'Deployed' on the Custom Report Type definition in Setup."
+        },
+        {
+          "symptom": "Custom fields like Ticket_Age_Days__c are missing from report columns.",
+          "fix": "Edit the report type layout in Setup to ensure newly created fields are added to the field palette."
+        }
+      ],
+      "variation": "Create a matrix report grouping rows by Category and columns by Priority.",
+      "evidencePrompt": "Submit a screenshot description showing your report grouped by Status with a chart attached.",
+      "resource": "https://trailhead.salesforce.com/content/learn/modules/reports_dashboards",
+      "question": {
+        "prompt": "Why might a user be unable to view a newly created Custom Report Type?",
+        "options": [
+          "The report type status is still set to 'In Development' rather than 'Deployed'.",
+          "The user has not logged out and back in today.",
+          "Custom objects cannot be used in reports without Apex code."
+        ],
+        "correct": 0,
+        "explain": "Users without administrative reporting permissions cannot see report types while they remain in 'In Development' status."
+      }
+    },
+    {
+      "id": "sfp10",
+      "requires": [
+        "sfp09"
+      ],
+      "title": "Prepare your computer and Git folder",
+      "phase": "Developer Environment",
+      "minutes": 60,
+      "outcome": "Install VS Code, Git, and Salesforce CLI locally, then connect to your playground via browser web login.",
+      "explain": [
+        "Professional Salesforce development uses desktop tools to manage application configurations as code. Installing Visual Studio Code with the Salesforce Extension Pack gives you an editor, while Git tracks history on your local machine without needing paid subscriptions.",
+        "The Salesforce CLI ('sf') connects your computer to your sandbox or Trailhead Playground using web-based OAuth login. The CLI stores access tokens locally in your operating system profile, so you never share passwords or store plain-text credentials in project files."
+      ],
+      "terms": [
+        {
+          "word": "Salesforce CLI (sf)",
+          "meaning": "A command-line interface for managing org lifecycles and metadata retrieval."
+        },
+        {
+          "word": "Web Login Flow",
+          "meaning": "An OAuth authentication process opening your default browser to verify your Trailhead Playground."
+        },
+        {
+          "word": "Workspace Directory",
+          "meaning": "A local operating system folder on your computer containing project source files."
+        }
+      ],
+      "example": "A student runs 'sf org login web -a school-playground' in their terminal, signs into their Playground in the browser popup, and establishes a secure connection.",
+      "build": [
+        "Download and install Git (git-scm.com) and VS Code (code.visualstudio.com) using default installation options.",
+        "Install Salesforce CLI from developer.salesforce.com/tools/salesforcecli and verify in terminal using 'sf --version'.",
+        "Open VS Code, create a dedicated local folder such as 'C:\\projects\\school-help-desk' or '~/projects/school-help-desk'.",
+        "Open a terminal in your chosen folder. Run sf org login web --alias school-dev and sign in to your own free practice org in the browser. This is Salesforce login, separate from this website login."
+      ],
+      "checks": [
+        "Run sf org list and check that school-dev is connected. Do not run or share a verbose org display: it can expose tokens.",
+        "Negative check: Running 'sf org display --target-org invalid-alias' returns an unrecognized org alias error.",
+        "Running 'git --version' returns the installed Git version string."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "'sf' is not recognized as an internal or external command.",
+          "fix": "Restart your terminal or command prompt after installing the CLI so your system PATH updates."
+        },
+        {
+          "symptom": "Browser login redirects to a production login rather than your playground.",
+          "fix": "Ensure you use the Playground custom domain or pass '--instance-url https://test.salesforce.com' if using a sandbox."
+        }
+      ],
+      "variation": "Set the connected playground as your default target org using 'sf config set target-org school-playground'.",
+      "evidencePrompt": "Run 'sf org list' and paste the terminal line showing your connected playground alias.",
+      "resource": "https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm",
+      "question": {
+        "prompt": "What does the command 'sf org login web -a school-playground' do?",
+        "options": [
+          "It opens an OAuth browser window to authorize your org and assigns it the local alias 'school-playground'.",
+          "It downloads all student records and databases directly into a spreadsheet.",
+          "It creates a new paid enterprise production environment."
+        ],
+        "correct": 0,
+        "explain": "The command triggers an interactive web login and saves an alias for easy reference in subsequent CLI tasks."
+      }
+    },
+    {
+      "id": "sfp11",
+      "requires": [
+        "sfp10"
+      ],
+      "title": "Bring your app into version control",
+      "phase": "Source Control & Metadata",
+      "minutes": 60,
+      "outcome": "Retrieve custom Help Desk metadata into a local project and track changes using Git.",
+      "explain": [
+        "Salesforce configurations—like custom fields, flows, and permission sets—are defined as XML metadata files. When you retrieve source code using the CLI, you pull down these configuration definitions, NOT customer records or student data.",
+        "Tracking metadata in a local Git repository allows you to document changes, view differences between versions, and revert mistakes. This forms the foundation of modern team development without needing paid continuous integration tools."
+      ],
+      "terms": [
+        {
+          "word": "Metadata",
+          "meaning": "Configuration files (XML, JSON) defining your objects, fields, and automation rather than data records."
+        },
+        {
+          "word": "sf project retrieve start",
+          "meaning": "The CLI command that fetches metadata from your authenticated org into local files."
+        },
+        {
+          "word": "Git Commit",
+          "meaning": "A saved snapshot of changes recorded in your local repository history."
+        }
+      ],
+      "example": "Running metadata retrieval writes 'Help_Request__c.object-meta.xml' to your 'force-app/main/default/objects' directory for version tracking.",
+      "build": [
+        "Run sf project generate --name SchoolHelpDesk, then cd SchoolHelpDesk. Check that sfdx-project.json is in the current folder.",
+        "Run sf project retrieve start --target-org school-dev --metadata CustomObject:Help_Request__c --metadata CustomObject:School_Asset__c. Retrieve the app, tabs, layouts, Flow, permission sets and report dependencies too, using the official CLI reference and their exact API names.",
+        "Inspect the XML and compare each retrieved field with your org. Before Git add, ignore .sf/, .sfdx/, .env files and any downloaded credentials; metadata retrieval does not include your business records.",
+        "Run git init, inspect git status, stage only the intended source files and make your first commit. Add a simple README with the fictional schema and setup steps, never usernames or tokens."
+      ],
+      "checks": [
+        "The 'force-app' directory contains 'Help_Request__c.object-meta.xml' and custom field definitions.",
+        "Negative check: No actual record rows (like real ticket descriptions or requester contacts) are retrieved into the project.",
+        "Running 'git status' reports a clean working tree after the initial commit."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "'sf project retrieve start' reports 'No source found'.",
+          "fix": "Double-check the API name of your custom object, ensuring the '__c' suffix is included."
+        },
+        {
+          "symptom": "Git commit fails stating identity unknown.",
+          "fix": "Run 'git config --global user.name' and 'git config --global user.email' to configure your local author information."
+        }
+      ],
+      "variation": "Retrieve your flow metadata by running 'sf project retrieve start -m Flow:Help_Request_Automation'.",
+      "evidencePrompt": "Paste the terminal output of 'git log -n 1 --oneline' showing your successful local metadata commit.",
+      "resource": "https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_source_file_format.htm",
+      "question": {
+        "prompt": "What does 'sf project retrieve start' pull into your local computer directory?",
+        "options": [
+          "XML metadata files representing schema, fields, and automation structures.",
+          "All student and faculty records currently stored in the database.",
+          "Compiled executable machine binaries for desktop installation."
+        ],
+        "correct": 0,
+        "explain": "Source retrieval only downloads configuration and metadata files, never business data or student database records."
+      }
+    },
+    {
+      "id": "sfp12",
+      "requires": [
+        "sfp11"
+      ],
+      "title": "Write your first Apex service",
+      "phase": "Apex Core",
+      "minutes": 60,
+      "outcome": "Read a small Apex class and query the number of unfinished requests.",
+      "explain": [
+        "Apex runs on Salesforce servers. A class groups related code; a method is a named operation. Integer holds a whole number. SOQL is the query language for Salesforce records. Start with a read-only operation so you can connect the code to a number you can check in the app.",
+        "The starter openCount method counts requests whose Status is neither Resolved nor Closed. with sharing respects record sharing, and WITH USER_MODE asks Salesforce to enforce user access for the query. Neither a website quiz nor a passing syntax check establishes that these permissions work: test with the proper user in your practice org."
+      ],
+      "terms": [
+        {
+          "word": "SOQL",
+          "meaning": "Salesforce Object Query Language used to search and read database records."
+        },
+        {
+          "word": "List",
+          "meaning": "An ordered collection of elements of the same data type identified by index."
+        },
+        {
+          "word": "Service Class",
+          "meaning": "An Apex class dedicated to encapsulating specific business operations and data updates."
+        }
+      ],
+      "example": "With two accessible New requests and one Closed request, openCount returns 2. A zero count is still a valid whole number.",
+      "build": [
+        "Study the supplied HelpDeskService.cls. Locate the class, the method name, the Integer return type and the SOQL filter; predict the result for one New and one Closed fictional request.",
+        "Create the classes folder in force-app/main/default. Save HelpDeskService.cls and its matching metadata XML, then deploy just this reviewed source to school-dev using the official CLI reference.",
+        "From Developer Console Execute Anonymous in your practice org, run System.debug(HelpDeskService.openCount()); compare the log number with a filtered request list. Logs are not portfolio evidence if they contain private data.",
+        "Change the example records, not the query yet: try zero unfinished requests and several unfinished requests. Record your predictions and results.",
+        "These starter files require the exact earlier schema and must be compiled and tested in your own practice org. They have not been executed against your org by this website; diagnose and record any deployment errors."
+      ],
+      "checks": [
+        "One New request and one Closed request with resolution notes produce the expected open count for the signed-in user.",
+        "If every visible request is Resolved or Closed, the method returns zero rather than a null value.",
+        "An unauthorized user cannot read the object or restricted fields through this user-mode query. If this role test is blocked, document it."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "System.LimitException: Too many SOQL queries: 101.",
+          "fix": "Move the SOQL query outside of your for-loop so data is fetched once into a List."
+        },
+        {
+          "symptom": "Field does not exist error during compilation.",
+          "fix": "Verify custom field names end with '__c' and check exact spelling in your object metadata."
+        }
+      ],
+      "variation": "Add a category filter as a new method parameter. Predict how it changes the query and test empty and matching categories without weakening user access.",
+      "evidencePrompt": "Explain the class and method, show your predicted and actual counts, and describe the permissions used. Do not paste logs containing credentials.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "What does openCount return if there are no unfinished requests visible to the user?",
+        "options": [
+          "Zero",
+          "A fake request",
+          "The count of hidden requests"
+        ],
+        "correct": 0,
+        "explain": "COUNT returns a number. Zero is valid, and user-mode access must still apply."
+      },
+      "snippets": [
+        {
+          "name": "HelpDeskService.cls",
+          "title": "Read-only Apex service",
+          "code": "public with sharing class HelpDeskService {\n    @AuraEnabled(cacheable=true)\n    public static Integer openCount() {\n        return [SELECT COUNT() FROM Help_Request__c\n                WHERE Status__c NOT IN ('Resolved', 'Closed')\n                WITH USER_MODE];\n    }\n}\n"
+        },
+        {
+          "name": "HelpDeskService.cls-meta.xml",
+          "title": "Apex metadata",
+          "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ApexClass xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><status>Active</status>\n</ApexClass>\n"
+        }
+      ]
+    },
+    {
+      "id": "sfp13",
+      "requires": [
+        "sfp12"
+      ],
+      "title": "Test normal, empty and bulk cases",
+      "phase": "Automated Testing",
+      "minutes": 60,
+      "outcome": "Write assertions for the service and validation rule, including zero and 200 records.",
+      "explain": [
+        "High test coverage percentage alone does not prove your code works correctly. Effective test methods use explicit Assert statements to verify that business requirements and data validations behave exactly as expected under varied scenarios.",
+        "Tests must create their own synthetic data inside Test.startTest() and Test.stopTest() blocks. Testing with 200 records proves your service class handles bulk platform transactions safely."
+      ],
+      "terms": [
+        {
+          "word": "Assert",
+          "meaning": "A system statement used to verify whether an actual result matches an expected outcome."
+        },
+        {
+          "word": "Bulk Test",
+          "meaning": "A test execution verifying logic stability when receiving 200 records in a single batch."
+        },
+        {
+          "word": "Test.startTest()",
+          "meaning": "Marks the boundary where governor limits reset for the code under evaluation."
+        }
+      ],
+      "example": "An empty test database should return 0; one New and one valid Closed request should return 1; 200 New requests should return 200.",
+      "build": [
+        "Read the supplied HelpDeskServiceTest class: each test creates its own fictional records and compares an expected number with the actual result. Test data is isolated from your normal org records.",
+        "Save the class and its metadata XML. Run sf apex run test --target-org school-dev --class-names HelpDeskServiceTest --result-format human --wait 10. Read any assertion message before changing code.",
+        "Keep tests for zero records, one unfinished plus one finished request, and 200 unfinished requests. Add a test that a Closed request without resolution notes is rejected by the validation rule.",
+        "Temporarily change a filter or a test fixture to produce a failure, explain why it failed, then restore the correct contract. A high coverage percentage alone is not enough.",
+        "These starter files require the exact earlier schema and must be compiled and tested in your own practice org. They have not been executed against your org by this website; diagnose and record any deployment errors."
+      ],
+      "checks": [
+        "The zero, mixed-status and 200-record tests pass with meaningful expected-versus-actual assertions.",
+        "A test asserts that closing without notes fails; removing the validation rule makes this test fail rather than silently pass.",
+        "Explain why System.runAs alone does not prove field-level access; keep the separate permission/user-mode test from unit 7."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "FIELD_CUSTOM_VALIDATION_EXCEPTION in unit test setup.",
+          "fix": "Populate all required fields on synthetic records, such as Subject__c, prior to inserting."
+        },
+        {
+          "symptom": "Test coverage is 100% but business logic bugs slip through.",
+          "fix": "Add explicit Assert.areEqual statements on field values instead of relying solely on error-free execution."
+        }
+      ],
+      "variation": "Add a Resolved fixture with notes and assert it is excluded. Add a separate validation-failure assertion, then make one intentional defect to show a test catches it.",
+      "evidencePrompt": "Record test names, expected results, actual results and an intentional defect your tests caught.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "What is the primary indicator of a trustworthy unit test in Salesforce?",
+        "options": [
+          "Meeting 75% line coverage without any System assertions.",
+          "Confirming actual field outcomes and expected exceptions with explicit assertions.",
+          "Running the test with SeeAllData=true against live production data."
+        ],
+        "correct": 1,
+        "explain": "Coverage alone only shows lines were visited. True verification requires assertions that confirm expected business outputs and exceptions."
+      },
+      "snippets": [
+        {
+          "name": "HelpDeskServiceTest.cls",
+          "title": "Zero, normal, invalid and bulk tests",
+          "code": "@IsTest\nprivate class HelpDeskServiceTest {\n    @IsTest static void emptyReturnsZero() {\n        System.assertEquals(0, HelpDeskService.openCount());\n    }\n    @IsTest static void mixedStatusesCountOnlyOpen() {\n        insert new List<Help_Request__c>{\n            new Help_Request__c(Subject__c='Fictional projector', Status__c='New',\n                Category__c='Hardware', Priority__c='Medium'),\n            new Help_Request__c(Subject__c='Fictional repair', Status__c='Closed',\n                Category__c='Hardware', Priority__c='Medium', Resolution_Notes__c='Fixed')\n        };\n        Test.startTest();\n        Integer actual = HelpDeskService.openCount();\n        Test.stopTest();\n        System.assertEquals(1, actual);\n    }\n    @IsTest static void bulkReturnsTwoHundred() {\n        List<Help_Request__c> requests = new List<Help_Request__c>();\n        for (Integer i=0; i<200; i++) {\n            requests.add(new Help_Request__c(Subject__c='Fictional ticket '+i,\n                Status__c='New', Category__c='Hardware', Priority__c='Medium'));\n        }\n        insert requests;\n        Test.startTest();\n        Integer actual = HelpDeskService.openCount();\n        Test.stopTest();\n        System.assertEquals(200, actual);\n    }\n    @IsTest static void closingWithoutNotesIsRejected() {\n        Help_Request__c request = new Help_Request__c(Subject__c='Fictional ticket',\n            Status__c='Closed', Category__c='Hardware', Priority__c='Medium');\n        Database.SaveResult result = Database.insert(request, false);\n        System.assertEquals(false, result.isSuccess());\n        System.assertEquals(StatusCode.FIELD_CUSTOM_VALIDATION_EXCEPTION,\n            result.getErrors()[0].getStatusCode());\n    }\n}\n"
+        },
+        {
+          "name": "HelpDeskServiceTest.cls-meta.xml",
+          "title": "Test class metadata",
+          "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ApexClass xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><status>Active</status>\n</ApexClass>\n"
+        }
+      ]
+    },
+    {
+      "id": "sfp14",
+      "requires": [
+        "sfp13"
+      ],
+      "title": "Build a small Lightning component",
+      "phase": "UI Layer",
+      "minutes": 60,
+      "outcome": "Build an LWC that displays the real unfinished-request count with loading and error states.",
+      "explain": [
+        "HTML describes what appears on a page. JavaScript controls values and behaviour. An import brings a named feature into a file; a class holds a component’s state. Follow the official LWC basics unit before copying the example, and be able to explain a property, an event and a template expression.",
+        "The component calls the same Apex service from unit 12. Data arrives later, so the page needs a loading state and a separate error state. Zero is a valid result, not a failure: code must check whether data is defined rather than whether the number is truthy."
+      ],
+      "terms": [
+        {
+          "word": "LWC",
+          "meaning": "Lightning Web Component, a modern lightweight user interface framework built on web standards."
+        },
+        {
+          "word": "Template Directive",
+          "meaning": "Special HTML attributes like lwc:if or for:each used to control conditional rendering and iteration."
+        },
+        {
+          "word": "Wire Service",
+          "meaning": "A reactive service that provides Salesforce data and metadata to Lightning Web Components."
+        }
+      ],
+      "example": "The HTML reads {count}. The wire function receives a result later; data equal to 0 must show 0, while an access error shows the error view.",
+      "build": [
+        "Complete the linked LWC foundations, then create force-app/main/default/lwc/helpDeskCount. Study the supplied HTML, JavaScript and metadata files one at a time.",
+        "Save the three files, check that the component imports HelpDeskService.openCount and that its metadata exposes an App Page and Record Page.",
+        "Deploy the reviewed component to school-dev and add it to the School Help Desk Lightning page using App Builder. Activate the correct page assignment. Grant authorized users Apex class access to HelpDeskService through the correct permission set; do not grant it to unauthorized users.",
+        "Test several requests, zero requests and an access failure under the restricted user. Explain what each of the loading, count and error views means. Use Refresh count after changing requests: Apex wire data is cached and does not automatically refresh from unrelated record edits.",
+        "These starter files require the exact earlier schema and must be compiled and tested in your own practice org. They have not been executed against your org by this website; diagnose and record any deployment errors."
+      ],
+      "checks": [
+        "The rendered number matches the user’s accessible unfinished requests, including zero.",
+        "Without access to the Apex class/object/field, the component shows an error rather than invented records.",
+        "The component is readable in a narrow page area and does not display request subjects or personal contact details."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "No component visible in Lightning App Builder palette.",
+          "fix": "Ensure <isExposed>true</isExposed> and target tags are present in openHelpRequests.js-meta.xml."
+        },
+        {
+          "symptom": "Template iteration fails to render list items.",
+          "fix": "Ensure each direct child inside for:each has a unique 'key' attribute bound to an Id."
+        }
+      ],
+      "variation": "Add a helpful explanation beside a zero count, keeping zero different from loading and failure.",
+      "evidencePrompt": "Submit a screenshot of openHelpRequests placed on the School Help Desk App home page in your practice org.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "Why is the 'key' attribute required on elements repeated with for:each in LWC templates?",
+        "options": [
+          "To allow the virtual DOM engine to track and re-render modified items efficiently.",
+          "To tell the SOQL engine which database column to order the query by.",
+          "To apply automatic CSS color styling to table rows."
+        ],
+        "correct": 0,
+        "explain": "The key attribute provides a unique identifier so the rendering engine can selectively re-render items when lists change."
+      },
+      "snippets": [
+        {
+          "name": "helpDeskCount.js",
+          "title": "JavaScript state and server data",
+          "code": "import { LightningElement, wire } from 'lwc';\nimport { refreshApex } from '@salesforce/apex';\nimport openCount from '@salesforce/apex/HelpDeskService.openCount';\nexport default class HelpDeskCount extends LightningElement {\n    count;\n    error;\n    wiredResult;\n    refreshing = false;\n    get hasCount() { return this.count !== undefined; }\n    @wire(openCount)\n    receiveCount(result) {\n        this.wiredResult = result;\n        const { data, error } = result;\n        if (data !== undefined) { this.count = data; this.error = undefined; }\n        else if (error) { this.count = undefined; this.error = 'Cannot load. Check app permissions.'; }\n    }\n    async refreshCount() {\n        if (!this.wiredResult) return;\n        this.refreshing = true;\n        try { await refreshApex(this.wiredResult); }\n        catch { this.count = undefined; this.error = 'Refresh failed. Please retry.'; }\n        finally { this.refreshing = false; }\n    }\n}\n"
+        },
+        {
+          "name": "helpDeskCount.html",
+          "title": "HTML loading/count/error views",
+          "code": "<template>\n    <lightning-card title=\"Unfinished help requests\">\n        <template lwc:if={error}><p class=\"slds-p-around_medium\">{error}</p></template>\n        <template lwc:elseif={hasCount}><p class=\"slds-p-around_medium\">{count}</p></template>\n        <template lwc:else><p class=\"slds-p-around_medium\">Loading...</p></template>\n    <lightning-button label=\"Refresh count\" onclick={refreshCount} disabled={refreshing}></lightning-button>\n    </lightning-card>\n</template>\n"
+        },
+        {
+          "name": "helpDeskCount.js-meta.xml",
+          "title": "Component exposure metadata",
+          "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LightningComponentBundle xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><isExposed>true</isExposed>\n    <targets><target>lightning__AppPage</target><target>lightning__RecordPage</target></targets>\n</LightningComponentBundle>\n"
+        }
+      ]
+    },
+    {
+      "id": "sfp15",
+      "requires": [
+        "sfp14"
+      ],
+      "title": "Release to a second practice org",
+      "phase": "Release Management",
+      "minutes": 60,
+      "outcome": "Use Git and the sf CLI to validate and deploy Help Desk metadata cleanly to an independent second practice Salesforce environment.",
+      "explain": [
+        "Developing software in a single environment creates blind spots because local manual configurations mask missing dependencies. Deploying metadata to a clean second practice org simulates real-world staging deployments.",
+        "The sf project deploy pipeline converts your local project files into a package that the target org validates. Running test levels during deployment ensures both custom logic and schema integrity remain intact."
+      ],
+      "terms": [
+        {
+          "word": "Target Org",
+          "meaning": "The specific authenticated Salesforce environment that receives a deployment."
+        },
+        {
+          "word": "Dry Run Validation",
+          "meaning": "Checking a deployment package against an org's rules and tests without saving changes."
+        },
+        {
+          "word": "Metadata API",
+          "meaning": "Salesforce programmatic API used to retrieve, deploy, and manage environment configuration."
+        }
+      ],
+      "example": "sf project deploy validate --target-org SecondPracticeOrg --test-level RunLocalTests\nsf project deploy start --target-org SecondPracticeOrg",
+      "build": [
+        "Create or obtain a second free practice Playground/Developer Edition org and authorize it with sf org login web --alias school-test. It is not a licensed production environment.",
+        "Check the source inventory includes both custom objects, their fields, tabs, app/page/layout assignments, validation rule, active Flow version, permission sets, reports and Apex/LWC files. Commit the reviewed metadata.",
+        "Use sf project deploy start --target-org school-test --dry-run --test-level RunLocalTests to rehearse the package. Read dependency errors; never deploy blindly or assume a dry run changed the org.",
+        "When the dry run is clean, run the corresponding deploy start without --dry-run, test the app and create fictional sample records separately. Configure test-user assignments in the target; business data and user assignments do not automatically travel with source."
+      ],
+      "checks": [
+        "The second practice org has the expected app, fields, validation, Flow and component and passes the actual functional checklist.",
+        "All Apex tests pass in the target; a missing field/dependency is diagnosed and fixed before deploying.",
+        "The destination has only the sample records you deliberately created. Source retrieval/deployment did not copy private business data."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Deployment error: Missing custom field School_Asset__c.",
+          "fix": "Retrieve and commit the School_Asset__c object definition before deploying dependent Help_Request__c fields."
+        },
+        {
+          "symptom": "Invalid login or token expired when targeting SecondPracticeOrg.",
+          "fix": "Re-run 'sf org login web -a SecondPracticeOrg' to refresh platform authentication tokens."
+        }
+      ],
+      "variation": "Create a scoped manifest package.xml to selectively deploy only your Apex classes and LWC.",
+      "evidencePrompt": "Submit terminal output showing the completed 'sf project deploy start' summary table with 0 errors.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "Why should developers validate deployments against an independent practice org?",
+        "options": [
+          "To catch uncommitted dependencies and configuration gaps before handing work off.",
+          "Because Salesforce deletes the primary org once code is retrieved to Git.",
+          "To bypass running unit tests when migrating code."
+        ],
+        "correct": 0,
+        "explain": "A fresh target org reveals undeclared dependencies that happened to exist in the origin org but were missing from Git."
+      }
+    },
+    {
+      "id": "sfp16",
+      "requires": [
+        "sfp15"
+      ],
+      "title": "Handle a new requirement independently",
+      "phase": "Capstone Delivery",
+      "minutes": 60,
+      "outcome": "Implement an independent change request, document security and reproducible data, and conduct a structured human peer review.",
+      "explain": [
+        "Real development involves adapting an existing system to unexpected requirement changes and handing it off through code reviews. In this capstone, you apply an urgent school policy change requiring all Critical requests to assign immediately to a designated triage queue.",
+        "Quality delivery includes a clear README, a permission matrix, 10 fictional synthetic test cases, and negative verification tests. A human peer reviewer inspects your solution to confirm acceptance criteria are fully met."
+      ],
+      "terms": [
+        {
+          "word": "Change Request",
+          "meaning": "A formal proposal for an alteration to software architecture or functional behavior."
+        },
+        {
+          "word": "Permission Matrix",
+          "meaning": "A documentation grid mapping personas (e.g. Teacher, Tech Staff) to object and field permissions."
+        },
+        {
+          "word": "Peer Review",
+          "meaning": "A structured examination of code and configuration by another developer to catch issues."
+        }
+      ],
+      "example": "# School Help Desk Capstone README\n- 10 Synthetic Test Records: scripts/data/sample-requests.json\n- Security Matrix: Docs/Permissions.md (Tech Staff: Read/Edit, Student: None)\n- Negative Tests: Verified missing resolution notes block Closed status.",
+      "build": [
+        "Without step-by-step instructions, implement an agreed change request: add Due Date and identify overdue unfinished requests in a report or component. Decide the rule, edge cases and permission impact before building.",
+        "Populate 10 fictional synthetic cases covering all Status and Priority combinations across computer lab and classroom assets.",
+        "Create a project README documenting reproducible setup steps, permission matrix, and verified negative test cases.",
+        "Package all artifacts into a Git branch and conduct a structured walk-through with a human peer reviewer."
+      ],
+      "checks": [
+        "A reviewer can reproduce setup from your README and run ten fictional cases covering normal, empty, boundary and invalid behaviour. Ten cases need not cover every possible combination.",
+        "Negative check: Reviewer tests closing a ticket without notes and confirms the validation error fires in the UI.",
+        "A reviewer checks the stated reader/staff permission matrix under real test-user contexts. Any unavailable check is explicitly marked blocked, not passed."
+      ],
+      "troubleshoot": [
+        {
+          "symptom": "Queue assignment fails with 'Group does not exist'.",
+          "fix": "Ensure the High Priority Support Queue metadata is deployed before running the service class logic."
+        },
+        {
+          "symptom": "Peer reviewer cannot replicate test data.",
+          "fix": "Provide a clean synthetic JSON or CSV file and 'sf data import' command inside your README setup guide."
+        }
+      ],
+      "variation": "Add automated email notifications to school department heads when Critical requests enter the queue.",
+      "evidencePrompt": "Submit the signed human peer-review checklist and a link to the finalized Git pull request containing your README.",
+      "resource": "https://trailhead.salesforce.com/content/learn/trails/force_com_dev_beginner",
+      "question": {
+        "prompt": "What should be provided to a peer reviewer to ensure a complete handoff?",
+        "options": [
+          "Only a screenshot of 100% test coverage with no documentation.",
+          "A reproducible setup guide, permission matrix, synthetic data, and negative test evidence.",
+          "Direct access to your personal login credentials without using Git."
+        ],
+        "correct": 1,
+        "explain": "A complete reviewer handoff requires clear instructions, synthetic records, security context, and proof of boundary testing."
+      }
+    }
+  ]
+}
