@@ -338,7 +338,29 @@
           "correct": 0,
           "feedback": "The lookup links records without duplicating Contact facts. Check the chosen deletion behavior and record permissions separately."
         }
-      ]
+      ],
+      "milestone": {
+        "title": "Connect requesters and equipment",
+        "prompt": "Link two fictional Help Requests to the same Contact and one School Asset using Requester__c and School_Asset__c. Test the relationships taught so far; resolution notes and validation are introduced in later units.",
+        "tests": [
+          {
+            "input": "Create Contact Pat Chen and School Asset Lab Projector; create two New requests linking both.",
+            "expected": "Both requests save and appear in the configured Contact related list; each links to the same asset.",
+            "why": "The relationship stores an ID rather than copying Contact facts."
+          },
+          {
+            "input": "Change only the second request to a different fictional School Asset.",
+            "expected": "The first request still links to Lab Projector; the second shows its changed asset.",
+            "why": "Editing one child record does not edit the other child record."
+          },
+          {
+            "input": "Leave the optional School_Asset__c lookup empty on a new request with required fields filled.",
+            "expected": "The request saves if the lookup is configured optional; no imaginary asset is created.",
+            "why": "Check the chosen required-field setting instead of assuming every relationship is mandatory."
+          }
+        ],
+        "evidencePrompt": "Record each actual input, observed result and one correction. This is self-reported practice-org evidence; do not include screenshots/logs containing personal data or credentials."
+      }
     },
     {
       "id": "sfp05",
@@ -676,7 +698,29 @@
           "correct": 0,
           "feedback": "Fast Field Updates (before-save) are optimized for changing fields on the triggering record before the database commit."
         }
-      ]
+      ],
+      "milestone": {
+        "title": "Automate one small decision",
+        "prompt": "Create a before-save, fast-field-update Flow on `Help_Request__c` to automatically escalate specific tickets. (Assumption explained inline: Before-save flows execute prior to validation rules, meaning field assignments are evaluated during standard save operations). Perform actual testing in your free practice org.",
+        "tests": [
+          {
+            "input": "Create a new Help Desk Request with `Category__c` set to 'Network' and `Priority__c` set to 'Low'.",
+            "expected": "The record saves and `Priority__c` is automatically updated to 'Medium'.",
+            "why": "Verifies the Flow correctly matches the Network/Low condition and executes the assignment."
+          },
+          {
+            "input": "Create two new requests: one with 'Network' and 'High', and another with 'Hardware' and 'Low'.",
+            "expected": "The Network request remains 'High', and the Hardware request remains 'Low'.",
+            "why": "Ensures the default branch correctly leaves unchanged cases intact."
+          },
+          {
+            "input": "Attempt a new Network+Low request with required Subject__c empty.",
+            "expected": "The Flow does not bypass validation; the system rejects the save with a required field error.",
+            "why": "Confirms that automation does not override base system integrity and required fields."
+          }
+        ],
+        "evidencePrompt": "Record each actual input, observed result and one correction. This is self-reported practice-org evidence; do not include screenshots/logs containing personal data or credentials."
+      }
     },
     {
       "id": "sfp09",
@@ -1179,7 +1223,29 @@
           "correct": 0,
           "feedback": "It verifies one bulk case. Add empty, mixed-state, invalid-notes and permission tests; a single passing test does not prove every platform limit or configuration is safe."
         }
-      ]
+      ],
+      "milestone": {
+        "title": "Prove the service with independent test fixtures",
+        "prompt": "After learning isolated Apex tests in this unit, test the service with fresh fictional fixtures. Respect the validation rule and distinguish record visibility from denied object access. Run the actual test class in your practice org; the website records your self-review.",
+        "tests": [
+          {
+            "input": "An isolated test method with no inserted Help_Request__c business records calls openCount().",
+            "expected": "Returns0. Do not enable SeeAllData.",
+            "why": "Zero is valid data; the test must not depend on records already created in your org."
+          },
+          {
+            "input": "Insert one New, one Resolved and one Closed request, with Resolution_Notes__c on both finished requests and other required fields supplied.",
+            "expected": "openCount() returns1; separately inserting Closed without notes is rejected.",
+            "why": "Both finished statuses are excluded, and fixtures still obey the earlier validation rule."
+          },
+          {
+            "input": "Insert200 New requests in a list and call the method inside Test.startTest()/Test.stopTest().",
+            "expected": "Returns200 for this fixture; inspect actual test results and any failures.",
+            "why": "A bulk fixture checks this specific case. It does not prove every governor limit, permission or deployment is safe."
+          }
+        ],
+        "evidencePrompt": "Record each actual input, observed result and one correction. This is self-reported practice-org evidence; do not include screenshots/logs containing personal data or credentials."
+      }
     },
     {
       "id": "sfp14",
@@ -1487,7 +1553,29 @@
           "correct": 0,
           "feedback": "Providing clear synthetic scenarios allows the peer reviewer to efficiently prove that the solution meets the requirements securely."
         }
-      ]
+      ],
+      "milestone": {
+        "title": "Handle a new requirement independently",
+        "prompt": "Design and build a Due Date tracking requirement independently. Create a project README documenting a reproducible setup and a security matrix. (Assumption explained inline: The Due Date logic requires no paid services or external APIs, relying solely on standard platform tools).",
+        "tests": [
+          {
+            "input": "Create five fictional requests: New due yesterday, New due tomorrow, New with no due date, Resolved due yesterday with notes, Closed due yesterday with notes.",
+            "expected": "Only the first is flagged overdue under the stated rule. Tomorrow, blank-date and both finished states are excluded.",
+            "why": "The rule is explicit and covers date boundaries and both finished statuses."
+          },
+          {
+            "input": "As a Tech Staff test user, attempt to Close one of the synthetic overdue tickets without filling out `Resolution_Notes__c`.",
+            "expected": "The UI blocks the action with a validation error.",
+            "why": "Explicit separate case testing invalid notes where expected rejection occurs, confirming validation rules survive new capstone changes."
+          },
+          {
+            "input": "Use the unit7 permission matrix. Give Reader and Staff test users the documented object/class permissions and known shared records. Try reading and editing those records, then a separate unshared record.",
+            "expected": "Reader can read the permitted shared record but cannot edit it; Staff can perform the explicitly granted edits; the unshared record remains denied unless separately shared.",
+            "why": "Object permission, field permission and record sharing are distinct; profile or app navigation alone does not prove effective access."
+          }
+        ],
+        "evidencePrompt": "Record each actual input, observed result and one correction. This is self-reported practice-org evidence; do not include screenshots/logs containing personal data or credentials."
+      }
     }
   ]
 }
