@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "tracks": [
     {
       "id": "python",
@@ -69,7 +69,28 @@
           ],
           "hours": 15,
           "level": 1,
-          "levelTitle": "Start from zero"
+          "levelTitle": "Start from zero",
+          "coach": {
+            "before": "Computers execute text instructions sequentially. Output is the visible result. Strings are literal text enclosed in quotes.",
+            "worked": "Combine two pieces of text:\nprint('Hello' + ' ' + 'World')\n# Output: Hello World",
+            "steps": [
+              "Identify 'Hello' and 'World' as strings.",
+              "Use the + operator to join (concatenate) them.",
+              "Include a space string to separate the words.",
+              "Use print to display the joined text."
+            ],
+            "question": "What is the output of print('1' + '1')?",
+            "choices": [
+              "2",
+              "11",
+              "Error"
+            ],
+            "correct": 1,
+            "feedback": "11: Strings join end-to-end; they do not perform arithmetic.",
+            "guided": "Print 'Blue' and 'Pizza' on separate lines. Input: None. Expected Output: 'Blue\\nPizza'.",
+            "independent": "Print a 3-line banner using asterisks: print('*\\n**\\n***'). Input: None. Expected Output: '*\\n**\\n***'.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with file outputs and real UI must be done on a suitable computer."
+          }
         },
         {
           "id": "p02",
@@ -133,7 +154,28 @@
           ],
           "hours": 15,
           "level": 1,
-          "levelTitle": "Start from zero"
+          "levelTitle": "Start from zero",
+          "coach": {
+            "before": "Variables name values. if asks a yes-or-no question; else handles the other case. >= includes the boundary value. Indented lines belong to their branch.",
+            "worked": "passengers = 3\nif passengers >= 3:\n    price = 0\nelse:\n    price = 5\nprint(price)  # Output: 0",
+            "steps": [
+              "Set passengers to 3.",
+              "3 >= 3 is True.",
+              "Choose price 0; skip the else branch.",
+              "Print 0."
+            ],
+            "question": "For passengers=3, what is returned?",
+            "choices": [
+              "0",
+              "5",
+              "3"
+            ],
+            "correct": 0,
+            "feedback": "0: 3 is greater than or equal to 3, triggering the carpool rate.",
+            "guided": "Change passengers to 2. Expected printed price: 5. Change to 4: expected 0.",
+            "independent": "Set age=65 and choose price=10 if age>=65, otherwise15. Expected: age64→15, age65→10, age66→10.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work involving concrete boundaries and interactive user input/output requires a suitable computer."
+          }
         },
         {
           "id": "p03",
@@ -196,7 +238,28 @@
           ],
           "hours": 15,
           "level": 1,
-          "levelTitle": "Start from zero"
+          "levelTitle": "Start from zero",
+          "coach": {
+            "before": "Loops repeat actions. An accumulator lives outside a loop to gather results step-by-step. In this example def names a reusable function; nums is its input, and return sends the final count back. print(count_pos(...)) calls it then displays the answer.",
+            "worked": "Count positive numbers:\ndef count_pos(nums):\n    count = 0\n    for n in nums:\n        if n > 0: count += 1\n    return count\nprint(count_pos([1, -1, 2]))  # Output: 2",
+            "steps": [
+              "Initialize count to 0 outside the loop.",
+              "Iterate over nums.",
+              "Check if n > 0.",
+              "Increment count if True, return count after loop."
+            ],
+            "question": "What if count = 0 is inside the loop?",
+            "choices": [
+              "Works normally",
+              "Resets count every step",
+              "Syntax error"
+            ],
+            "correct": 1,
+            "feedback": "Resets count every step: Accumulators must exist before the repetition starts.",
+            "guided": "Multiply all numbers in a list using an accumulator starting at 1. Input: [2,3,4]. Expected Output: 24.",
+            "independent": "Count 'e' characters in a string. Input: 'elephant'. Expected Output: 2.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work processing the full chapter project should be run on a suitable computer."
+          }
         },
         {
           "id": "p04",
@@ -259,7 +322,28 @@
           ],
           "hours": 15,
           "level": 2,
-          "levelTitle": "Make useful programs"
+          "levelTitle": "Make useful programs",
+          "coach": {
+            "before": "Functions encapsulate logic. Parameters receive data, and return passes results back.",
+            "worked": "def area(w, h):\n    return w * h\nprint(area(3, 4) + 12)  # Output: 24",
+            "steps": [
+              "Define area function.",
+              "Return multiplication.",
+              "Call area(3,4): it returns 12; it does not print anything itself.",
+              "Add 12 to the returned result."
+            ],
+            "question": "If area used print instead of return, what happens to area(3, 4) + 12?",
+            "choices": [
+              "Calculates 24",
+              "TypeError",
+              "Prints 24"
+            ],
+            "correct": 1,
+            "feedback": "TypeError: print returns None. None + 12 causes a crash.",
+            "guided": "Write c_to_f(c) returning c * 9/5 + 32. Input: 0. Expected Output: 32.0.",
+            "independent": "Calculate wages with 1.5x overtime for hours > 40. Input: 41 hours, 10 rate. Expected Output: 415.0.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work spanning multiple file modules must be done on a suitable computer."
+          }
         },
         {
           "id": "p05",
@@ -324,7 +408,28 @@
           ],
           "hours": 15,
           "level": 2,
-          "levelTitle": "Make useful programs"
+          "levelTitle": "Make useful programs",
+          "coach": {
+            "before": "Lists maintain order. Dictionaries map keys to values. .get() handles missing keys safely.",
+            "worked": "Group words by first letter:\ndef group(words):\n    d = {}\n    for w in words:\n        k = w[0]\n        d[k] = d.get(k, []) + [w]\n    return d\nprint(group(['ant', 'apple']))  # Output: {'a': ['ant', 'apple']}",
+            "steps": [
+              "Initialize dictionary.",
+              "Extract first letter.",
+              "Use .get() to find existing list or empty list.",
+              "Append word and store back."
+            ],
+            "question": "Why use .get() here?",
+            "choices": [
+              "Faster execution",
+              "Prevents KeyError",
+              "Sorts items automatically"
+            ],
+            "correct": 1,
+            "feedback": "Prevents KeyError: Directly accessing a missing key crashes the program.",
+            "guided": "Map student names to their lengths. Input: 'Ali'. Expected Output: {'Ali': 3}.",
+            "independent": "Find the string with the most votes in a list. Input: ['A', 'B', 'A']. Expected Output: 'A'.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work analyzing the full chapter project should be done on a suitable computer."
+          }
         },
         {
           "id": "p06",
@@ -391,7 +496,28 @@
           ],
           "hours": 15,
           "level": 2,
-          "levelTitle": "Make useful programs"
+          "levelTitle": "Make useful programs",
+          "coach": {
+            "before": "Software requires structure. Raising exceptions stops bad data from causing silent corruption. Keep a reusable parser separate from a file-reading caller. A text file stores characters on disk; opening it can fail if the path is wrong. Test the parser first, then separately test reading a fictional file on your computer.",
+            "worked": "Parse age:\ndef parse_age(text):\n    age = int(text)\n    if age < 0: raise ValueError('Negative')\n    return age\nprint(parse_age('10'))  # Output: 10",
+            "steps": [
+              "Parse text to int.",
+              "Check for negative values.",
+              "Raise exception if invalid.",
+              "Return valid age."
+            ],
+            "question": "What happens if text is 'ten'?",
+            "choices": [
+              "Returns 10",
+              "Custom ValueError",
+              "int() raises ValueError"
+            ],
+            "correct": 2,
+            "feedback": "int() raises ValueError: Parsing fails before our custom negative check executes.",
+            "guided": "Write divide(a, b). Raise ValueError if b is 0. Input: 10, 0. Expected Output: ValueError.",
+            "independent": "Write require_non_empty(text). Raise ValueError if text is empty string. Input: ''. Expected Output: ValueError.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work integrating databases and real file systems must be done on a suitable computer."
+          }
         },
         {
           "id": "p07",
@@ -456,7 +582,28 @@
           ],
           "hours": 15,
           "level": 3,
-          "levelTitle": "Get better at solving problems"
+          "levelTitle": "Get better at solving problems",
+          "coach": {
+            "before": "Big O measures algorithmic growth. Counting loops helps determine O(n) or O(n^2).",
+            "worked": "Count steps:\ndef count_steps(n):\n    steps = 0\n    for _ in range(n):\n        steps += 1\n    return steps\nprint(count_steps(5))  # Output: 5",
+            "steps": [
+              "Set steps to 0.",
+              "Loop n times.",
+              "Increment steps by 1 each time.",
+              "Return final steps representing O(n)."
+            ],
+            "question": "If we add a nested loop of size n inside the first loop, what is the new complexity?",
+            "choices": [
+              "O(n)",
+              "O(n^2)",
+              "O(1)"
+            ],
+            "correct": 1,
+            "feedback": "O(n^2): The inner loop runs n times for each of the n iterations of the outer loop, resulting in n * n steps.",
+            "guided": "Count total operations in two separate (non-nested) loops of size n. Input: n=5. Expected Output: 10.",
+            "independent": "Find maximum in a list by checking every item (O(n)). Input: [3, 1, 4]. Expected Output: 4.",
+            "boundary": "The linked search lab is a warm-up. Count operations for n=8 and16 before timing; scans should take 8 and16 visits. Python benchmarks can run in the browser too, but timing includes environment noise and does not prove a growth bound."
+          }
         },
         {
           "id": "p08",
@@ -518,7 +665,28 @@
           ],
           "hours": 15,
           "level": 3,
-          "levelTitle": "Get better at solving problems"
+          "levelTitle": "Get better at solving problems",
+          "coach": {
+            "before": "Two pointers track ranges to avoid O(n^2) nested loops. arr[left],arr[right] = arr[right],arr[left] swaps two values simultaneously. Each pointer is a list index. This worked example reverses in-place, meaning it changes the supplied list.",
+            "worked": "Reverse list in-place:\ndef reverse_arr(arr):\n    left, right = 0, len(arr)-1\n    while left < right:\n        arr[left], arr[right] = arr[right], arr[left]\n        left += 1; right -= 1\n    return arr\nprint(reverse_arr([1,2,3]))  # Output: [3, 2, 1]",
+            "steps": [
+              "Initialize pointers at start and end.",
+              "Swap elements at left and right.",
+              "Move pointers inward.",
+              "Stop when pointers cross."
+            ],
+            "question": "When reversing [1,2,3,4], what is swapped first?",
+            "choices": [
+              "1 and 2",
+              "1 and 4",
+              "2 and 3"
+            ],
+            "correct": 1,
+            "feedback": "1 and 4: The outer elements are swapped before moving inward.",
+            "guided": "Find if array is palindrome using two pointers. Input: [1,2,1]. Expected Output: True.",
+            "independent": "Find two sorted numbers summing to target using pointers. Input: [1,3,4], target=7. Expected Output: (3, 4).",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with the full chapter project must be done on a suitable computer."
+          }
         },
         {
           "id": "p09",
@@ -566,7 +734,7 @@
             {
               "id": "p09-1",
               "type": "Create",
-              "prompt": "Implement insertion sort and merge sort; compare with sorted on empty, reversed and duplicate-heavy inputs.",
+              "prompt": "Implement insertion sort and an iterative merge sort (the recursive variant comes after the recursion chapter); compare with sorted on empty, reversed and duplicate-heavy inputs.",
               "criteria": "Do not mutate input unless the contract says so; measure memory as well as comparisons."
             },
             {
@@ -584,7 +752,28 @@
           ],
           "hours": 15,
           "level": 3,
-          "levelTitle": "Get better at solving problems"
+          "levelTitle": "Get better at solving problems",
+          "coach": {
+            "before": "Sorting algorithms arrange items. Stable sorts preserve original order of equal keys.",
+            "worked": "Merge sorted arrays:\ndef merge(a, b):\n    res, i, j = [], 0, 0\n    while i < len(a) and j < len(b):\n        if a[i] <= b[j]: res.append(a[i]); i+=1\n        else: res.append(b[j]); j+=1\n    return res + a[i:] + b[j:]\nprint(merge([1,5], [2,3]))  # Output: [1, 2, 3, 5]",
+            "steps": [
+              "Start pointers at index 0.",
+              "Compare elements.",
+              "Append the smaller value; on a tie choose from a first to preserve cross-half order. Advance only that pointer.",
+              "Append remaining elements when one ends."
+            ],
+            "question": "Merging [1,5] and [2,3], what is the first comparison?",
+            "choices": [
+              "1 vs 5",
+              "1 vs 2",
+              "5 vs 2"
+            ],
+            "correct": 1,
+            "feedback": "1 vs 2: Compares the first elements of both arrays.",
+            "guided": "Sort strings by length using sorted(words, key=len). Input: ['aa', 'b']. Expected Output: ['b', 'aa'].",
+            "independent": "Extract and sort even numbers from a list without modifying original. Input: [3,2,4]. Expected Output: [2,4].",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with native Python memory usage should be analyzed on a suitable computer."
+          }
         },
         {
           "id": "p10",
@@ -647,7 +836,28 @@
           ],
           "hours": 15,
           "level": 3,
-          "levelTitle": "Get better at solving problems"
+          "levelTitle": "Get better at solving problems",
+          "coach": {
+            "before": "A stack removes the most recently added item; a queue removes the oldest. Reverse Polish notation (RPN) writes an operator after its two operands: 2 3 + means 2+3. pop removes the last stack value; int converts numeric text.",
+            "worked": "def eval_rpn(ops):\n    stack = []\n    for op in ops:\n        if op in ('+', '-'):\n            right = stack.pop()\n            left = stack.pop()\n            stack.append(left + right if op == '+' else left - right)\n        else:\n            stack.append(int(op))\n    return stack[0]\nprint(eval_rpn(['4', '2', '-']))  # Output: 2",
+            "steps": [
+              "Push 4, then 2: stack is [4,2].",
+              "For minus, pop right=2, then left=4.",
+              "Compute left-right=2 and push it.",
+              "The single remaining value is 2. This tiny example assumes valid input; add malformed-expression tests separately."
+            ],
+            "question": "Evaluating ['4', '2', '-'], what is subtracted?",
+            "choices": [
+              "4 - 2",
+              "2 - 4",
+              "Doesn't matter"
+            ],
+            "correct": 0,
+            "feedback": "4 - 2: First popped is right operand, second popped is left.",
+            "guided": "Use a list stack to reverse a string. Input: 'cat'. Expected Output: 'tac'.",
+            "independent": "Simulate a queue with deque. Append 1,2, then popleft. Input: None. Expected Output: 1.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work profiling O(1) deque performance at scale should be done on a suitable computer."
+          }
         },
         {
           "id": "p11",
@@ -710,7 +920,28 @@
           ],
           "hours": 15,
           "level": 4,
-          "levelTitle": "Explore bigger puzzles"
+          "levelTitle": "Explore bigger puzzles",
+          "coach": {
+            "before": "Recursion calls itself with smaller inputs. It requires a base case to terminate. Each call has its own n. Returning unwinds those calls: fact(4)=4*fact(3), then 3*fact(2), then 2*fact(1). Factorial is defined here only for nonnegative integers.",
+            "worked": "def fact(n):\n    if n < 0:\n        raise ValueError(\"Nonnegative input required\")\n    if n <= 1:\n        return 1\n    return n * fact(n-1)\nprint(fact(4))  # Output: 24",
+            "steps": [
+              "Check base case (n <= 1), returning 1 to cleanly handle 0 and 1.",
+              "Multiply n by result of fact(n-1).",
+              "Recurse until base case is reached.",
+              "Unwind stack to produce final product."
+            ],
+            "question": "Why is handling 0 important in factorial?",
+            "choices": [
+              "Saves disk space",
+              "Prevents infinite recursion below 1",
+              "Sorts output"
+            ],
+            "correct": 1,
+            "feedback": "Prevents infinite recursion below 1: If we didn't handle 0 cleanly, negative numbers could cause endless loops.",
+            "guided": "Write recursive countdown to 0. Input: 3. Expected Output: [3, 2, 1, 0].",
+            "independent": "Sum recursively with empty-list base case 0. Expected: []→0, [1,2,3]→6; fact(0)→1 and fact(-1)→ValueError.",
+            "boundary": "Browser foundations are a warm-up. Pyodide executes real Python; full chapter work hitting deep recursion limits must be done on a suitable computer."
+          }
         },
         {
           "id": "p12",
@@ -773,7 +1004,28 @@
           ],
           "hours": 15,
           "level": 4,
-          "levelTitle": "Explore bigger puzzles"
+          "levelTitle": "Explore bigger puzzles",
+          "coach": {
+            "before": "Trees store hierarchical data. Traversals dictate the order nodes are visited. class defines a kind of object. Node(...) creates one; __init__ initializes it; self names that particular object. val stores its value; left and right point to children or None. None means there is no child; negative infinity is below every finite number.",
+            "worked": "Tree maximum:\nclass Node:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\ndef tree_max(node):\n    if not node: return float('-inf')\n    return max(node.val, tree_max(node.left), tree_max(node.right))\nprint(tree_max(Node(1, Node(5), Node(3))))  # Output: 5",
+            "steps": [
+              "Return negative infinity if None.",
+              "Recurse left.",
+              "Recurse right.",
+              "Return max of current, left, and right."
+            ],
+            "question": "What does a leaf node return?",
+            "choices": [
+              "None",
+              "0",
+              "Its own value"
+            ],
+            "correct": 2,
+            "feedback": "Its own value: Left and right are -infinity, so the node's value is the maximum.",
+            "guided": "Sum all nodes in binary tree. Input: Tree with 1, 2, 3. Expected Output: 6.",
+            "independent": "Count number of nodes in binary tree. Input: Tree with root, left, right. Expected Output: 3.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with the full chapter project requires a suitable computer."
+          }
         },
         {
           "id": "p13",
@@ -838,7 +1090,28 @@
           ],
           "hours": 15,
           "level": 4,
-          "levelTitle": "Explore bigger puzzles"
+          "levelTitle": "Explore bigger puzzles",
+          "coach": {
+            "before": "Graphs link vertices via edges. BFS uses a queue and visited set to find shortest paths. BFS shortest-path claims refer to number of edges in an unweighted graph. Different edge costs need a different algorithm. get(node,[]) supplies an empty neighbour list if absent.",
+            "worked": "Path exists A to B:\nfrom collections import deque\ndef path_exists(graph, start, target):\n    q, visited = deque([start]), {start}\n    while q:\n        node = q.popleft()\n        if node == target: return True\n        for n in graph.get(node, []):\n            if n not in visited: visited.add(n); q.append(n)\n    return False\nprint(path_exists({'A':['B'], 'B':[]}, 'A', 'B'))  # Output: True",
+            "steps": [
+              "Enqueue start, mark visited.",
+              "While queue active, pop node.",
+              "Return True if target.",
+              "Enqueue unvisited neighbors."
+            ],
+            "question": "What prevents an infinite loop on A<->B?",
+            "choices": [
+              "Queue limit",
+              "Visited set",
+              "Timeout"
+            ],
+            "correct": 1,
+            "feedback": "Visited set: Marking nodes visited prevents re-adding them to the queue.",
+            "guided": "Fetch neighbors of node 'C' from an adjacency list {'C': ['D']}. Input: 'C'. Expected Output: ['D'].",
+            "independent": "Count disconnected undirected graph components using BFS. Input: {'A':[], 'B':[]}. Expected Output: 2.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with the full chapter project requires a suitable computer."
+          }
         },
         {
           "id": "p14",
@@ -904,7 +1177,28 @@
           ],
           "hours": 15,
           "level": 4,
-          "levelTitle": "Explore bigger puzzles"
+          "levelTitle": "Explore bigger puzzles",
+          "coach": {
+            "before": "Dynamic programming reuses smaller answers. Here choose non-adjacent rewards: taking one house forbids taking its neighbour. a is the best total before the previous house; b is the best total through the previous house. max chooses the larger candidate.",
+            "worked": "House Robber:\ndef rob(nums):\n    if not nums: return 0\n    a, b = 0, nums[0]\n    for i in range(1, len(nums)):\n        a, b = b, max(a + nums[i], b)\n    return b\nprint(rob([2, 7, 9, 3]))  # Output: 11",
+            "steps": [
+              "Start a=0,b=2 for the first house.",
+              "At 7, choose max(0+7,2)=7; new a=2,b=7.",
+              "At 9, choose max(2+9,7)=11; new a=7,b=11.",
+              "At 3, choose max(7+3,11)=11. Final answer: 11."
+            ],
+            "question": "Why pick 9 in [2,7,9,3]?",
+            "choices": [
+              "Largest",
+              "2 + 9 > 7",
+              "Odd"
+            ],
+            "correct": 1,
+            "feedback": "2 + 9 > 7: Taking current plus two-houses-ago yields higher value than the adjacent house.",
+            "guided": "Compute Fibonacci with F(0)=0,F(1)=1 and F(n)=F(n-1)+F(n-2). Expected: F(0)=0,F(1)=1,F(3)=2,F(5)=5. Do not confuse it with stair counts, which use a different base case.",
+            "independent": "For this non-adjacent reward rule, test []→0, [5]→5, [2,7,9,3]→11 and [2,1,1,2]→4. Inputs here are nonnegative integers.",
+            "boundary": "The linked stairs lab is a warm-up for DP. Implement and test this different reward problem separately; explain each state and its base cases before trying knapsack or larger tables."
+          }
         },
         {
           "id": "p15",
@@ -972,7 +1266,28 @@
           ],
           "hours": 15,
           "level": 5,
-          "levelTitle": "Build and improve a project"
+          "levelTitle": "Build and improve a project",
+          "coach": {
+            "before": "Production software enforces boundaries, separates concerns, and relies on automated testing.",
+            "worked": "def withdraw(balance, amount):\n    if type(balance) is not int or type(amount) is not int:\n        raise ValueError('Use integer amounts')\n    if balance < 0 or amount < 0 or amount > balance:\n        raise ValueError('Invalid amount')\n    return balance - amount\nprint(withdraw(100, 20))  # Output: 80",
+            "steps": [
+              "Validate integer inputs first; this small model uses whole units only.",
+              "Reject negative values or spending more than the balance.",
+              "Return a new balance; this pure function does not write to storage.",
+              "Test the storage transaction separately when building the real project."
+            ],
+            "question": "Why validate input before business rules?",
+            "choices": [
+              "Save memory",
+              "Prevent type crashes",
+              "Looks neat"
+            ],
+            "correct": 1,
+            "feedback": "Prevent type crashes: Comparing strings to numeric balances will crash the business logic.",
+            "guided": "Write create_account(username). Raise ValueError if username is empty. Input: ''. Expected Error: ValueError.",
+            "independent": "Test withdraw(100,20)→80, withdraw(100,0)→100, withdraw(100,200)→ValueError and withdraw(100,'20')→ValueError. Assert values and errors; printing them alone is not an assertion.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work with real concurrency and transaction locks must be done on a suitable computer."
+          }
         },
         {
           "id": "p16",
@@ -1036,7 +1351,28 @@
           ],
           "hours": 15,
           "level": 5,
-          "levelTitle": "Build and improve a project"
+          "levelTitle": "Build and improve a project",
+          "coach": {
+            "before": "A capstone combines requirements, code and evidence. This toy object keeps pending changes separate from committed data. It only illustrates commit/rollback; it is not durable storage, crash recovery or a concurrency-safe database.",
+            "worked": "class DB:\n    def __init__(self):\n        self.data, self.pending = {}, {}\n    def add(self, key, value):\n        self.pending[key] = value\n    def commit(self):\n        self.data.update(self.pending)\n        self.pending.clear()\n    def rollback(self):\n        self.pending.clear()\ndb = DB()\ndb.add('x', 1)\ndb.commit()\ndb.add('y', 2)\ndb.rollback()\nprint(db.data)  # Output: {'x': 1}",
+            "steps": [
+              "Start with empty committed data and pending changes.",
+              "Add x=1 then commit: data now contains x.",
+              "Add y=2 to pending only.",
+              "Rollback clears pending; committed data still contains only x=1."
+            ],
+            "question": "What is the journal's purpose?",
+            "choices": [
+              "Speed",
+              "Isolate changes for safe rollback",
+              "Logging"
+            ],
+            "correct": 1,
+            "feedback": "Isolate changes for safe rollback: Keeps the main store clean if a complex operation fails halfway.",
+            "guided": "Add 'add_user' command validating unique username in a dictionary. Input: 'alice' (already exists). Expected Error: ValueError.",
+            "independent": "For a task CLI, specify list behavior first: add T1, complete T1, list only unfinished tasks→[]; list all tasks→T1 marked completed. Persist, restart and verify T1 remains completed. Inject invalid input and check existing tasks survive.",
+            "boundary": "Browser foundations are a warm-up. Full chapter work involving true deployment pipelines must be done on a suitable computer."
+          }
         }
       ],
       "levels": [
@@ -1157,7 +1493,28 @@
           ],
           "hours": 13,
           "level": 1,
-          "levelTitle": "Start with tables"
+          "levelTitle": "Start with tables",
+          "coach": {
+            "before": "A table describes one kind of thing. Columns name its facts; rows are individual examples. An ID distinguishes two people with the same name.",
+            "worked": "School register: columns id, name, class. Rows (1,Asha,10) and (2,Asha,9) describe different pupils. Reading row 2 gives class 9; adding another pupil adds a row, not a new name column.",
+            "steps": [
+              "Choose one kind of thing: pupils.",
+              "Name three columns: id, name, class.",
+              "Add one row per pupil; give each a different id.",
+              "Read class from row 2: it is 9."
+            ],
+            "question": "Two pupils share the name Asha. What distinguishes their rows?",
+            "choices": [
+              "Their different ids",
+              "A new table for each pupil",
+              "Two name columns"
+            ],
+            "correct": 0,
+            "feedback": "Their ids distinguish the two pupils. Names can repeat; each row describes one pupil.",
+            "guided": "Draw a three-column register with the two illustrated pupils. Expected: two rows, ids 1 and 2.",
+            "independent": "Add Ravi in class 10 with id 3. Expected: three rows; selecting class 10 would include ids 1 and 3.",
+            "boundary": "The first SQL foundation lab lets you select existing rows. Server installation and multi-user access come later."
+          }
         },
         {
           "id": "m02",
@@ -1222,7 +1579,28 @@
           ],
           "hours": 13,
           "level": 1,
-          "levelTitle": "Start with tables"
+          "levelTitle": "Start with tables",
+          "coach": {
+            "before": "Tables hold facts. A primary key uniquely identifies a row. A foreign key links to a primary key. Constraints protect data.",
+            "worked": "CREATE TABLE items (id INTEGER PRIMARY KEY, price DECIMAL(10,2) CHECK (price >= 0)); INSERT INTO items (id, price) VALUES (1, -5); -- This fails.",
+            "steps": [
+              "Define the table name and columns.",
+              "Add PRIMARY KEY to the unique identifier.",
+              "Add a CHECK constraint to enforce business rules (price >= 0).",
+              "Attempt to insert invalid data to verify the constraint blocks it."
+            ],
+            "question": "What happens if you insert price=10 into the items table?",
+            "choices": [
+              "It fails",
+              "It succeeds",
+              "It is stored as 0"
+            ],
+            "correct": 1,
+            "feedback": "The CHECK constraint requires price >= 0. Since 10 is >= 0, the insert succeeds.",
+            "guided": "Create a users table with an age column and a CHECK constraint for age >= 18. Insert age=20. Expect success.",
+            "independent": "Create a vehicles table with wheels CHECK (wheels IN (2, 4)). Insert wheels=3. Expect constraint failure.",
+            "boundary": "Browser labs run on SQLite. They do not fully simulate MySQL's strict modes, permission models, or storage engines."
+          }
         },
         {
           "id": "m03",
@@ -1286,7 +1664,28 @@
           ],
           "hours": 13,
           "level": 1,
-          "levelTitle": "Start with tables"
+          "levelTitle": "Start with tables",
+          "coach": {
+            "before": "Databases use transactions to group changes. SQLite (in our browser) and MySQL handle some transactions differently.",
+            "worked": "For the seeded products table: BEGIN; UPDATE products SET stock=0 WHERE id=1; ROLLBACK; SELECT stock FROM products WHERE id=1; returns 30. In MySQL, ordinary CREATE TABLE causes an implicit commit; CREATE TEMPORARY TABLE is an exception but still cannot be rolled back.",
+            "steps": [
+              "Start a transaction with BEGIN.",
+              "Perform a destructive operation like DELETE.",
+              "Notice the change is pending.",
+              "Use ROLLBACK to undo it, or COMMIT to keep it."
+            ],
+            "question": "In MySQL, can you ROLLBACK a CREATE TABLE command?",
+            "choices": [
+              "Yes, always",
+              "No, it commits immediately",
+              "Only if it is empty"
+            ],
+            "correct": 1,
+            "feedback": "Ordinary MySQL CREATE TABLE causes an implicit commit and is not undone by ROLLBACK. Temporary-table DDL has different commit rules and is still not rolled back.",
+            "guided": "Begin a transaction, update an item's price, and rollback. Query the price. Expect the original value.",
+            "independent": "Update an order's status to 'shipped' inside a transaction, then commit. Query the status. Expect 'shipped'.",
+            "boundary": "Browser labs use SQLite, which doesn't simulate MySQL's implicit commits on DDL or its specific locking mechanisms."
+          }
         },
         {
           "id": "m04",
@@ -1350,7 +1749,28 @@
           ],
           "hours": 13,
           "level": 2,
-          "levelTitle": "Ask useful questions"
+          "levelTitle": "Ask useful questions",
+          "coach": {
+            "before": "Queries filter rows using WHERE and sort using ORDER BY. NULL requires special handling with IS NULL.",
+            "worked": "Pagination relies on predictable sorting. SELECT id FROM events ORDER BY created_at, id LIMIT 10 OFFSET 10; The id tie-breaker ensures consistent pages even if timestamps match.",
+            "steps": [
+              "Sort by the primary timestamp (created_at).",
+              "Add a unique column (id) as a tie-breaker.",
+              "Apply LIMIT to restrict page size.",
+              "Apply OFFSET to skip earlier pages."
+            ],
+            "question": "Why use 'id' as a tie-breaker in ORDER BY?",
+            "choices": [
+              "To make it faster",
+              "Because timestamps might be identical",
+              "To remove NULLs"
+            ],
+            "correct": 1,
+            "feedback": "If timestamps are identical, the database might return rows in a random order across pages. A unique tie-breaker fixes this.",
+            "guided": "Select products ordered by price descending, using id descending as a tie-breaker. Limit to 5.",
+            "independent": "Select users ordered by last_login ascending, with id ascending as a tie-breaker. Skip the first 5 rows with OFFSET 5.",
+            "boundary": "Browser labs do not simulate the real performance cost of large OFFSETs; in reality, keyset pagination is needed."
+          }
         },
         {
           "id": "m05",
@@ -1414,7 +1834,28 @@
           ],
           "hours": 13,
           "level": 2,
-          "levelTitle": "Ask useful questions"
+          "levelTitle": "Ask useful questions",
+          "coach": {
+            "before": "INNER JOIN keeps matches. LEFT JOIN keeps all left rows. Joins multiply rows if there are multiple matches.",
+            "worked": "Finding missing data with LEFT JOIN: SELECT u.name FROM users u LEFT JOIN orders o ON u.id = o.user_id WHERE o.id IS NULL; This finds users with no orders.",
+            "steps": [
+              "Use LEFT JOIN to keep all users.",
+              "Join orders on the shared user_id.",
+              "Users without orders will have NULL in the order columns.",
+              "Filter WHERE o.id IS NULL to find only those users."
+            ],
+            "question": "In a LEFT JOIN from users to orders, what does it mean if order.id IS NULL?",
+            "choices": [
+              "The order was deleted",
+              "The user has no matching orders",
+              "The user's id is zero"
+            ],
+            "correct": 1,
+            "feedback": "LEFT JOIN fills the right table's columns with NULL when no match exists. Filtering for this finds unmatched left rows.",
+            "guided": "Use LEFT JOIN to find products with no sales (sales.id IS NULL). Expect a list of unsold products.",
+            "independent": "Use LEFT JOIN to find departments with no employees. Expect departments that have an empty employee list.",
+            "boundary": "The browser cannot test the execution plans of complex multi-table joins on large datasets."
+          }
         },
         {
           "id": "m06",
@@ -1478,7 +1919,28 @@
           ],
           "hours": 13,
           "level": 2,
-          "levelTitle": "Ask useful questions"
+          "levelTitle": "Ask useful questions",
+          "coach": {
+            "before": "GROUP BY summarizes rows. Recursion repeatedly joins a table to itself until a stopping rule is met. Window functions calculate across related rows without collapsing them.",
+            "worked": "sales rows (id=1,amount=10),(id=2,amount=20). SELECT id,amount,SUM(amount) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total FROM sales ORDER BY id; returns (1,10,10),(2,20,30).",
+            "steps": [
+              "Select individual columns like date and amount.",
+              "Define the window function SUM(amount) OVER (...).",
+              "Order the window by date to accumulate chronologically.",
+              "Each row displays its individual amount and the running total."
+            ],
+            "question": "Does a window function collapse the result into one row per date?",
+            "choices": [
+              "Yes",
+              "No, it keeps original rows",
+              "Only if you use HAVING"
+            ],
+            "correct": 1,
+            "feedback": "Window functions add aggregate calculations as a new column to the existing rows; they do not group or collapse the result.",
+            "guided": "Calculate a running total of expenses ordered by id. Expect each row to show the accumulated sum.",
+            "independent": "On paper, add row (3,5): expected running totals 10,30,35. Then write WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<3) SELECT x FROM n ORDER BY x; expected 1,2,3.",
+            "boundary": "Browser labs don't test the memory constraints of massive window partitions found in real analytics databases."
+          }
         },
         {
           "id": "m07",
@@ -1542,7 +2004,28 @@
           ],
           "hours": 13,
           "level": 3,
-          "levelTitle": "Keep changes correct and quick"
+          "levelTitle": "Keep changes correct and quick",
+          "coach": {
+            "before": "Transactions group changes. A lost update happens if two sessions read, then write based on stale reads.",
+            "worked": "Atomic decrement: UPDATE stock SET qty = qty - 1 WHERE item_id = 5 AND qty >= 1; This safely reserves stock in one step without relying on a prior SELECT.",
+            "steps": [
+              "Avoid selecting the quantity and calculating the new value in the application.",
+              "Issue an UPDATE that computes qty - 1 directly.",
+              "Include qty >= 1 in the WHERE clause to prevent negative stock.",
+              "Check how many rows were updated; if 0, the item was out of stock."
+            ],
+            "question": "Why is 'qty >= 1' in the WHERE clause important?",
+            "choices": [
+              "It speeds up the query",
+              "It prevents stock from dropping below zero",
+              "It locks the table"
+            ],
+            "correct": 1,
+            "feedback": "If stock is 0, the condition fails, the row is not updated, and stock never becomes negative.",
+            "guided": "Write an atomic UPDATE to add 50 to a user's balance. Expect the balance to increase regardless of concurrent updates.",
+            "independent": "Write an atomic UPDATE to claim a ticket (SET status = 'claimed') WHERE status = 'available'. Expect 1 updated row.",
+            "boundary": "Browser SQLite cannot demonstrate real MySQL concurrent transaction isolation levels and row-level locking."
+          }
         },
         {
           "id": "m08",
@@ -1606,7 +2089,28 @@
           ],
           "hours": 13,
           "level": 3,
-          "levelTitle": "Keep changes correct and quick"
+          "levelTitle": "Keep changes correct and quick",
+          "coach": {
+            "before": "Indexes speed up queries. EXPLAIN shows the execution plan.",
+            "worked": "A plain index on created_at may support a range: WHERE created_at >= '2023-01-01' AND created_at < '2024-01-01'. This avoids applying YEAR() to every value. Compare plans; optimizer choice depends on data and available indexes.",
+            "steps": [
+              "Identify a function applied to an indexed column.",
+              "Express the same date period with inclusive start and exclusive end.",
+              "Check result equivalence, including dates at both boundaries.",
+              "Use MySQL EXPLAIN to see whether the optimizer chooses the index."
+            ],
+            "question": "Which date belongs to the 2023 range?",
+            "choices": [
+              "2024-01-01",
+              "2023-12-31",
+              "2022-12-31"
+            ],
+            "correct": 1,
+            "feedback": "2023-12-31 is after the inclusive 2023 start and before the exclusive 2024 start. Index use must still be checked with EXPLAIN.",
+            "guided": "Rewrite WHERE LOWER(email) = 'a@b.com' if the collation is case-insensitive. Just use WHERE email = 'a@b.com'.",
+            "independent": "Rewrite WHERE amount + 10 = 50. Expect WHERE amount = 40 to allow index usage.",
+            "boundary": "SQLite execution plans differ entirely from MySQL InnoDB plans; real plan tuning requires a MySQL server."
+          }
         },
         {
           "id": "m09",
@@ -1671,7 +2175,28 @@
           ],
           "hours": 13,
           "level": 4,
-          "levelTitle": "Build and protect a database"
+          "levelTitle": "Build and protect a database",
+          "coach": {
+            "before": "Concatenating user input into SQL is dangerous. Parameters protect the database.",
+            "worked": "Instead of `SELECT * FROM users WHERE name = '` + input + `'`, use `SELECT * FROM users WHERE name = ?` and pass the input separately. The database treats the input as pure data.",
+            "steps": [
+              "Identify places where user input is added to SQL.",
+              "Replace the input with a placeholder (like ?).",
+              "Pass the user input as a separate parameter list to the execution function.",
+              "The database engine binds the data, preventing SQL injection."
+            ],
+            "question": "If the input is ' OR 1=1', what happens with a parameterized query?",
+            "choices": [
+              "It returns all rows",
+              "It looks for a user literally named ' OR 1=1'",
+              "It throws an error"
+            ],
+            "correct": 1,
+            "feedback": "Parameters are treated purely as literal values, so it searches for that exact string instead of altering the query logic.",
+            "guided": "Identify the vulnerability in: `DELETE FROM items WHERE id = ` + user_id. Rewrite it using a ? placeholder.",
+            "independent": "Write a parameterized INSERT statement for a new user with name and email placeholders. Test with a name containing a quote.",
+            "boundary": "Browser SQL environments don't let you write real application code (Python/Node) to test actual driver parameter binding."
+          }
         },
         {
           "id": "m10",
@@ -1736,7 +2261,28 @@
           ],
           "hours": 13,
           "level": 4,
-          "levelTitle": "Build and protect a database"
+          "levelTitle": "Build and protect a database",
+          "coach": {
+            "before": "Databases need backups and proper permissions to recover from mistakes or failures.",
+            "worked": "Restore a base backup into a separate recovery instance, then replay binary-log events up to the exact position before the accidental delete. Verify restored records before switching the application. Never overwrite the live database as your first experiment.",
+            "steps": [
+              "Identify the exact time the error occurred.",
+              "Restore the database to the most recent full backup.",
+              "Apply the transaction logs sequentially.",
+              "Stop applying logs just before the destructive transaction."
+            ],
+            "question": "Can a nightly backup alone recover data changed at 9:59 AM?",
+            "choices": [
+              "Yes",
+              "No",
+              "Only if the database is small"
+            ],
+            "correct": 1,
+            "feedback": "A backup only has data up to the time it was taken. You need transaction logs to recover subsequent changes.",
+            "guided": "Define the steps to recover a table dropped accidentally, given a weekly backup and daily logs.",
+            "independent": "In a disposable MySQL instance, create a role: CREATE ROLE 'report_reader'; GRANT SELECT ON reports.* TO 'report_reader'; assign it to a test user and activate it. Expected: SELECT works; UPDATE is denied. Never test on production data.",
+            "boundary": "Browser environments cannot test MySQL binary logs, replication, or file-level backup tools like mysqldump."
+          }
         },
         {
           "id": "m11",
@@ -1802,7 +2348,28 @@
           ],
           "hours": 13,
           "level": 4,
-          "levelTitle": "Build and protect a database"
+          "levelTitle": "Build and protect a database",
+          "coach": {
+            "before": "Databases change as applications grow. Migrations must not break running apps.",
+            "worked": "Expand-and-contract migration: To rename a column, 1. Add the new column. 2. Write to both. 3. Read from new. 4. Drop the old column. Dropping it immediately breaks older app versions.",
+            "steps": [
+              "Add the new column without removing the old one.",
+              "Update the application to write to both columns.",
+              "Backfill old rows with data for the new column.",
+              "Update the application to read only from the new column, then drop the old one."
+            ],
+            "question": "Why not just use ALTER TABLE to rename the column in one step?",
+            "choices": [
+              "It is not supported",
+              "App instances running old code will crash",
+              "It deletes the data"
+            ],
+            "correct": 1,
+            "feedback": "During a deployment, some app servers still run the old code. A direct rename causes them to fail when looking for the old column.",
+            "guided": "Outline the steps to split a 'name' column into 'first_name' and 'last_name' without downtime.",
+            "independent": "Outline the steps to change a column type from INT to BIGINT safely on a huge, busy table.",
+            "boundary": "Browser setups don't have multiple app servers or massive tables to demonstrate lock contention during schema changes."
+          }
         },
         {
           "id": "m12",
@@ -1865,7 +2432,28 @@
           ],
           "hours": 13,
           "level": 5,
-          "levelTitle": "Make a complete data project"
+          "levelTitle": "Make a complete data project",
+          "coach": {
+            "before": "A complete project combines schema design, correct queries, safe writes, and operational readiness.",
+            "worked": "Acceptance check for money: SELECT SUM(balance) FROM accounts. If transfers are wrapped in transactions, this total should never change during concurrent transfers between accounts.",
+            "steps": [
+              "Define the system invariant (e.g., total money is constant).",
+              "Write a query to measure this invariant.",
+              "Run concurrent operations (like transfers).",
+              "Compare the before and after totals. A matching total supports this invariant for the tested cases; also inspect per-account balances and failed-transfer behavior."
+            ],
+            "question": "If a transfer fails halfway and is not rolled back, what happens to the sum?",
+            "choices": [
+              "It stays the same",
+              "It changes, breaking the invariant",
+              "The database crashes"
+            ],
+            "correct": 1,
+            "feedback": "A partial update means money was created or destroyed, changing the total and proving the system is not transactionally safe.",
+            "guided": "Write a query to check that no order items reference a missing order. Expect zero rows.",
+            "independent": "Write an invariant query to ensure stock quantity is never negative. Expect zero rows violating this.",
+            "boundary": "The browser lab cannot run real concurrent stress tests or verify actual network integrations and end-to-end latency."
+          }
         }
       ],
       "levels": [
@@ -1983,7 +2571,28 @@
           ],
           "hours": 10,
           "level": 1,
-          "levelTitle": "Understand the pieces"
+          "levelTitle": "Understand the pieces",
+          "coach": {
+            "before": "Before deploying, understand the target. Metadata is the configuration and logic. Records are the actual business data entries.",
+            "worked": "To add a new 'Shoe Size' tracking feature, we deploy the metadata defining the field. We do not deploy specific users' shoe sizes. Validation checks if this field can deploy safely.",
+            "steps": [
+              "Identify the required metadata",
+              "Run a validation dry-run",
+              "Deploy the metadata",
+              "Verify the field exists in the org"
+            ],
+            "question": "Does a successful validation dry-run mean the feature is available to users?",
+            "choices": [
+              "Yes, validation automatically publishes it",
+              "No, validation only checks if a deployment would succeed",
+              "Yes, but only for administrators"
+            ],
+            "correct": 1,
+            "feedback": "Validation does not save changes. A real deployment must follow.",
+            "guided": "Classify: one request with Subject=Broken keyboard is data; the definition of Subject__c is metadata. Expected classifications: data, metadata.",
+            "independent": "A new Due_Date__c definition is metadata; a request’s due date 2026-10-12 is data. Verify the field exists and a fictional record accepts a date after actual deployment.",
+            "boundary": "Browser simulators simulate job statuses, but they cannot verify configuration inside a real Salesforce org."
+          }
         },
         {
           "id": "s02",
@@ -2047,7 +2656,28 @@
           ],
           "hours": 10,
           "level": 1,
-          "levelTitle": "Understand the pieces"
+          "levelTitle": "Understand the pieces",
+          "coach": {
+            "before": "Git records changes. A commit is a snapshot. A branch isolates work. Merging combines text, but doesn't prove it works.",
+            "worked": "Two developers edit the same permission set on different branches. Git merges the text cleanly, but the combined permissions might grant too much access. The logic must be re-tested.",
+            "steps": [
+              "Create two branches",
+              "Commit changes independently",
+              "Merge branches",
+              "Test the combined behavior"
+            ],
+            "question": "If Git reports no merge conflicts, what is guaranteed?",
+            "choices": [
+              "The code will compile and pass tests",
+              "The text lines were combined without overlap",
+              "The metadata is ready for production"
+            ],
+            "correct": 1,
+            "feedback": "Git only handles text. A clean text merge can still result in broken business logic.",
+            "guided": "Two branches change one setting: branch A says Read; branch B says Edit. Expected: the reviewer must choose the intended access; taking both blindly is not a security review.",
+            "independent": "Write a PR for adding Due_Date__c: include purpose, changed files, empty-date and valid-date test results, and permission impact. Expected: a reviewer can reproduce both tests.",
+            "boundary": "The simulation shows text merges but cannot execute Salesforce syntax checks on the combined code."
+          }
         },
         {
           "id": "s03",
@@ -2110,7 +2740,28 @@
           ],
           "hours": 10,
           "level": 1,
-          "levelTitle": "Understand the pieces"
+          "levelTitle": "Understand the pieces",
+          "coach": {
+            "before": "Source code lives in structured folders. force-app holds Salesforce metadata. .github/workflows holds automation scripts.",
+            "worked": "Deleting a custom field requires a destructiveChanges.xml file. We must identify any dependencies, like classes using the field, and plan a recovery before deleting.",
+            "steps": [
+              "Identify the metadata to remove",
+              "Trace dependencies",
+              "Write the destructive manifest",
+              "Rehearse the deletion on a throwaway component"
+            ],
+            "question": "Why should you practice destructive changes on a disposable component?",
+            "choices": [
+              "Because production environments reject all deletions",
+              "To safely learn the process without permanently losing real configuration",
+              "Because Git requires it"
+            ],
+            "correct": 1,
+            "feedback": "Never experiment on live configuration. Practice with disposable items to understand dependencies.",
+            "guided": "Illustration: Apex class references Due_Date__c but package contains only the class. Expected missing dependency: the field definition.",
+            "independent": "For deleting Test_Only__c, list every reference, remove them first in a disposable org and rehearse recovery. Expected: deployment succeeds only after references are resolved; data recovery is separately planned.",
+            "boundary": "Simulations parse XML paths but cannot calculate the true dependency closure of a real Salesforce environment."
+          }
         },
         {
           "id": "s04",
@@ -2175,7 +2826,28 @@
           ],
           "hours": 10,
           "level": 2,
-          "levelTitle": "Let the computer help check"
+          "levelTitle": "Let the computer help check",
+          "coach": {
+            "before": "CI workflows run automatic checks. A validation checks a pull request, while a deployment applies merged code.",
+            "worked": "A workflow script runs static analysis before validation. If the scanner finds an error, the script must exit with a failure code to block the pipeline from continuing.",
+            "steps": [
+              "Trigger workflow on pull request",
+              "Run static analysis script",
+              "Propagate any failure exit codes",
+              "Proceed to validation only if successful"
+            ],
+            "question": "Why must a workflow script propagate failure exit codes?",
+            "choices": [
+              "To stop the pipeline and prevent deploying broken code",
+              "To upload the error log to Salesforce",
+              "To automatically fix the code"
+            ],
+            "correct": 0,
+            "feedback": "Suppressing errors creates a false green build. The pipeline must fail to block bad code.",
+            "guided": "Illustration: scanner exits 1 but a script returns 0 unconditionally. Expected fix: preserve the failing exit code and stop before validation.",
+            "independent": "Make a two-job plan: PR checks never deploy; main deployment uses the reviewed revision. Expected: failed PR checks block release; successful deployment is verified in the intended org.",
+            "boundary": "The browser illustrates workflow gates; it does not run a hosted CI workflow or authenticate to Salesforce. Run the actual checks locally or on a free runner, and inspect their exit status."
+          }
         },
         {
           "id": "s05",
@@ -2238,7 +2910,28 @@
           ],
           "hours": 10,
           "level": 2,
-          "levelTitle": "Let the computer help check"
+          "levelTitle": "Let the computer help check",
+          "coach": {
+            "before": "Authentication proves identity. Authorization grants permissions. Both are required for an automated tool to act.",
+            "worked": "A CI runner signs a JWT with a private key. Salesforce verifies it using a public certificate. The integration user must also be specifically authorized for the connected app and granted minimal permissions.",
+            "steps": [
+              "Provide the private key to the runner",
+              "Configure the public certificate in Salesforce",
+              "Assign minimal deployment permissions",
+              "Authorize the integration user"
+            ],
+            "question": "If an integration user has a valid certificate but lacks app authorization, what happens?",
+            "choices": [
+              "The deployment succeeds silently",
+              "The login fails due to lack of authorization",
+              "Salesforce temporarily grants admin rights"
+            ],
+            "correct": 1,
+            "feedback": "A valid key is insufficient if the identity is not explicitly authorized for the application.",
+            "guided": "Place private key only in the runner’s secret storage; public certificate in the Salesforce application. Expected: no private key in Git, screenshots or logs.",
+            "independent": "On paper, plan a certificate rotation: add the replacement public certificate, update the runner secret, verify login to a practice org, then revoke the old credential. Expected: new login succeeds and old credential is denied. Continuity depends on the application’s supported rotation process.",
+            "boundary": "Simulators handle fake tokens. Real authentication requires managing active secrets securely in a vault."
+          }
         },
         {
           "id": "s06",
@@ -2301,7 +2994,28 @@
           ],
           "hours": 10,
           "level": 2,
-          "levelTitle": "Let the computer help check"
+          "levelTitle": "Let the computer help check",
+          "coach": {
+            "before": "Secrets must never be committed to source code. Review rules protect against unauthorized changes.",
+            "worked": "A deleted secret can remain in Git history and copies. Immediately revoke or rotate it at the provider; then remove exposure according to the incident plan. History cleanup alone cannot invalidate a copied credential.",
+            "steps": [
+              "Identify the leaked credential",
+              "Immediately revoke it at the provider",
+              "Clean the repository history",
+              "Implement secure placeholders"
+            ],
+            "question": "Why does deleting a leaked key in the next commit fail to protect the system?",
+            "choices": [
+              "It takes too long to process",
+              "Git retains the full history of previous commits, leaving the key exposed",
+              "The file becomes read-only"
+            ],
+            "correct": 1,
+            "feedback": "Git tracks history. Anyone can check out the previous commit and read the leaked secret.",
+            "guided": "Replace a fake inline token with a secret reference. Expected: no token value in the staged diff. Never practice with a real token.",
+            "independent": "Fake token found in an old commit: record revoke/rotate, verify old token is denied, audit use, clean exposure and update dependent apps. Expected: deletion alone is rejected as a complete fix.",
+            "boundary": "Browser labs use dummy strings. Real credential leakage requires coordinating revocation with your cloud provider."
+          }
         },
         {
           "id": "s07",
@@ -2364,7 +3078,28 @@
           ],
           "hours": 10,
           "level": 3,
-          "levelTitle": "Plan a safe release"
+          "levelTitle": "Plan a safe release",
+          "coach": {
+            "before": "A delta contains only the differences between two points. Setting the correct baseline is critical.",
+            "worked": "Baseline A was deployed successfully. Commit B adds Priority__c but its deployment fails. C also adds a Flow referencing Priority__c. Compare A to C: the package needs the field AND Flow plus their dependencies. Comparing B to C omits the never-deployed field.",
+            "steps": [
+              "Find the last successful deployment baseline",
+              "Identify the head commit",
+              "Calculate the delta",
+              "Verify the resulting package includes all expected changes"
+            ],
+            "question": "What happens if a delta is calculated using a shallow git clone without history?",
+            "choices": [
+              "The delta may be empty or missing necessary files",
+              "The deployment automatically succeeds",
+              "Git generates a fake history"
+            ],
+            "correct": 0,
+            "feedback": "Delta tools require the actual commit history to compare files properly.",
+            "guided": "Release log: A success, B failure, C proposed. Expected baseline: A, not B.",
+            "independent": "A has neither field nor Flow; B adds field but fails; C adds Flow using that field. Expected package: field + Flow and required dependencies, plus a reviewed deletion plan if applicable.",
+            "boundary": "Simulated deltas compare text files. Real Salesforce deltas must respect metadata API boundaries and folder structures."
+          }
         },
         {
           "id": "s08",
@@ -2427,7 +3162,28 @@
           ],
           "hours": 10,
           "level": 3,
-          "levelTitle": "Plan a safe release"
+          "levelTitle": "Plan a safe release",
+          "coach": {
+            "before": "Tests are assertions of expected behavior. Code coverage only proves lines executed, not that they are correct.",
+            "worked": "An Apex test runs business logic and explicitly asserts that the final result matches the expectation. A useful test must include negative inputs and check bulk processing limits.",
+            "steps": [
+              "Prepare test records",
+              "Execute the target business logic",
+              "Assert the actual result against the expected outcome",
+              "Verify behavior under bulk limits"
+            ],
+            "question": "Does high line coverage guarantee that code behaves correctly?",
+            "choices": [
+              "Yes, the compiler guarantees correctness",
+              "No, lines can execute without asserting the correct business outcome",
+              "Yes, if it runs in production"
+            ],
+            "correct": 1,
+            "feedback": "Coverage tracks execution. Only meaningful assertions verify correctness.",
+            "guided": "For a 10% discount on 100, assert actual price equals 90, not merely that the calculation ran.",
+            "independent": "Design tests for 0 open requests→0, one New + one Closed with notes→1, and 200 New→200. Add a restricted-user check; count assertions alone do not prove permission safety.",
+            "boundary": "Simulations execute basic logic checks. Real Apex limits, bulk behaviors, and database transactions only occur on Salesforce servers."
+          }
         },
         {
           "id": "s09",
@@ -2490,7 +3246,28 @@
           ],
           "hours": 10,
           "level": 3,
-          "levelTitle": "Plan a safe release"
+          "levelTitle": "Plan a safe release",
+          "coach": {
+            "before": "A deployment changes the target environment. Observation confirms the change. A rollback reverses metadata.",
+            "worked": "After deploying a new field, we verify users can actually access it. If a deployment fails or causes issues, we can roll back the metadata, but we cannot easily restore deleted business data.",
+            "steps": [
+              "Execute the deployment",
+              "Perform a post-release verification",
+              "Observe user permissions",
+              "Decide to rollback or fix forward"
+            ],
+            "question": "Why is rolling back a deployment not a universal fix?",
+            "choices": [
+              "Git prevents undoing commits",
+              "Rolling back metadata might not recover deleted business data records",
+              "Rollbacks require a new certificate"
+            ],
+            "correct": 1,
+            "feedback": "Metadata changes can be reverted, but data lost or altered by those changes often requires manual restoration.",
+            "guided": "After adding Due_Date__c, check a permitted staff user can enter a date and an unpermitted user cannot edit it. Expected: both access checks match the matrix.",
+            "independent": "Rehearse reverting a disposable field definition. Expected: old metadata can be restored when dependencies allow; deleted field values are not assumed recovered by a Git revert.",
+            "boundary": "A browser lab simulates job states. Real deployments require verifying actual user visibility and integration logs."
+          }
         },
         {
           "id": "s10",
@@ -2556,7 +3333,28 @@
           ],
           "hours": 10,
           "level": 4,
-          "levelTitle": "Bring the whole journey together"
+          "levelTitle": "Bring the whole journey together",
+          "coach": {
+            "before": "A mature system promotes artifacts through isolated environments. Unplanned changes cause drift.",
+            "worked": "We build a package once and promote it to Dev, UAT, and Production. If an admin edits Production directly, they create drift. We must pull that drift into source control before the next release overwrites it.",
+            "steps": [
+              "Build an immutable artifact",
+              "Promote the artifact to UAT",
+              "Test and approve",
+              "Promote the exact same artifact to Production"
+            ],
+            "question": "What is the danger of manual drift in a production environment?",
+            "choices": [
+              "It makes the system run faster",
+              "The next automated release may overwrite the manual changes",
+              "It automatically deletes the repository"
+            ],
+            "correct": 1,
+            "feedback": "Automated pipelines deploy what is in source control. Manual changes not in source will be overwritten.",
+            "guided": "Repository says Priority=Low/Medium/High; practice org also has Critical. Expected drift: Critical exists only in org; reconcile and review before deploying.",
+            "independent": "Record one immutable revision, local test output, practice-org rehearsal, reviewer decision and post-deploy check. Expected: deployed revision matches the reviewed one; a documented previous revision can be redeployed where metadata dependencies permit.",
+            "boundary": "The browser illustrates release decisions. Rehearse on two free practice orgs with fictional data and locally run checks; real company production/sandbox access and CI features depend on its own plan. No paid environments are required for this course."
+          }
         }
       ],
       "levels": [

@@ -61,7 +61,28 @@
         ],
         "correct": 0,
         "explain": "A relational CRM provides structured schema, controlled picklists, and auditable statuses so support tasks cannot get buried or lost across personal inboxes."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Before building an app, a beginner needs to understand databases versus spreadsheets. A database stores distinct 'Objects' (like tables) that track structured records instead of freeform text. We use a CRM (Customer Relationship Management) platform to build a School Help Desk where every maintenance issue has specific columns (fields) so data is never lost or typed inconsistently.",
+          "example": "(Not compiled) Instead of an email 'Projector broken', we store a Help_Request__c record with Status='New', Priority='Medium', and Category='Hardware'.",
+          "trace": [
+            "Identify the real-world thing to track (a maintenance request).",
+            "Determine the required properties (Subject, Status, Priority).",
+            "Recognize that a system needs these properties structured, not mixed in a single paragraph.",
+            "Plan the 'Object' as a central container for these records."
+          ],
+          "try": "Sketch out a table with columns for Subject, Category, and Status, and add one row for a broken keyboard.",
+          "question": "Why is a structured database object better than a shared inbox for tracking school maintenance?",
+          "choices": [
+            "It prevents lost requests by enforcing specific fields like Status and Priority.",
+            "It automatically repairs the hardware.",
+            "It requires a paid subscription to use emails."
+          ],
+          "correct": 0,
+          "feedback": "Structured objects enforce a lifecycle and consistent tracking. A CRM doesn't repair hardware or inherently require paid emails."
+        }
+      ]
     },
     {
       "id": "sfp02",
@@ -125,7 +146,28 @@
         ],
         "correct": 0,
         "explain": "External desktop developer tools and CLIs cannot rely on interactive web sessions and require an authenticated user with a known username and password."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "A Trailhead Playground is a free practice org for fictional data. Launch it from Trailhead and identify its generated username. Desktop CLI login later opens a browser for OAuth; do not put a password or token into a terminal command or source file.",
+          "example": "Illustration: Trailhead → Hands-on Orgs → Launch your practice org. In the org, confirm its name and username. No customer system is involved.",
+          "trace": [
+            "Create or choose your own free Trailhead Playground.",
+            "Launch it and confirm you are in your practice environment.",
+            "Record its non-secret name so you can distinguish it from a second test org.",
+            "Use the playground’s access instructions if direct login or password reset is needed; later CLI authorization uses browser OAuth."
+          ],
+          "try": "Find the same practice org again from Trailhead. Expected: its name matches your notes, and fictional records are safe to create.",
+          "question": "Which environment should you use for course experiments?",
+          "choices": [
+            "Your free practice org with fictional data",
+            "An employer’s live customer org",
+            "Any org where a browser is already signed in"
+          ],
+          "correct": 0,
+          "feedback": "Use your own free practice org. An existing login does not authorize experiments on someone else’s live system."
+        }
+      ]
     },
     {
       "id": "sfp03",
@@ -190,7 +232,28 @@
         ],
         "correct": 0,
         "explain": "Picklists maintain strict data integrity by enforcing a controlled set of allowed values, which is essential for consistent reporting and business automation."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "A Custom Object defines one record type, like a table. Set its Object Name explicitly to Help_Request so its API name is Help_Request__c. Labels can contain spaces and differ from API names. A restricted picklist limits saved values to the configured list; required/default settings are separate choices.",
+          "example": "(Not compiled) A custom object Help_Request__c has a picklist field Priority__c. A user can only select 'Low', 'Medium', 'High', or 'Critical'.",
+          "trace": [
+            "Create the object with label Help Desk Request and Object Name Help_Request.",
+            "Verify the API name is Help_Request__c rather than guessing it from the label.",
+            "Create Priority__c with Low, Medium, High and Critical; enable restriction to listed values.",
+            "Set required/default options explicitly, then test valid and missing values."
+          ],
+          "try": "Create a 'Status' picklist and attempt to save a record with a blank or misspelled status.",
+          "question": "With a restricted Priority picklist containing Low, Medium, High and Critical, can an API save Urgent?",
+          "choices": [
+            "The system rejects the input because it is not an authorized picklist value.",
+            "The system accepts it and creates a new picklist value automatically.",
+            "The system crashes and deletes the record."
+          ],
+          "correct": 0,
+          "feedback": "A restricted picklist rejects an unlisted saved value. Defaults and required-field rules are separate; unrestricted picklists can behave differently through APIs."
+        }
+      ]
     },
     {
       "id": "sfp04",
@@ -254,7 +317,28 @@
         ],
         "correct": 0,
         "explain": "Lookup relationships loosely link records without cascade-deletion, preserving historical maintenance records even if an employee leaves the school."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "A lookup stores the ID of a related record instead of copying its facts. Requester__c links a Help Request to a Contact. Lookup deletion behavior is configurable: inspect the option rather than assuming the related requests will always remain unchanged.",
+          "example": "(Not compiled) A Help_Request__c record has a field Requester__c that points to the Contact 'Pat Chen'. The ticket stores an ID, not Pat's actual phone number.",
+          "trace": [
+            "Identify the parent object (Contact) and child object (Help Request).",
+            "Create a Lookup Relationship field on the child object.",
+            "Name the field Requester__c.",
+            "View the 'Submitted Help Requests' related list on the Contact record."
+          ],
+          "try": "Create a Contact and a Help Request, link them, then delete the Help Request to confirm the Contact remains.",
+          "question": "Why store a Contact ID in Requester__c rather than copy a phone number into every request?",
+          "choices": [
+            "It links to one shared Contact; deletion handling is configured separately",
+            "It guarantees every Contact can be deleted safely",
+            "It automatically grants every user access to the Contact"
+          ],
+          "correct": 0,
+          "feedback": "The lookup links records without duplicating Contact facts. Check the chosen deletion behavior and record permissions separately."
+        }
+      ]
     },
     {
       "id": "sfp05",
@@ -318,7 +402,28 @@
         ],
         "correct": 0,
         "explain": "A dedicated Lightning App provides a focused workspace tailored to a team's workflow by displaying only the tabs and tools they need to do their jobs."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Use App Manager to create a Lightning App and choose its navigation tabs. Lightning App Builder configures pages inside the app. Navigation simplifies the workspace; it does not replace object, field or record permissions.",
+          "example": "(Not compiled) The 'School Help Desk' app provides an indigo navigation bar containing exactly four tabs: Help Desk Requests, School Assets, Contacts, and Reports.",
+          "trace": [
+            "Open App Manager in Setup.",
+            "Create a new Lightning App named 'School Help Desk'.",
+            "Select the specific navigation items (tabs) needed for IT support.",
+            "Assign the app to the System Administrator and Standard User profiles."
+          ],
+          "try": "Open the App Launcher, select the new School Help Desk app, and observe how unrelated tabs disappear.",
+          "question": "What is the primary benefit of creating a dedicated Lightning App for the help desk team?",
+          "choices": [
+            "It restricts the navigation bar to only the tabs needed for their workflow, reducing clutter.",
+            "It automatically builds all the underlying database tables.",
+            "It prevents users from accessing Salesforce on mobile devices."
+          ],
+          "correct": 0,
+          "feedback": "A Lightning App bundles relevant tabs and hides distractions, improving user efficiency without altering database security or mobile access."
+        }
+      ]
     },
     {
       "id": "sfp06",
@@ -382,7 +487,28 @@
         ],
         "correct": 0,
         "explain": "Validation rules evaluate upon record save; if the formula evaluates to TRUE, the transaction is rolled back and the error message is displayed."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "We need to prevent bad data from being saved. A Validation Rule checks a formula before saving; if the formula is TRUE, it blocks the save and shows an error. For example, a ticket marked 'Closed' must have Resolution_Notes__c. A Formula Field is a read-only field that calculates values automatically, like ticket age.",
+          "example": "Formula illustration for this app:\nAND(OR(ISPICKVAL(Status__c, 'Resolved'), ISPICKVAL(Status__c, 'Closed')), ISBLANK(Resolution_Notes__c))\n-- TRUE means block save. Test the actual rule in your practice org.",
+          "trace": [
+            "Create Resolution_Notes__c first.",
+            "Check whether status is Resolved OR Closed.",
+            "Check whether notes are blank.",
+            "Block only when both the finished-status condition and blank-notes condition are true."
+          ],
+          "try": "Test New with blank notes→allowed; Closed with blank notes→blocked; Closed with notes→allowed. Resolved also requires notes.",
+          "question": "When does a Validation Rule block a record from being saved?",
+          "choices": [
+            "When its error condition formula evaluates to TRUE.",
+            "When its error condition formula evaluates to FALSE.",
+            "When the record is older than 30 days."
+          ],
+          "correct": 0,
+          "feedback": "Validation rules trigger the error message when the condition evaluates to TRUE (i.e., the rule is violated)."
+        }
+      ]
     },
     {
       "id": "sfp07",
@@ -445,7 +571,28 @@
         ],
         "correct": 0,
         "explain": "Permission sets are strictly additive and cannot revoke access granted by a user's profile."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Security requires controlling who can see and change records. Profiles provide baseline access. Permission Sets *add* access (they never subtract it). Record Sharing controls visibility of specific records. We test this by creating a separate test user, because a System Administrator bypasses most restrictions.",
+          "example": "(Not compiled) A user has a 'Reader' profile. A 'Help_Desk_Staff' permission set adds Edit access to Help_Request__c. The user can now edit.",
+          "trace": [
+            "Identify the baseline profile's minimal access.",
+            "Create a Permission Set granting Edit access to Help Requests.",
+            "Set the object's Sharing Settings to Private.",
+            "Log in as a test user and verify they cannot edit until the Permission Set is assigned."
+          ],
+          "try": "Log in as a test user, attempt to edit a request, then assign the Permission Set and try again.",
+          "question": "A profile grants object Edit and a permission set omits it. Does that omission revoke object Edit?",
+          "choices": [
+            "No; permission sets add permissions. Record and field access still need separate checks.",
+            "Yes; an omitted permission always denies access",
+            "Yes; only the record owner can ever edit"
+          ],
+          "correct": 0,
+          "feedback": "An omitted permission does not revoke object Edit granted elsewhere. Actual editing also depends on record sharing and field permissions; test all layers with a non-admin user."
+        }
+      ]
     },
     {
       "id": "sfp08",
@@ -508,7 +655,28 @@
         ],
         "correct": 0,
         "explain": "Fast Field Updates run before the database save and are designed specifically for updating fields on the triggering record."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Automation saves time. A Record-Triggered Flow acts like a visual script that runs when a record is saved. A 'Fast Field Update' (Before-Save) flow is used to change fields on the same record that triggered it before it reaches the database. For example, automatically upgrading 'Low' priority network issues to 'Medium'.",
+          "example": "(Not compiled) A Flow checks: Is Category 'Network' AND Priority 'Low'? If yes, an Assignment element changes Priority to 'Medium'.",
+          "trace": [
+            "Create a Record-Triggered Flow on Help Request creation.",
+            "Select 'Fast Field Updates' for efficiency.",
+            "Add a Decision element to check if Category is Network and Priority is Low.",
+            "Add an Assignment element to update the Priority to Medium."
+          ],
+          "try": "Create Network+Low→Medium; Hardware+Low→Low; Network+High→High. Expected: only the configured condition changes priority.",
+          "question": "Why choose 'Fast Field Updates' for this flow?",
+          "choices": [
+            "Because we are only updating a field on the exact record that triggered the flow.",
+            "Because it sends emails faster to the IT team.",
+            "Because it processes millions of records in bulk."
+          ],
+          "correct": 0,
+          "feedback": "Fast Field Updates (before-save) are optimized for changing fields on the triggering record before the database commit."
+        }
+      ]
     },
     {
       "id": "sfp09",
@@ -571,7 +739,28 @@
         ],
         "correct": 0,
         "explain": "Users without administrative reporting permissions cannot see report types while they remain in 'In Development' status."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Data is useless if you can't read it. Reports group and summarize records. To report on our custom object, we use a Custom Report Type. Grouping records by a field like Status__c or Category__c turns a simple list into a summary report, which can be visualized as a chart.",
+          "example": "(Not compiled) A Summary Report groups 10 tickets by Category: 6 Hardware, 4 Software. A bar chart displays these totals.",
+          "trace": [
+            "Create a Custom Report Type for Help Requests and deploy it.",
+            "Create a New Report using that type.",
+            "Add columns like Subject and Status.",
+            "Group the rows by Category to enable subtotals and charts."
+          ],
+          "try": "Create fictional requests: two New, one Closed with notes. Group by Status; expected counts 2 and 1. After changing a New request to Closed with notes, refresh/rerun the report; expected 1 and 2.",
+          "question": "Why must a Custom Report Type be set to 'Deployed'?",
+          "choices": [
+            "So that non-administrator users can see and use it to build reports.",
+            "To compile the report type into Apex code.",
+            "To automatically email the report to the principal every morning."
+          ],
+          "correct": 0,
+          "feedback": "'In Development' report types are hidden from regular users. 'Deployed' makes them visible."
+        }
+      ]
     },
     {
       "id": "sfp10",
@@ -634,7 +823,28 @@
         ],
         "correct": 0,
         "explain": "The command triggers an interactive web login and saves an alias for easy reference in subsequent CLI tasks."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Real development uses text files (code) instead of just clicking in a browser. The Salesforce CLI (sf) connects your computer to your practice org securely. Git is a tool that saves versions of your text files locally. The CLI uses a web login so you don't type passwords in the terminal.",
+          "example": "(Command line) sf org login web -a school-dev opens a browser. You log in, and the CLI saves a secure token linked to the alias 'school-dev'.",
+          "trace": [
+            "Install VS Code, Git, and the Salesforce CLI.",
+            "Create a local workspace directory on your computer.",
+            "Open the terminal in that directory.",
+            "Run sf org login web to authenticate your practice org securely."
+          ],
+          "try": "Run sf org list in the terminal to verify your 'school-dev' alias is connected.",
+          "question": "What is the security benefit of sf org login web?",
+          "choices": [
+            "It uses OAuth so your password is never stored in plain text on your computer.",
+            "It encrypts your local hard drive.",
+            "It automatically logs out all other users in the org."
+          ],
+          "correct": 0,
+          "feedback": "Web login uses OAuth tokens, keeping your actual password completely out of the CLI and source files."
+        }
+      ]
     },
     {
       "id": "sfp11",
@@ -697,7 +907,28 @@
         ],
         "correct": 0,
         "explain": "Source retrieval only downloads configuration and metadata files, never business data or student database records."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Salesforce configurations (fields, objects, flows) can be downloaded as XML files called 'metadata'. sf project retrieve start pulls these files, NOT your actual records/data. You use Git to 'commit' (save a snapshot) of these files so you have a history of your app's structure.",
+          "example": "(Command line) sf project retrieve start -m CustomObject:Help_Request__c downloads Help_Request__c.object-meta.xml.",
+          "trace": [
+            "Generate a standard Salesforce project folder structure.",
+            "Run a retrieve command specifying the exact API names of your metadata.",
+            "Review the downloaded XML files in your text editor.",
+            "Use Git to add and commit these configuration files."
+          ],
+          "try": "Retrieve your Help Request object, run git status, and make your first commit.",
+          "question": "What does the retrieve command download to your computer?",
+          "choices": [
+            "XML metadata files that define your app's structure.",
+            "The actual help desk records and student data.",
+            "A compiled desktop executable program."
+          ],
+          "correct": 0,
+          "feedback": "Retrieving metadata moves configuration, not ordinary business records. Configuration itself can contain sensitive literals; inspect the staged diff and never commit tokens or personal data. Source retrieval is not an automatic privacy guarantee."
+        }
+      ]
     },
     {
       "id": "sfp12",
@@ -772,6 +1003,65 @@
           "name": "HelpDeskService.cls-meta.xml",
           "title": "Apex metadata",
           "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ApexClass xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><status>Active</status>\n</ApexClass>\n"
+        }
+      ],
+      "bridges": [
+        {
+          "idea": "Apex is Salesforce's programming language. A 'Class' groups code, and a 'Method' does a specific job. 'Integer' is a whole number. A method returns a value to whatever called it. You write Apex in local .cls files, not directly in the browser. The class belongs in its own file.",
+          "example": "Apex method fragment, shown inside the supplied HelpDeskService class file:\npublic static Integer openCount() {\n    // The complete starter returns a SOQL count.\n}\nInteger means its eventual answer is a whole number such as 0 or 3; this fragment alone is not deployable.",
+          "trace": [
+            "Create a .cls file for the class and a .cls-meta.xml for its properties.",
+            "Define the class HelpDeskService.",
+            "Define a method returning an Integer.",
+            "Deploy the file to your org."
+          ],
+          "try": "Read the complete .cls/.cls-meta.xml starter below before deploying. Expected: openCount returns a count, not printed text. Invoke only the method from Execute Anonymous after deployment.",
+          "question": "What does an 'Integer' return type mean in an Apex method?",
+          "choices": [
+            "The method will output a whole number, including zero.",
+            "The method will output text.",
+            "The method will output a true or false value."
+          ],
+          "correct": 0,
+          "feedback": "Integer strictly defines the output as a whole number. Zero is a valid Integer."
+        },
+        {
+          "idea": "SOQL is how Apex asks the database for records. Using SELECT COUNT(), we ask for a number instead of a list of data. We filter using WHERE. Our rule excludes both 'Resolved' AND 'Closed' statuses. We enclose the SOQL in square brackets [ ] inside Apex.",
+          "example": "(Apex) [SELECT COUNT() FROM Help_Request__c WHERE Status__c NOT IN ('Resolved', 'Closed')]",
+          "trace": [
+            "Identify the object to query (Help_Request__c).",
+            "Decide to count rather than retrieve rows (SELECT COUNT()).",
+            "Add a WHERE clause to filter out finished tickets using NOT IN.",
+            "Wrap the query in brackets and return it."
+          ],
+          "try": "Change the query to count only 'New' tickets and predict the number based on your org's data.",
+          "question": "Why use NOT IN ('Resolved', 'Closed')?",
+          "choices": [
+            "It correctly excludes both finished states so they aren't counted.",
+            "It only excludes 'Closed' tickets.",
+            "It deletes the resolved tickets from the database."
+          ],
+          "correct": 0,
+          "feedback": "The NOT IN operator filters out any record matching either of the values in the list."
+        },
+        {
+          "idea": "This project’s Apex metadata targets API 66.0, where system-mode defaults require explicit permission enforcement. Newer API versions can have different defaults. Keep explicit with sharing and WITH USER_MODE to make this example’s intent clear across versions; record, object, field and Apex-class access all need tests.",
+          "example": "(Apex) [SELECT COUNT() FROM Help_Request__c WITH USER_MODE] ensures the user running the code is actually allowed to see the object.",
+          "trace": [
+            "Use explicit with sharing on the class for its record-sharing intent.",
+            "Use WITH USER_MODE in the query to enforce object, field and record access.",
+            "Test an allowed user with known visible records.",
+            "Test a user without object Read: access must be denied, not presented as a successful zero. A permitted user with no visible matching records may correctly receive 0."
+          ],
+          "try": "Run the method as a user without read access to Help Requests to verify it blocks them.",
+          "question": "What does WITH USER_MODE do in a SOQL query?",
+          "choices": [
+            "It forces the query to respect the running user's object and field permissions.",
+            "It runs the query as an administrator.",
+            "It automatically shares the record with all users."
+          ],
+          "correct": 0,
+          "feedback": "USER_MODE strictly enforces the user's profile and permission set restrictions during the database query."
         }
       ]
     },
@@ -848,6 +1138,46 @@
           "name": "HelpDeskServiceTest.cls-meta.xml",
           "title": "Test class metadata",
           "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ApexClass xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><status>Active</status>\n</ApexClass>\n"
+        }
+      ],
+      "bridges": [
+        {
+          "idea": "By default, Apex tests do not see ordinary existing business records; they create their own fixtures. Some setup/metadata records remain accessible. Keep these tests isolated and do not enable SeeAllData. Assertions compare expected and actual results; test-created data is rolled back after the test.",
+          "example": "(Apex) System.assertEquals(0, HelpDeskService.openCount()); checks if an empty test database correctly returns 0.",
+          "trace": [
+            "Create a test class with @IsTest.",
+            "Insert synthetic records if needed.",
+            "Call your Apex method.",
+            "Write an explicit assertion comparing the expected result to the actual result."
+          ],
+          "try": "Change an assertion to expect the wrong number and watch the test fail.",
+          "question": "Why must a test class insert its own records?",
+          "choices": [
+            "Because test methods are isolated and cannot see real records in the database.",
+            "To permanently add more data to your app.",
+            "Because standard users are not allowed to run tests."
+          ],
+          "correct": 0,
+          "feedback": "Tests run in an isolated silo. This guarantees tests are reproducible and don't accidentally modify or rely on real business data."
+        },
+        {
+          "idea": "Good tests check edges and limits. What if there are 200 tickets at once (a bulk test)? What if a ticket is 'Closed' without Resolution_Notes__c (a boundary exception)? You wrap the code you are testing in Test.startTest() and Test.stopTest() to ensure fair limits, and use assertions to verify validations trigger properly.",
+          "example": "(Apex) Insert 200 New requests in a List, call the method inside start/stop test, and assert the result is exactly 200.",
+          "trace": [
+            "Create a loop that generates 200 synthetic Help Requests.",
+            "Insert them all at once.",
+            "Use Test.startTest() before calling your method.",
+            "Assert that the returned count is exactly 200."
+          ],
+          "try": "Write a test that deliberately tries to insert a Closed ticket without notes to confirm the Validation Rule blocks it.",
+          "question": "What does a passing 200-New-request count test establish?",
+          "choices": [
+            "The count works for this 200-record fixture; other inputs and permissions still need tests",
+            "Every governor limit is safe in every context",
+            "All production deployments must succeed"
+          ],
+          "correct": 0,
+          "feedback": "It verifies one bulk case. Add empty, mixed-state, invalid-notes and permission tests; a single passing test does not prove every platform limit or configuration is safe."
         }
       ]
     },
@@ -930,6 +1260,65 @@
           "title": "Component exposure metadata",
           "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LightningComponentBundle xmlns=\"http://soap.sforce.com/2006/04/metadata\">\n    <apiVersion>66.0</apiVersion><isExposed>true</isExposed>\n    <targets><target>lightning__AppPage</target><target>lightning__RecordPage</target></targets>\n</LightningComponentBundle>\n"
         }
+      ],
+      "bridges": [
+        {
+          "idea": "A Lightning Web Component (LWC) uses HTML to structure the visual interface. We use template directives like lwc:if and lwc:elseif to show different content based on the data's state (e.g., loading, showing a number, or showing an error). Data from JavaScript is displayed using curly braces { }.",
+          "example": "HTML illustration, not a complete component:\n<template lwc:if={hasCount}>Open: {count}</template>\n-- hasCount true and count 0 displays Open: 0. Use the complete HTML/JS/metadata starter below.",
+          "trace": [
+            "Create an HTML template file.",
+            "Add a lightning-card to give it a standard Salesforce look.",
+            "Use lwc:if to check for errors.",
+            "Use {count} to output the JavaScript variable to the screen."
+          ],
+          "try": "Add static text like 'Total Open:' right before the {count} variable.",
+          "question": "What does {count} do in an LWC HTML file?",
+          "choices": [
+            "It dynamically displays the value of the 'count' variable from the JavaScript file.",
+            "It executes a SOQL database query.",
+            "It creates a new CSS animation."
+          ],
+          "correct": 0,
+          "feedback": "Curly braces in LWC HTML bind visual elements to dynamic data properties defined in the component's JavaScript."
+        },
+        {
+          "idea": "The JavaScript file controls the LWC's logic. It is an ES6 Module that imports features it needs, like the Apex method. The export default class holds the component's state (its variables). We define properties like count and error here, which the HTML reads.",
+          "example": "(JavaScript) import openCount from '@salesforce/apex/HelpDeskService.openCount'; connects the LWC to the Apex server.",
+          "trace": [
+            "Import LightningElement from the lwc engine.",
+            "Import the explicit Apex method.",
+            "Declare variables like count and error inside the class.",
+            "Deploy the component with its .js-meta.xml so it can be added to pages."
+          ],
+          "try": "Change a variable's name in JS and see how it breaks the HTML until you update the HTML to match.",
+          "question": "Why do we import the Apex method in the JavaScript file?",
+          "choices": [
+            "To declare which server method the component calls; permissions are still enforced separately",
+            "To automatically translate the Apex code into JavaScript.",
+            "To bypass Salesforce security rules."
+          ],
+          "correct": 0,
+          "feedback": "The import declares a dependency on an Apex method. It does not automatically make the method secure: server sharing and user-mode checks still matter."
+        },
+        {
+          "idea": "Salesforce data takes time to arrive. The @wire service calls Apex asynchronously. The result object has data and error. Because a count of 0 is a valid number, we check if data !== undefined rather than just checking if data is 'truthy'. The data is cached, so we must explicitly call refreshApex when the user clicks a refresh button.",
+          "example": "(JavaScript) if (data !== undefined) { this.count = data; } ensures 0 is treated as a valid count, not an error. Then use refreshApex(this.wiredResult).",
+          "trace": [
+            "Decorate a function with @wire(openCount).",
+            "Check if data !== undefined to handle zero correctly.",
+            "Store the entire raw wire result.",
+            "Use refreshApex(this.wiredResult) in a button click handler."
+          ],
+          "try": "Write a condition checking if (data) instead of !== undefined, and notice how a zero count fails to display.",
+          "question": "Why must we use data !== undefined instead of if (data) for a count?",
+          "choices": [
+            "Because in JavaScript, the number 0 evaluates to false, which would incorrectly trigger the error state.",
+            "Because the database always returns text.",
+            "Because undefined is the same as zero."
+          ],
+          "correct": 0,
+          "feedback": "JavaScript treats 0 as false. Check for undefined so a received zero is displayed as valid data rather than mistaken for not-yet-loaded state. An error is a separate wire result, not inferred from zero."
+        }
       ]
     },
     {
@@ -993,7 +1382,28 @@
         ],
         "correct": 0,
         "explain": "A fresh target org reveals undeclared dependencies that happened to exist in the origin org but were missing from Git."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "Deploying to a second practice org tests whether your retrieved package includes its dependencies. A dry run validates the package and runs the configured tests without committing deployment changes. A green result does not prove permissions, fictional data or the user interface are correct; verify them after actual deployment.",
+          "example": "CLI illustration: use the complete dry-run command in this unit’s Build steps for school-test. Inspect target alias, metadata package and test results; then use its actual deploy command. Do not substitute a customer org.",
+          "trace": [
+            "Connect a second, empty practice org using the CLI.",
+            "Ensure all XML files are committed to Git.",
+            "Run a dry-run validate command to check dependencies.",
+            "Fix any errors, then run the actual deploy command."
+          ],
+          "try": "Try deploying without retrieving a required field first, read the error message, and fix the missing dependency.",
+          "question": "What is the purpose of a dry run validation?",
+          "choices": [
+            "It checks your code against the org's rules and tests for missing pieces without actually saving changes.",
+            "It deletes all data in the target org.",
+            "It bypasses all required unit tests."
+          ],
+          "correct": 0,
+          "feedback": "A dry run acts as a safe rehearsal, catching missing dependencies and test failures before committing changes."
+        }
+      ]
     },
     {
       "id": "sfp16",
@@ -1056,7 +1466,28 @@
         ],
         "correct": 1,
         "explain": "A complete reviewer handoff requires clear instructions, synthetic records, security context, and proof of boundary testing."
-      }
+      },
+      "bridges": [
+        {
+          "idea": "A real developer takes a requirement (like tracking Due Dates for Critical tickets), plans the architecture, writes the code, and hands it off for peer review. A complete handoff requires instructions (a README), a security matrix, and synthetic test data so a reviewer can prove it works securely without guessing.",
+          "example": "(Documentation) A README.md containing a permission matrix showing exactly what a Teacher versus IT Staff can edit.",
+          "trace": [
+            "Analyze the new requirement and plan the data model changes.",
+            "Implement the custom fields and update automations.",
+            "Generate 10 synthetic test records to cover different scenarios.",
+            "Write a README explaining setup and testing steps for the reviewer."
+          ],
+          "try": "Draft a permission matrix for your app on paper before changing any profile settings.",
+          "question": "Why should a developer provide synthetic test data for a peer review?",
+          "choices": [
+            "So the reviewer can immediately verify the logic without guessing or inventing scenarios.",
+            "To charge the school for data entry services.",
+            "Because test classes cannot be run in Salesforce."
+          ],
+          "correct": 0,
+          "feedback": "Providing clear synthetic scenarios allows the peer reviewer to efficiently prove that the solution meets the requirements securely."
+        }
+      ]
     }
   ]
 }
