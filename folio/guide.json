@@ -2,7 +2,7 @@
   {
     "id": "overview",
     "label": "Give me the short version",
-    "keywords": "overview intro about story summary who abhishek introduction",
+    "keywords": "overview intro about story summary who introduction background",
     "answer": "Abhishek Kumar is a PwC Associate with a computer-science background. His professional experience includes Salesforce Developer training and Azure DevOps support. His personal projects explore software learning, release engineering, Python and machine learning. He is a Sathyabama gold medalist and an IEEE conference-paper coauthor.",
     "link": "#experience",
     "linkLabel": "Explore the experience"
@@ -19,7 +19,7 @@
     "id": "projects",
     "label": "Show me something I can try",
     "keywords": "project demo live build try product studio learning website",
-    "answer": "Learning Studio is a live personal project. It includes 38 roadmap modules, executable Python and SQL foundation labs, release simulations, project briefs and delayed recall. Device profiles work now. Cloud account integration is prepared but is not activated yet.",
+    "answer": "Learning Studio is a live personal project with 38 roadmap chapters, executable Python and SQL labs, an eight-step Python Study Planner and six-step SQL reporting project. GitHub sign-in, private account progress, study timers and group sharing are available. Salesforce follows a 16-unit School Help Desk project with practice-org milestones. SQL runs with SQLite in the browser; Salesforce builds require your own practice org.",
     "link": "learn.html",
     "linkLabel": "Open Learning Studio"
   },
@@ -46,5 +46,13 @@
     "answer": "LinkedIn is the public contact route. The professional brief summarizes experience, education, projects and research, and can be printed or saved as a PDF. Private contact details are not distributed by this guide.",
     "link": "https://www.linkedin.com/in/abhishek-kumar-047b45229/",
     "linkLabel": "Connect on LinkedIn"
+  },
+  {
+    "id": "achievements",
+    "label": "Awards and achievements",
+    "keywords": "achievement achievements accomplishment accomplishments award awards medal medals medalist scholarship scholarships recognition honours honors distinction education academic graduation graduate college university sathyabama",
+    "answer": "Abhishek is a Sathyabama gold medalist and a recipient of the Chancellor’s Merit Scholarship. He also coauthored “Multilayered Security approach for CI/CD Pipeline with Web Application Development” in the 2025 ICCPCT proceedings. Moments shows his academic recognition, and Research links to the publication.",
+    "link": "#moments",
+    "linkLabel": "See awards and milestones"
   }
 ]
