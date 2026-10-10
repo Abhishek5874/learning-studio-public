@@ -14,9 +14,9 @@ window.LearningJourney = (()=>{
  const due=()=>modules().filter(m=>evidenceReady(m)&&s().reviews[m.id]?.due<=Date.now());
  const heading=(eyebrow,title,description)=>`<div class="journey-heading"><div class="eyebrow">${eyebrow}</div><h1>${title}</h1><p>${description}</p></div>`;
  const nav=()=>`<nav class="journey-nav" aria-label="Learning journey">${[['roadmap','The roadmap'],['today','Today’s session'],['projects','Project portfolio']].map(([id,title])=>`<button data-journey="${id}" class="${section===id?'primary':'secondary'}" ${section===id?'aria-current="page"':''}>${title}</button>`).join('')}</nav>`;
- function bind(){document.querySelectorAll('[data-journey]').forEach(b=>b.onclick=()=>open(b.dataset.journey));document.querySelectorAll('[data-module]').forEach(b=>b.onclick=()=>openModule(b.dataset.module));document.querySelectorAll('[data-lab]').forEach(b=>b.onclick=()=>api.openLesson(b.dataset.lab,b.dataset.originModule||selected));document.querySelectorAll('[data-recall]').forEach(b=>b.onclick=()=>review(b.dataset.recall));}
+ function bind(){if($('#roadmap-build-project'))$('#roadmap-build-project').onclick=()=>ProjectStudio.open();document.querySelectorAll('[data-journey]').forEach(b=>b.onclick=()=>open(b.dataset.journey));document.querySelectorAll('[data-module]').forEach(b=>b.onclick=()=>openModule(b.dataset.module));document.querySelectorAll('[data-lab]').forEach(b=>b.onclick=()=>api.openLesson(b.dataset.lab,b.dataset.originModule||selected));document.querySelectorAll('[data-recall]').forEach(b=>b.onclick=()=>review(b.dataset.recall));}
  function shell(body){api.app.innerHTML=`<div class="journey">${nav()}${body}</div>`;bind();}
- function open(which='roadmap'){section=which;selected=null;history.replaceState(null,'','#roadmap');api.activate();if(window.LearnerStore.canEdit())render();}
+ function open(which='roadmap'){window.ProjectStudio?.stop();section=which;selected=null;history.replaceState(null,'','#roadmap');api.activate();if(window.LearnerStore.canEdit())render();}
  function render(){if(selected){modulePage(getModule(selected));return;}if(section==='today')today();else if(section==='projects')projects();else roadmap();}
  function roadmap(){
   if(track().id==='salesforce'&&window.SalesforceProject?.hasData()){SalesforceProject.open();return;}
@@ -29,11 +29,12 @@ window.LearningJourney = (()=>{
   }).join('');
   shell(heading('YOUR BEGINNER-FRIENDLY PATH','Start from zero. Learn one idea at a time.',t.prerequisite+' '+t.promise)+
    '<section class="starter-welcome"><div><span class="eyebrow">NO RUSH · NO EXPERIENCE NEEDED</span><h2>'+esc(t.title)+'</h2><p>'+esc(t.promise)+'</p><p class="starter-reassurance">New words are explained. Try a small example, make a guess, and learn from what happens. You can repeat any chapter.</p><button class="primary starter-try" data-lab="'+t.modules[0].lab+'" data-origin-module="'+t.modules[0].id+'">Try your first browser activity →</button><p class="starter-time">Start with a small example. You can come back to these levels afterward.</p></div><div class="starter-checklist"><strong>Your simple learning loop</strong><ol><li>Read one clear idea</li><li>See a small example</li><li>Try it in the browser</li><li>Explain it in your own words</li></ol></div></section>'+
+   '<section class="starter-welcome"><div><span class="eyebrow">BUILD THROUGH THE WHOLE PATH</span><h2>Your continuous Study Planner project</h2><p>Each small step adds to the same planner. Learn the blocks, run varied-input checks, then solve an independent milestone.</p><button class="primary" id="roadmap-build-project">Start or continue my project →</button></div></section>'+
    '<div class="journey-stats"><div><strong>'+t.modules.length+'</strong><span>short chapters</span></div><div><strong>'+done+'/'+t.modules.length+'</strong><span>chapter check-ins</span></div><div><strong>'+data.projects.filter(p=>p.track===t.id).length+'</strong><span>projects to build later</span></div></div>'+
    '<div class="section-title beginner-level-title"><h2>Choose a level</h2><span>Start with Level 1. Later levels stay open whenever you are ready.</span></div><div class="level-stack">'+levels+'</div>'+
    '<section class="journey-intro"><div><h2>When something feels difficult</h2><p>Pause. Read the example again. Change one small thing and predict what will happen. A wrong answer is useful information; it shows us what to practise next.</p></div><div><h3>What do the check-ins mean?</h3><p>They are reminders to review your own work, not grades or certificates. You can use the practice lab for an automatic check, then return here to save what you learned.</p><a href="'+esc(t.resource)+'" target="_blank" rel="noopener">Official reference for later ↗</a></div></section>');
  }
- function openModule(id){const m=getModule(id);if(!m)return;const t=data.tracks.find(t=>t.modules.includes(m));api.state().track=t.id;selected=id;history.replaceState(null,'','#chapter/'+id);api.activate();api.save();modulePage(m);window.scrollTo({top:0,behavior:'instant'});}
+ function openModule(id){window.ProjectStudio?.stop();const m=getModule(id);if(!m)return;const t=data.tracks.find(t=>t.modules.includes(m));api.state().track=t.id;selected=id;history.replaceState(null,'','#chapter/'+id);api.activate();api.save();modulePage(m);window.scrollTo({top:0,behavior:'instant'});}
  function modulePage(m){
   const t=data.tracks.find(x=>x.modules.some(y=>y.id===m.id))||track();
   const index=t.modules.indexOf(m),next=t.modules[index+1],missing=m.prerequisites.map(getModule).filter(x=>x&&!evidenceReady(x)).slice(0,2);
@@ -79,6 +80,7 @@ window.LearningJourney = (()=>{
  }
  function projectStatus(p,r){return (r.artifact||'').trim().length>=40&&p.rubric.every((_,i)=>r.checks?.[i])?'Ready for peer review · self-assessed':'In progress · add reproducible evidence and review each criterion.';}
  function importBackup(input){
+  window.ProjectStudio?.importBackup(input?.projectStudio);
   if(!input||typeof input!=='object')return;
   for(const m of modules()){
    for(const a of m.activities){const r=input.activities?.[a.id];if(r&&typeof r.evidence==='string'&&r.evidence.length<=16000)s().activities[a.id]={evidence:r.evidence,rating:['independent','retry'].includes(r.rating)?r.rating:null,revealed:r.revealed===true};}

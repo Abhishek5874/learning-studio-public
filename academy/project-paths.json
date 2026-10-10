@@ -1,0 +1,1823 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "track": "python",
+      "title": "Study Planner",
+      "brief": "Build a personal Study Planner to manage fictional tasks and time budgets. Learn core Python concepts step by step.",
+      "steps": [
+        {
+          "id": "pp01",
+          "title": "Greeting Function",
+          "requires": [],
+          "modules": [
+            "p01"
+          ],
+          "outcome": "Learn to define a function, validate string input, and return a value.",
+          "recap": "Start here: a program follows written instructions. No earlier project step is needed.",
+          "blocks": [
+            {
+              "title": "A function receives a value and returns an answer",
+              "idea": "def starts a reusable function. name is its input parameter. The indented return line sends an answer back; it does not display it. Calling print on that answer displays text.",
+              "example": "def hello(name):\n    return 'Hi ' + name\nprint(hello('Asha'))  # Hi Asha",
+              "trace": [
+                "hello receives Asha as name.",
+                "The + joins two strings, giving Hi Asha.",
+                "return sends that string back; print displays it."
+              ]
+            },
+            {
+              "title": "Clean text, then reject an empty value",
+              "idea": "strip removes only spaces at the outer ends. An if chooses a branch. raise ValueError stops invalid input; a caller can catch it. An all-space name becomes empty.",
+              "example": "name = ' Asha '\nprint(name.strip())  # Asha",
+              "trace": [
+                "Start with spaces before and after Asha.",
+                "strip gives Asha without changing letters.",
+                "An empty cleaned name must raise ValueError, not return a greeting."
+              ]
+            }
+          ],
+          "mission": "Write a greeting function that strips outer spaces and rejects empty names. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    # TODO: strip name, raise ValueError if empty, return 'Ready, '+name+'!'\n    pass\n\n# Demo\nprint(greeting(' Alice '))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\n# Demo\nprint(greeting(' Alice '))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Valid name",
+              "setup": "",
+              "expression": "greeting(' Alice ')",
+              "expected": "Ready, Alice!",
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Empty name",
+              "setup": "",
+              "expression": "greeting('')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c3",
+              "label": "Spaces only",
+              "setup": "",
+              "expression": "greeting('   ')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Valid simple",
+              "setup": "",
+              "expression": "greeting('Bob')",
+              "expected": "Ready, Bob!",
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            }
+          ],
+          "hints": [
+            "Use name.strip() to remove spaces.",
+            "Use if not name: to check if the string is empty.",
+            "Use the + operator to join strings."
+          ],
+          "variation": {
+            "prompt": "Return a farewell message starting with 'Goodbye, ' instead.",
+            "tests": [
+              "Farewell(\" Asha \")→Goodbye, Asha!; farewell(\" \")→ValueError."
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Explain your changed input, expected result, actual result and one boundary you tested."
+        },
+        {
+          "id": "pp02",
+          "title": "Task Creation",
+          "requires": [
+            "pp01"
+          ],
+          "modules": [
+            "p02"
+          ],
+          "outcome": "Learn dictionaries and multi-condition validation.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "A dictionary keeps related facts together",
+              "idea": "Curly braces create a dictionary of key:value pairs. Keys such as title name a fact. task[\"title\"] reads that fact. False is Python’s boolean for not completed; it is different from text \"False\".",
+              "example": "task = {'id': 1, 'title': 'Math', 'minutes': 30, 'done': False}\nprint(task['title'])  # Math",
+              "trace": [
+                "One task has four named facts.",
+                "The title key maps to Math.",
+                "Reading that key returns Math, not the whole dictionary."
+              ]
+            },
+            {
+              "title": "Check the boundaries before creating the task",
+              "idea": "type(x) is int checks for an integer and rejects True/False as task numbers. 1 <= minutes <= 240 includes both ends. A valid task must have a positive id and a nonempty cleaned title.",
+              "example": "minutes = 240\nprint(type(minutes) is int and 1 <= minutes <= 240)  # True",
+              "trace": [
+                "240 has integer type.",
+                "It meets the inclusive lower and upper bounds.",
+                "0,241 and text \"30\" must be rejected before creating the task."
+              ]
+            }
+          ],
+          "mission": "Write make_task(id, title, minutes) returning a task dictionary. Validate inputs. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    # TODO: Validate id > 0, minutes 1..240, title not empty. Return dict with done: False\n    pass\n\n# Demo\nprint(make_task(1, 'Read', 30))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\n# Demo\nprint(make_task(1, 'Read', 30))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Valid task",
+              "setup": "",
+              "expression": "make_task(1, 'Read', 30)",
+              "expected": {
+                "id": 1,
+                "title": "Read",
+                "minutes": 30,
+                "done": false
+              },
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Invalid ID",
+              "setup": "",
+              "expression": "make_task(-1, 'Read', 30)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c3",
+              "label": "Invalid Minutes",
+              "setup": "",
+              "expression": "make_task(1, 'Read', 300)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Empty Title",
+              "setup": "",
+              "expression": "make_task(1, '   ', 30)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "min",
+              "label": "One minute boundary",
+              "setup": "",
+              "expression": "make_task(1,' Math ',1)['minutes']",
+              "expected": 1,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "max",
+              "label": "240 minute boundary",
+              "setup": "",
+              "expression": "make_task(1,'Math',240)['minutes']",
+              "expected": 240,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "bool",
+              "label": "Boolean is not an id",
+              "setup": "",
+              "expression": "make_task(True,'Math',10)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            }
+          ],
+          "hints": [
+            "Check that id > 0 and minutes >= 1 and minutes <= 240.",
+            "Strip the title string and check length.",
+            "Return a literal dictionary with the required keys."
+          ],
+          "variation": {
+            "prompt": "Add a priority argument that defaults to 1 if not provided.",
+            "tests": [
+              "priority omitted→1; explicit priority3→3; keep the existing fields and validations."
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Explain your changed input, expected result, actual result and one boundary you tested."
+        },
+        {
+          "id": "pp03",
+          "title": "Planned Minutes",
+          "requires": [
+            "pp02"
+          ],
+          "modules": [
+            "p03"
+          ],
+          "outcome": "Learn for-loops and conditionals to accumulate values.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "Visit each task once",
+              "idea": "Square brackets hold a list. for task in tasks visits each dictionary in order. not task[\"done\"] is True when done is False. The loop body is indented.",
+              "example": "tasks = [{'minutes': 10, 'done': False}, {'minutes': 20, 'done': True}]\nfor task in tasks:\n    print(task['done'])  # False, then True",
+              "trace": [
+                "Read the first dictionary: unfinished.",
+                "Read the second dictionary: completed.",
+                "Only the unfinished task belongs in the remaining planned total."
+              ]
+            },
+            {
+              "title": "Keep the running total outside the loop",
+              "idea": "An accumulator remembers an answer while the loop runs. total += value means total = total + value. An empty list leaves the starting total unchanged.",
+              "example": "total = 0\nfor minutes in [10, 15]:\n    total += minutes\nprint(total)  # 25",
+              "trace": [
+                "Start total at 0 once.",
+                "Add 10, giving 10; add15, giving25.",
+                "Return only after the loop; returning inside would stop early."
+              ]
+            }
+          ],
+          "mission": "Write planned_minutes(tasks) that sums the minutes of all unfinished tasks. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    # TODO: Sum minutes of tasks where done is False\n    pass\n\n# Demo\nprint(planned_minutes([make_task(1, 'A', 10), make_task(2, 'B', 20)]))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\n# Demo\nprint(planned_minutes([make_task(1, 'A', 10), make_task(2, 'B', 20)]))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Mixed tasks",
+              "setup": "t1={'id':1,'title':'A','minutes':10,'done':False}\nt2={'id':2,'title':'B','minutes':20,'done':True}",
+              "expression": "planned_minutes([t1, t2])",
+              "expected": 10,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "All done",
+              "setup": "t2={'id':2,'title':'B','minutes':20,'done':True}",
+              "expression": "planned_minutes([t2])",
+              "expected": 0,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c3",
+              "label": "Empty list",
+              "setup": "",
+              "expression": "planned_minutes([])",
+              "expected": 0,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c4",
+              "label": "None done",
+              "setup": "t1={'id':1,'title':'A','minutes':10,'done':False}",
+              "expression": "planned_minutes([t1, t1])",
+              "expected": 20,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            }
+          ],
+          "hints": [
+            "Create a variable total = 0 outside the loop.",
+            "Check if not task['done'] inside the loop.",
+            "Add task['minutes'] to total."
+          ],
+          "variation": {
+            "prompt": "Sum minutes for only completed tasks instead.",
+            "tests": [
+              "For unfinished10 and completed20, completed_minutes→20; empty list→0; all unfinished→0."
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Describe your observed result showing the output of a script calculating planned minutes with a mix of done and undone tasks."
+        },
+        {
+          "id": "pp04",
+          "title": "Adding Tasks",
+          "requires": [
+            "pp03"
+          ],
+          "modules": [
+            "p04"
+          ],
+          "outcome": "Learn list copying and validation against existing data.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "Copy the list before appending",
+              "idea": "list(tasks) creates a new list containing the same task objects. append adds to that new list. This is a shallow copy: it protects list membership, but does not clone the task dictionaries.",
+              "example": "tasks = [1]\nnew_tasks = list(tasks)\nnew_tasks.append(2)\nprint(tasks, new_tasks)  # [1] [1, 2]",
+              "trace": [
+                "Create a separate list container.",
+                "Append2 only to the copy.",
+                "The original list remains [1]."
+              ]
+            },
+            {
+              "title": "Scan ids before adding",
+              "idea": "A task id identifies one task, even if two titles match. Compare the incoming id with every existing id. A match must raise ValueError; do not silently add a duplicate.",
+              "example": "ids = [1, 2]\nprint(2 in ids)  # True",
+              "trace": [
+                "Existing ids are1 and2.",
+                "Incoming id2 already exists.",
+                "Reject the addition; leave the original list unchanged."
+              ]
+            }
+          ],
+          "mission": "Write add_task(tasks, task) that returns a NEW list with the task appended, rejecting duplicate IDs. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    # TODO: Reject if task['id'] exists. Return a new list with task added.\n    pass\n\n# Demo\ntasks = [make_task(1, 'A', 10)]\nprint(add_task(tasks, make_task(2, 'B', 20)))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\n# Demo\ntasks = [make_task(1, 'A', 10)]\nprint(add_task(tasks, make_task(2, 'B', 20)))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Add valid task",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]\nt2={'id':2,'title':'B','minutes':20,'done':False}",
+              "expression": "add_task(tasks, t2)[1]['id']",
+              "expected": 2,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Original unmodified",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]\nt2={'id':2,'title':'B','minutes':20,'done':False}",
+              "expression": "len(tasks) if add_task(tasks, t2) else -1",
+              "expected": 1,
+              "expectError": null,
+              "why": "A correct returned result must also preserve the original objects. Copy the list and, when changing a task, each dictionary."
+            },
+            {
+              "id": "c3",
+              "label": "Duplicate ID",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]\nt_dup={'id':1,'title':'C','minutes':30,'done':False}",
+              "expression": "add_task(tasks, t_dup)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Empty list",
+              "setup": "t2={'id':2,'title':'B','minutes':20,'done':False}",
+              "expression": "add_task([], t2)",
+              "expected": [
+                {
+                  "id": 2,
+                  "title": "B",
+                  "minutes": 20,
+                  "done": false
+                }
+              ],
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            }
+          ],
+          "hints": [
+            "Loop through the existing tasks to check task['id'].",
+            "If a match is found, raise ValueError.",
+            "Use list(tasks) to copy before appending."
+          ],
+          "variation": {
+            "prompt": "If the ID exists, replace the old task instead of raising an error.",
+            "tests": [
+              "Replace id1 with a new 30-minute title: length remains1; original list stays unchanged. Add id2: length becomes2."
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Explain your changed input, expected result, actual result and one boundary you tested."
+        },
+        {
+          "id": "pp05",
+          "title": "Completing Tasks",
+          "requires": [
+            "pp04"
+          ],
+          "modules": [
+            "p05"
+          ],
+          "outcome": "Learn to copy dictionaries to avoid side effects.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "Copy each dictionary before changing it",
+              "idea": "A list copy alone still shares its dictionaries. dict(task) creates a new dictionary. Change done only on that copy so the original task remains untouched.",
+              "example": "task = {'done': False}\ncopy = dict(task)\ncopy['done'] = True\nprint(task['done'], copy['done'])  # False True",
+              "trace": [
+                "Create a separate dictionary.",
+                "Mark only that dictionary done.",
+                "Original remainsFalse; copied task becomesTrue."
+              ]
+            },
+            {
+              "title": "Remember whether the requested id was found",
+              "idea": "Start found=False. In the loop, change it to True only when a task id matches. Check found after visiting all tasks; a missing id is a failure, not a silently unchanged result.",
+              "example": "found = False\nfor task_id in [1, 2]:\n    if task_id == 2:\n        found = True\nprint(found)  # True",
+              "trace": [
+                "StartFalse.",
+                "Id1 does not match; id2 does.",
+                "After the loop, True confirms a match."
+              ]
+            }
+          ],
+          "mission": "Write complete_task(tasks, id) returning a NEW list of NEW dicts. Reject missing id. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    # TODO: Find task by id, set done=True in a copied dict. Return new list. Raise error if missing.\n    pass\n\n# Demo\ntasks = [make_task(1, 'A', 10)]\nprint(complete_task(tasks, 1))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\n# Demo\ntasks = [make_task(1, 'A', 10)]\nprint(complete_task(tasks, 1))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Complete existing",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]",
+              "expression": "complete_task(tasks, 1)[0]['done']",
+              "expected": true,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Missing id",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]",
+              "expression": "complete_task(tasks, 2)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c3",
+              "label": "Check original unharmed",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]\n_ = complete_task(tasks, 1)",
+              "expression": "tasks[0]['done']",
+              "expected": false,
+              "expectError": null,
+              "why": "A correct returned result must also preserve the original objects. Copy the list and, when changing a task, each dictionary."
+            },
+            {
+              "id": "c4",
+              "label": "Others unaffected",
+              "setup": "tasks=[{'id':1,'done':False},{'id':2,'done':False}]",
+              "expression": "complete_task(tasks, 1)[1]['done']",
+              "expected": false,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "copy",
+              "label": "Every dictionary is a fresh copy",
+              "setup": "tasks=[make_task(1,'Math',10),make_task(2,'SQL',20)]",
+              "expression": "all(a is not b for a,b in zip(tasks, complete_task(tasks,1)))",
+              "expected": true,
+              "expectError": null,
+              "why": "A correct returned result must also preserve the original objects. Copy the list and, when changing a task, each dictionary."
+            }
+          ],
+          "hints": [
+            "Initialize an empty list and a found = False flag.",
+            "In the loop, use nt = dict(t) to copy each task.",
+            "If nt['id'] matches, set done to True and found to True."
+          ],
+          "variation": {
+            "prompt": "Implement an uncomplete_task function setting done to False.",
+            "tests": [
+              "Uncomplete id1: copied task done becomesFalse; original remainsTrue. Missing id9→ValueError."
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Describe your observed result showing your complete_task output with the original task list correctly unchanged."
+        },
+        {
+          "id": "pp06",
+          "title": "Weekly Summary",
+          "requires": [
+            "pp05"
+          ],
+          "modules": [
+            "p06"
+          ],
+          "outcome": "Learn list indexing and data aggregation.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "Seven days use indices zero through six",
+              "idea": "[0]*7 creates seven totals. Day1 goes in slot0, so use day-1. A zero-minute session is valid; negative minutes and days outside1..7 are invalid.",
+              "example": "totals = [0] * 7\ntotals[1 - 1] += 20\nprint(totals)  # [20, 0, 0, 0, 0, 0, 0]",
+              "trace": [
+                "Start seven empty totals.",
+                "Day1 maps to index0.",
+                "Add20 to that slot, leaving the other six at0."
+              ]
+            },
+            {
+              "title": "Several sessions on one day add together",
+              "idea": "Visit each session and add its minutes to its day’s slot. Validate day and minutes before indexing; day0 would otherwise use Python’s last-slot indexing.",
+              "example": "totals = [0] * 7\nfor minutes in [20, 10]:\n    totals[0] += minutes\nprint(totals[0])  # 30",
+              "trace": [
+                "The first session adds20.",
+                "The second adds10 to the same slot.",
+                "The day total is30, not only the most recent session."
+              ]
+            }
+          ],
+          "mission": "Write weekly_summary(sessions) taking a list of {day: 1..7, minutes: >=0}. Return 7 totals. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    # TODO: Create list of 7 zeros. Loop sessions, validate, add to corresponding index.\n    pass\n\n# Demo\nprint(weekly_summary([{'day': 1, 'minutes': 30}]))",
+          "solution": "def greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    res = [0] * 7\n    for s in sessions:\n        d, m = s.get('day'), s.get('minutes')\n        if type(d) is not int or not (1 <= d <= 7): raise ValueError('Day')\n        if type(m) is not int or m < 0: raise ValueError('Min')\n        res[d - 1] += m\n    return res\n\n# Demo\nprint(weekly_summary([{'day': 1, 'minutes': 30}]))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Valid sessions",
+              "setup": "sessions=[{'day':1,'minutes':30},{'day':1,'minutes':15}]",
+              "expression": "weekly_summary(sessions)",
+              "expected": [
+                45,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Empty list",
+              "setup": "",
+              "expression": "weekly_summary([])",
+              "expected": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c3",
+              "label": "Invalid day",
+              "setup": "",
+              "expression": "weekly_summary([{'day':8,'minutes':10}])",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Invalid minutes",
+              "setup": "",
+              "expression": "weekly_summary([{'day':2,'minutes':-5}])",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "zero",
+              "label": "Zero minutes on day seven",
+              "setup": "",
+              "expression": "weekly_summary([{'day':7,'minutes':0}])",
+              "expected": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "day0",
+              "label": "Day zero is invalid",
+              "setup": "",
+              "expression": "weekly_summary([{'day':0,'minutes':10}])",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            }
+          ],
+          "hints": [
+            "Use res = [0] * 7 to prepare the totals.",
+            "Check that 1 <= day <= 7.",
+            "Update the list using res[day - 1] += minutes."
+          ],
+          "variation": {
+            "prompt": "Calculate the maximum minutes spent in a single session per day.",
+            "tests": [
+              "Same day sessions20 and10→daily maximum20, not sum30; empty days→0; invalid day0→ValueError."
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Explain your changed input, expected result, actual result and one boundary you tested."
+        },
+        {
+          "id": "pp07",
+          "title": "JSON Import/Export",
+          "requires": [
+            "pp06"
+          ],
+          "modules": [
+            "p07"
+          ],
+          "outcome": "Learn serialization and robust data validation.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "JSON is text representing values",
+              "idea": "import json brings in Python’s standard-library JSON tools. dumps turns a list/dictionary into text; loads turns JSON text into Python values. JSON uses lowercase false; Python uses False.",
+              "example": "import json\ntext = json.dumps([{'done': False}])\nprint(json.loads(text)[0]['done'])  # False",
+              "trace": [
+                "Serialize the Python list into JSON text.",
+                "Parse the text back into a list.",
+                "The done value returns as a real Python boolean."
+              ]
+            },
+            {
+              "title": "Parsing is only the first validation",
+              "idea": "Valid JSON can still describe an invalid task. Reuse make_task to validate id,title and minutes. Require actual boolean done, unique ids and exactly the four task fields; reject malformed JSON with ValueError.",
+              "example": "import json\ntry:\n    json.loads('not JSON')\nexcept json.JSONDecodeError:\n    print('Invalid JSON')  # Invalid JSON",
+              "trace": [
+                "Parsing fails before any task is created.",
+                "Catch the specific parsing exception.",
+                "Report ValueError from the import API, then separately validate well-formed data."
+              ]
+            }
+          ],
+          "mission": "Write export_plan(tasks) and import_plan(text). Import must validate strictly. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "import json\n\ndef greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    res = [0] * 7\n    for s in sessions:\n        d, m = s.get('day'), s.get('minutes')\n        if type(d) is not int or not (1 <= d <= 7): raise ValueError('Day')\n        if type(m) is not int or m < 0: raise ValueError('Min')\n        res[d - 1] += m\n    return res\n\ndef export_plan(tasks):\n    # TODO: return json string\n    pass\n\ndef import_plan(text):\n    # TODO: parse text, validate list, dicts, fields, and uniqueness\n    pass\n\n# Demo\nplan = export_plan([make_task(1, 'A', 10)])\nprint(import_plan(plan))",
+          "solution": "import json\n\ndef greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    res = [0] * 7\n    for s in sessions:\n        d, m = s.get('day'), s.get('minutes')\n        if type(d) is not int or not (1 <= d <= 7): raise ValueError('Day')\n        if type(m) is not int or m < 0: raise ValueError('Min')\n        res[d - 1] += m\n    return res\n\ndef export_plan(tasks):\n    return json.dumps(tasks)\n\ndef import_plan(text):\n    if type(text) is not str:\n        raise ValueError('JSON text required')\n    try:\n        data = json.loads(text)\n    except json.JSONDecodeError as error:\n        raise ValueError('Invalid JSON') from error\n    if type(data) is not list:\n        raise ValueError('A task list is required')\n    ids, result = set(), []\n    for task in data:\n        if type(task) is not dict or set(task) != {'id', 'title', 'minutes', 'done'}:\n            raise ValueError('Exactly four task fields required')\n        checked = make_task(task['id'], task['title'], task['minutes'])\n        if type(task['done']) is not bool:\n            raise ValueError('done must be a boolean')\n        if checked['id'] in ids:\n            raise ValueError('Duplicate task id')\n        ids.add(checked['id'])\n        checked['done'] = task['done']\n        result.append(checked)\n    return result\n\n# Demo\nplan = export_plan([make_task(1, 'A', 10)])\nprint(import_plan(plan))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Valid import",
+              "setup": "import json\nt = '[{\"id\":1,\"title\":\"A\",\"minutes\":10,\"done\":false}]'",
+              "expression": "import_plan(t)[0]['id']",
+              "expected": 1,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "Malformed JSON",
+              "setup": "",
+              "expression": "import_plan('bad')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c3",
+              "label": "Duplicate ID",
+              "setup": "t = '[{\"id\":1,\"title\":\"A\",\"minutes\":10,\"done\":false},{\"id\":1,\"title\":\"B\",\"minutes\":10,\"done\":false}]'",
+              "expression": "import_plan(t)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Missing field",
+              "setup": "t = '[{\"id\":1,\"minutes\":10,\"done\":false}]'",
+              "expression": "import_plan(t)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c5",
+              "label": "Invalid done type",
+              "setup": "t = '[{\"id\":1,\"title\":\"A\",\"minutes\":10,\"done\":0}]'",
+              "expression": "import_plan(t)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "badminutes",
+              "label": "Imported duration is validated",
+              "setup": "",
+              "expression": "import_plan('[{\"id\":1,\"title\":\"A\",\"minutes\":0,\"done\":false}]')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "badtitle",
+              "label": "Imported blank title is rejected",
+              "setup": "",
+              "expression": "import_plan('[{\"id\":1,\"title\":\" \",\"minutes\":10,\"done\":false}]')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "roundtrip",
+              "label": "Completed task survives export/import",
+              "setup": "",
+              "expression": "import_plan(export_plan(complete_task([make_task(1,'Math',20)],1)))[0]['done']",
+              "expected": true,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            }
+          ],
+          "hints": [
+            "Use try and except around json.loads(text).",
+            "Check if type(data) is list.",
+            "Loop over tasks and ensure all required keys exist and id is unique."
+          ],
+          "variation": {
+            "prompt": "Export plan with readable indentation (indent=2).",
+            "tests": [
+              "Exported text contains newlines with indent2; import_plan(export_plan(tasks)) gives equivalent validated tasks."
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Explain your changed input, expected result, actual result and one boundary you tested."
+        },
+        {
+          "id": "pp08",
+          "title": "Next Task Selector",
+          "requires": [
+            "pp07"
+          ],
+          "modules": [
+            "p08"
+          ],
+          "outcome": "Learn to search and return early from a list based on conditions.",
+          "recap": "Keep the earlier functions unchanged. This step adds one new capability to the same planner; the starter contains working earlier functions.",
+          "blocks": [
+            {
+              "title": "Return the first eligible task",
+              "idea": "Scan the list in its existing order. Two conditions must hold: the task is unfinished AND its minutes fit the budget. return immediately stops the function on the first match.",
+              "example": "tasks = [{'minutes': 30, 'done': False}, {'minutes': 20, 'done': False}]\nprint(tasks[1]['minutes'] <= 25)  # True",
+              "trace": [
+                "The first30-minute task does not fit25.",
+                "The second20-minute task does.",
+                "The planner returns the second task, not the longest task."
+              ]
+            },
+            {
+              "title": "Make not-found and invalid-input different",
+              "idea": "None means a valid search found no eligible task. ValueError means the budget input is invalid. Budget0 is valid but no positive-duration task fits; negative or non-integer budgets must fail.",
+              "example": "budget = 0\nprint(budget >= 0)  # True\nprint(20 <= budget)  # False",
+              "trace": [
+                "Zero is a valid nonnegative budget.",
+                "A20-minute task does not fit.",
+                "ReturnNone for no fit; reject negative or text budgets."
+              ]
+            }
+          ],
+          "mission": "Write next_task(tasks, budget) returning the first unfinished task fitting the budget. Keep every earlier function and its input/output contract. Use fictional values only.",
+          "code": "import json\n\ndef greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    res = [0] * 7\n    for s in sessions:\n        d, m = s.get('day'), s.get('minutes')\n        if type(d) is not int or not (1 <= d <= 7): raise ValueError('Day')\n        if type(m) is not int or m < 0: raise ValueError('Min')\n        res[d - 1] += m\n    return res\n\ndef export_plan(tasks):\n    return json.dumps(tasks)\n\ndef import_plan(text):\n    if type(text) is not str:\n        raise ValueError('JSON text required')\n    try:\n        data = json.loads(text)\n    except json.JSONDecodeError as error:\n        raise ValueError('Invalid JSON') from error\n    if type(data) is not list:\n        raise ValueError('A task list is required')\n    ids, result = set(), []\n    for task in data:\n        if type(task) is not dict or set(task) != {'id', 'title', 'minutes', 'done'}:\n            raise ValueError('Exactly four task fields required')\n        checked = make_task(task['id'], task['title'], task['minutes'])\n        if type(task['done']) is not bool:\n            raise ValueError('done must be a boolean')\n        if checked['id'] in ids:\n            raise ValueError('Duplicate task id')\n        ids.add(checked['id'])\n        checked['done'] = task['done']\n        result.append(checked)\n    return result\n\ndef next_task(tasks, budget):\n    # TODO: validate budget >= 0. Return first task where done is False and minutes <= budget\n    pass\n\n# Demo\ntasks = [make_task(1, 'A', 30), make_task(2, 'B', 20)]\nprint(next_task(tasks, 25))",
+          "solution": "import json\n\ndef greeting(name):\n    if type(name) is not str: raise ValueError('Invalid')\n    name = name.strip()\n    if not name: raise ValueError('Empty')\n    return 'Ready, ' + name + '!'\n\ndef make_task(id, title, minutes):\n    if type(id) is not int or id < 1: raise ValueError('ID')\n    if type(minutes) is not int or not (1 <= minutes <= 240): raise ValueError('Minutes')\n    if type(title) is not str: raise ValueError('Title')\n    title = title.strip()\n    if not title: raise ValueError('Empty Title')\n    return {'id': id, 'title': title, 'minutes': minutes, 'done': False}\n\ndef planned_minutes(tasks):\n    total = 0\n    for t in tasks:\n        if not t['done']:\n            total += t['minutes']\n    return total\n\ndef add_task(tasks, task):\n    for t in tasks:\n        if t['id'] == task['id']: raise ValueError('Duplicate')\n    res = list(tasks)\n    res.append(task)\n    return res\n\ndef complete_task(tasks, id):\n    found = False\n    res = []\n    for t in tasks:\n        nt = dict(t)\n        if nt['id'] == id:\n            nt['done'] = True\n            found = True\n        res.append(nt)\n    if not found: raise ValueError('Missing')\n    return res\n\ndef weekly_summary(sessions):\n    res = [0] * 7\n    for s in sessions:\n        d, m = s.get('day'), s.get('minutes')\n        if type(d) is not int or not (1 <= d <= 7): raise ValueError('Day')\n        if type(m) is not int or m < 0: raise ValueError('Min')\n        res[d - 1] += m\n    return res\n\ndef export_plan(tasks):\n    return json.dumps(tasks)\n\ndef import_plan(text):\n    if type(text) is not str:\n        raise ValueError('JSON text required')\n    try:\n        data = json.loads(text)\n    except json.JSONDecodeError as error:\n        raise ValueError('Invalid JSON') from error\n    if type(data) is not list:\n        raise ValueError('A task list is required')\n    ids, result = set(), []\n    for task in data:\n        if type(task) is not dict or set(task) != {'id', 'title', 'minutes', 'done'}:\n            raise ValueError('Exactly four task fields required')\n        checked = make_task(task['id'], task['title'], task['minutes'])\n        if type(task['done']) is not bool:\n            raise ValueError('done must be a boolean')\n        if checked['id'] in ids:\n            raise ValueError('Duplicate task id')\n        ids.add(checked['id'])\n        checked['done'] = task['done']\n        result.append(checked)\n    return result\n\ndef next_task(tasks, budget):\n    if type(budget) is not int or budget < 0: raise ValueError('Budget')\n    for t in tasks:\n        if not t['done'] and t['minutes'] <= budget:\n            return t\n    return None\n\n# Demo\ntasks = [make_task(1, 'A', 30), make_task(2, 'B', 20)]\nprint(next_task(tasks, 25))",
+          "cases": [
+            {
+              "id": "c1",
+              "label": "Task found",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':30,'done':False},{'id':2,'title':'B','minutes':20,'done':False}]",
+              "expression": "next_task(tasks, 25)",
+              "expected": {
+                "id": 2,
+                "title": "B",
+                "minutes": 20,
+                "done": false
+              },
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c2",
+              "label": "No task fits",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':30,'done':False}]",
+              "expression": "next_task(tasks, 10)",
+              "expected": null,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c3",
+              "label": "Negative budget",
+              "setup": "tasks=[]",
+              "expression": "next_task(tasks, -5)",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "c4",
+              "label": "Already done",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':True}]",
+              "expression": "next_task(tasks, 20)",
+              "expected": null,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "c5",
+              "label": "Non-integer budget",
+              "setup": "tasks=[]",
+              "expression": "next_task(tasks, '20')",
+              "expected": null,
+              "expectError": "ValueError",
+              "why": "This invalid input must be rejected before returning a normal value. Check the guard condition and the required error type."
+            },
+            {
+              "id": "prior0",
+              "label": "Earlier contract: Greeting Function",
+              "setup": "",
+              "expression": "greeting(' Alice ')",
+              "expected": "Ready, Alice!",
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior1",
+              "label": "Earlier contract: Task Creation",
+              "setup": "",
+              "expression": "make_task(1, 'Read', 30)",
+              "expected": {
+                "id": 1,
+                "title": "Read",
+                "minutes": 30,
+                "done": false
+              },
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior2",
+              "label": "Earlier contract: Planned Minutes",
+              "setup": "t1={'id':1,'title':'A','minutes':10,'done':False}\nt2={'id':2,'title':'B','minutes':20,'done':True}",
+              "expression": "planned_minutes([t1, t2])",
+              "expected": 10,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior3",
+              "label": "Earlier contract: Adding Tasks",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]\nt2={'id':2,'title':'B','minutes':20,'done':False}",
+              "expression": "add_task(tasks, t2)[1]['id']",
+              "expected": 2,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior4",
+              "label": "Earlier contract: Completing Tasks",
+              "setup": "tasks=[{'id':1,'title':'A','minutes':10,'done':False}]",
+              "expression": "complete_task(tasks, 1)[0]['done']",
+              "expected": true,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior5",
+              "label": "Earlier contract: Weekly Summary",
+              "setup": "sessions=[{'day':1,'minutes':30},{'day':1,'minutes':15}]",
+              "expression": "weekly_summary(sessions)",
+              "expected": [
+                45,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "prior6",
+              "label": "Earlier contract: JSON Import/Export",
+              "setup": "import json\nt = '[{\"id\":1,\"title\":\"A\",\"minutes\":10,\"done\":false}]'",
+              "expression": "import_plan(t)[0]['id']",
+              "expected": 1,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "budget0",
+              "label": "Zero budget has no match",
+              "setup": "",
+              "expression": "next_task([make_task(1,'Math',20)],0)",
+              "expected": null,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            },
+            {
+              "id": "first",
+              "label": "First fitting task wins",
+              "setup": "",
+              "expression": "next_task([make_task(1,'Math',20),make_task(2,'SQL',10)],20)['id']",
+              "expected": 1,
+              "expectError": null,
+              "why": "Trace this exact input through the function. Compare the returned value and its type; printing the right value is different from returning it."
+            }
+          ],
+          "hints": [
+            "Check budget >= 0.",
+            "Loop over tasks and check if not t['done'] and t['minutes'] <= budget.",
+            "Return the task right away. If the loop ends naturally, return None."
+          ],
+          "variation": {
+            "prompt": "Return a list of ALL unfinished tasks within the budget.",
+            "tests": [
+              "Clarify the new rule: return ALL individually fitting tasks, not a combination whose combined minutes fit. Two unfinished tasks10 and20 with budget20→both; finished tasks excluded; zero budget→[]."
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Describe your observed result showing next_task returning the correct task when the budget skips the first unfinished task."
+        }
+      ]
+    },
+    {
+      "track": "mysql",
+      "title": "Study Planner Database and Reports",
+      "brief": "Manage a study planner using Browser SQLite. Query learners, filter unfinished tasks, aggregate study minutes, safely log new sessions, and build a unified dashboard. Note: executed on Browser SQLite engine.",
+      "seed": "PRAGMA foreign_keys = ON;\nCREATE TABLE learners (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL\n);\nCREATE TABLE tasks (\n  id INTEGER PRIMARY KEY,\n  learner_id INTEGER REFERENCES learners(id),\n  title TEXT,\n  planned_minutes INTEGER CHECK (planned_minutes > 0),\n  done INTEGER CHECK (done IN (0,1))\n);\nCREATE TABLE sessions (\n  id INTEGER PRIMARY KEY,\n  learner_id INTEGER REFERENCES learners(id),\n  day INTEGER CHECK (day BETWEEN 1 AND 7),\n  minutes INTEGER CHECK (minutes >= 0)\n);\nINSERT INTO learners (id, name) VALUES (1, 'Asha'), (2, 'Ravi'), (3, 'Meera');\nINSERT INTO tasks (id, learner_id, title, planned_minutes, done) VALUES (1, 1, 'Math', 30, 0), (2, 1, 'Python', 20, 1), (3, 2, 'SQL', 40, 0);\nINSERT INTO sessions (id, learner_id, day, minutes) VALUES (1, 1, 1, 20), (2, 1, 1, 10), (3, 2, 2, 40);",
+      "steps": [
+        {
+          "id": "sq01",
+          "title": "Meet the Learners",
+          "requires": [],
+          "modules": [
+            "m01"
+          ],
+          "outcome": "Select and order records from a single table.",
+          "recap": "Using SELECT to fetch specific columns and ORDER BY to sort them sequentially.",
+          "blocks": [
+            {
+              "title": "Retrieving Data",
+              "idea": "Use SELECT column1, column2 FROM table_name to get specific information.",
+              "example": "SELECT name FROM learners;",
+              "trace": [
+                "Table: learners",
+                "Action: fetch name column",
+                "Result: list of names"
+              ]
+            },
+            {
+              "title": "Sorting Results",
+              "idea": "Use ORDER BY column_name to sort the results sequentially.",
+              "example": "SELECT id, name FROM learners ORDER BY id;",
+              "trace": [
+                "Rows fetched",
+                "Sort by id ascending",
+                "Return ordered rows"
+              ]
+            }
+          ],
+          "mission": "Write a query to select the id and name of all learners, ordered by their id.",
+          "code": "SELECT \n  -- your columns here\nFROM learners\nORDER BY id;",
+          "solution": "SELECT id, name FROM learners ORDER BY id;",
+          "cases": [
+            {
+              "id": "sq01_c1",
+              "label": "Default learners",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha"
+                  ],
+                  [
+                    2,
+                    "Ravi"
+                  ],
+                  [
+                    3,
+                    "Meera"
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq01_c2",
+              "label": "Extra learner",
+              "seedExtra": "INSERT INTO learners (id, name) VALUES (4, 'Zain');",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha"
+                  ],
+                  [
+                    2,
+                    "Ravi"
+                  ],
+                  [
+                    3,
+                    "Meera"
+                  ],
+                  [
+                    4,
+                    "Zain"
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq01_c3",
+              "label": "Empty learners",
+              "seedExtra": "DELETE FROM tasks; DELETE FROM sessions; DELETE FROM learners;",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name"
+                ],
+                "values": []
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            }
+          ],
+          "hints": [
+            "Use SELECT id, name",
+            "FROM the learners table",
+            "Add ORDER BY id at the end"
+          ],
+          "variation": {
+            "prompt": "How would the result change if learner 4 was added?",
+            "tests": [
+              "With an extra learner, they should appear in the ordered results. Expected: {\"columns\": [\"id\", \"name\"], \"values\": [[1, \"Asha\"], [2, \"Ravi\"], [3, \"Meera\"], [4, \"Zain\"]]}"
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Record a changed fixture, its expected rows, actual rows and one query fix."
+        },
+        {
+          "id": "sq02",
+          "title": "Unfinished Tasks",
+          "requires": [
+            "sq01"
+          ],
+          "modules": [
+            "m04"
+          ],
+          "outcome": "Filter records using WHERE clauses.",
+          "recap": "Using WHERE to apply conditions and restrict the rows returned to exactly what you need.",
+          "blocks": [
+            {
+              "title": "Filtering with WHERE",
+              "idea": "Use WHERE condition to only keep rows that match.",
+              "example": "SELECT title FROM tasks WHERE done = 1;",
+              "trace": [
+                "Table: tasks",
+                "Filter: done equals 1",
+                "Result: completed tasks only"
+              ]
+            },
+            {
+              "title": "The ordering contract is separate from filtering",
+              "idea": "done=0 keeps unfinished rows. ORDER BY id fixes their display order, even when two tasks have the same minutes. SELECT chooses which columns appear.",
+              "example": "SELECT id,title,planned_minutes FROM tasks WHERE done=0 ORDER BY id;\n-- (1,Math,30), (3,SQL,40)",
+              "trace": [
+                "Keep rows1 and3 because done is0.",
+                "Choose id,title and planned_minutes in that order.",
+                "Sort by id; minutes do not decide order."
+              ]
+            }
+          ],
+          "mission": "Write a query to select id, title, and planned_minutes for tasks that are NOT done (done = 0), ordered by id.",
+          "code": "SELECT id, title, planned_minutes\nFROM tasks\nWHERE -- add condition\nORDER BY id;",
+          "solution": "SELECT id, title, planned_minutes FROM tasks WHERE done = 0 ORDER BY id;",
+          "cases": [
+            {
+              "id": "sq02_c1",
+              "label": "Default tasks",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "id",
+                  "title",
+                  "planned_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Math",
+                    30
+                  ],
+                  [
+                    3,
+                    "SQL",
+                    40
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq02_c2",
+              "label": "All tasks done",
+              "seedExtra": "UPDATE tasks SET done = 1;",
+              "expected": {
+                "columns": [
+                  "id",
+                  "title",
+                  "planned_minutes"
+                ],
+                "values": []
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq02_c3",
+              "label": "Additional unfinished task",
+              "seedExtra": "INSERT INTO tasks (id, learner_id, title, planned_minutes, done) VALUES (4, 3, 'Science', 40, 0);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "title",
+                  "planned_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Math",
+                    30
+                  ],
+                  [
+                    3,
+                    "SQL",
+                    40
+                  ],
+                  [
+                    4,
+                    "Science",
+                    40
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            }
+          ],
+          "hints": [
+            "Select id, title, planned_minutes",
+            "Use WHERE done = 0",
+            "ORDER BY id"
+          ],
+          "variation": {
+            "prompt": "How does the query handle tasks with equal planned_minutes if their done status changes? Notice no personal data is fetched.",
+            "tests": [
+              "Change a task to done and insert equal minute task. Expected: {\"columns\": [\"id\", \"title\", \"planned_minutes\"], \"values\": [[3, \"SQL\", 40], [4, \"C++\", 40]]}"
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Record a changed fixture, its expected rows, actual rows and one query fix."
+        },
+        {
+          "id": "sq03",
+          "title": "Total Unfinished Planned Minutes",
+          "requires": [
+            "sq02"
+          ],
+          "modules": [
+            "m05"
+          ],
+          "outcome": "Aggregate data using GROUP BY and LEFT JOIN to include entities with no associated records.",
+          "recap": "Combining tables using LEFT JOIN to retain all learners, and SUM to aggregate planned minutes, treating NULL as 0.",
+          "blocks": [
+            {
+              "title": "Left Join",
+              "idea": "LEFT JOIN keeps all rows from the left table, even if there's no match in the right table.",
+              "example": "SELECT l.name, t.title FROM learners l LEFT JOIN tasks t ON l.id = t.learner_id;",
+              "trace": [
+                "Left: learners",
+                "Match: tasks",
+                "Unmatched learners get NULL tasks"
+              ]
+            },
+            {
+              "title": "Handling NULL with COALESCE",
+              "idea": "Use COALESCE to replace NULL with 0 for learners with no tasks.",
+              "example": "SELECT COALESCE(SUM(planned_minutes), 0) FROM tasks;",
+              "trace": [
+                "Check sum",
+                "If NULL",
+                "Return 0"
+              ]
+            },
+            {
+              "title": "Put the unfinished condition in the join",
+              "idea": "Putting t.done=0 in WHERE would remove learners whose joined task is NULL. Put it in ON so every learner remains; then group to add only matching unfinished durations.",
+              "example": "LEFT JOIN tasks t ON l.id=t.learner_id AND t.done=0\n-- Meera still appears; her total is0.",
+              "trace": [
+                "Start from all learners.",
+                "Match only unfinished tasks.",
+                "An unmatched learner remains and its missing sum becomes0 through COALESCE."
+              ]
+            }
+          ],
+          "mission": "Report all learners.id, learners.name, and the sum of planned_minutes for their unfinished tasks (done = 0) as total_planned. Include learners with no unfinished tasks by returning 0 for them. Order by learners.id.",
+          "code": "SELECT l.id, l.name, COALESCE(SUM(t.planned_minutes), 0) AS total_planned\nFROM learners l\n-- JOIN tasks and group\nORDER BY l.id;",
+          "solution": "SELECT l.id, l.name, COALESCE(SUM(t.planned_minutes), 0) AS total_planned FROM learners l LEFT JOIN tasks t ON l.id = t.learner_id AND t.done = 0 GROUP BY l.id ORDER BY l.id;",
+          "cases": [
+            {
+              "id": "sq03_c1",
+              "label": "Default state",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq03_c2",
+              "label": "Asha finishes Math",
+              "seedExtra": "UPDATE tasks SET done = 1 WHERE id = 1;",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq03_c3",
+              "label": "Multiple unfinished tasks for Meera",
+              "seedExtra": "INSERT INTO tasks (id, learner_id, title, planned_minutes, done) VALUES (4, 3, 'Art', 15, 0), (5, 3, 'Music', 25, 0);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    40
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            }
+          ],
+          "hints": [
+            "Use LEFT JOIN from learners to tasks",
+            "Add ON condition including t.done = 0",
+            "Use GROUP BY l.id and COALESCE(SUM(...), 0)"
+          ],
+          "variation": {
+            "prompt": "What if a user has multiple unfinished tasks, and another user has none?",
+            "tests": [
+              "Testing multiple unfinished tasks and users with none. Expected: {\"columns\": [\"id\", \"name\", \"total_planned\"], \"values\": [[1, \"Asha\", 30], [2, \"Ravi\", 40], [3, \"Meera\", 40]]}"
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Describe how Meera is represented in the output since she originally has no tasks."
+        },
+        {
+          "id": "sq04",
+          "title": "Total Studied Minutes",
+          "requires": [
+            "sq03"
+          ],
+          "modules": [
+            "m06"
+          ],
+          "outcome": "Pre-aggregate session data to avoid joining complications.",
+          "recap": "Using Common Table Expressions (CTEs) or Subqueries to aggregate one-to-many relationships before joining to prevent duplication.",
+          "blocks": [
+            {
+              "title": "Pre-aggregation",
+              "idea": "Group child table data before joining to the parent table to avoid multiplying rows.",
+              "example": "WITH session_totals AS (SELECT learner_id, SUM(minutes) AS total FROM sessions GROUP BY learner_id) SELECT * FROM session_totals;",
+              "trace": [
+                "Group sessions by learner",
+                "Sum minutes",
+                "Return one row per learner"
+              ]
+            },
+            {
+              "title": "Joining Pre-aggregated Data",
+              "idea": "Join the summarized data to the main table, handling NULLs for missing data.",
+              "example": "WITH totals AS (SELECT learner_id,SUM(minutes) AS minutes FROM sessions GROUP BY learner_id)\nSELECT l.id,COALESCE(t.minutes,0) FROM learners l LEFT JOIN totals t ON t.learner_id=l.id ORDER BY l.id;\n-- (1,30),(2,40),(3,0)",
+              "trace": [
+                "Left join learners",
+                "Match summarized sessions",
+                "Replace NULL with 0"
+              ]
+            }
+          ],
+          "mission": "Report all learners.id, learners.name, and the sum of their session minutes as total_studied. Use a CTE or subquery to sum sessions per learner first, then LEFT JOIN learners to this result. Ensure those with no sessions return 0. Order by learners.id.",
+          "code": "WITH SessionSums AS (\n  SELECT learner_id, SUM(minutes) AS total_mins\n  FROM sessions\n  GROUP BY learner_id\n)\nSELECT l.id, l.name, COALESCE(s.total_mins, 0) AS total_studied\nFROM learners l\n-- LEFT JOIN SessionSums\nORDER BY l.id;",
+          "solution": "WITH SessionSums AS (SELECT learner_id, SUM(minutes) AS total_mins FROM sessions GROUP BY learner_id) SELECT l.id, l.name, COALESCE(s.total_mins, 0) AS total_studied FROM learners l LEFT JOIN SessionSums s ON l.id = s.learner_id ORDER BY l.id;",
+          "cases": [
+            {
+              "id": "sq04_c1",
+              "label": "Default state",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_studied"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq04_c2",
+              "label": "Meera studies",
+              "seedExtra": "INSERT INTO sessions (id, learner_id, day, minutes) VALUES (4, 3, 3, 50), (5, 3, 3, 20);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_studied"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    70
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq04_c3",
+              "label": "No sessions at all",
+              "seedExtra": "DELETE FROM sessions;",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_studied"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    0
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            }
+          ],
+          "hints": [
+            "Define CTE SessionSums",
+            "LEFT JOIN to learners",
+            "Use COALESCE to handle NULLs"
+          ],
+          "variation": {
+            "prompt": "Why group sessions before joining to learners instead of just LEFT JOINing directly?",
+            "tests": [
+              "Pre-aggregated queries safely ignore multiple session complications. Expected: {\"columns\": [\"id\", \"name\", \"total_studied\"], \"values\": [[1, \"Asha\", 30], [2, \"Ravi\", 40], [3, \"Meera\", 70]]}"
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Explain how pre-aggregation avoids the join multiplication bug if a user has multiple tasks AND multiple sessions."
+        },
+        {
+          "id": "sq05",
+          "title": "Logging a Session Safely",
+          "requires": [
+            "sq04"
+          ],
+          "modules": [
+            "m07"
+          ],
+          "outcome": "Understand transactions, BEGIN/COMMIT, and INSERT statements.",
+          "recap": "Using transactions to group writes, ensuring database consistency, and verifying changes.",
+          "blocks": [
+            {
+              "title": "Transactions",
+              "idea": "Wrap multiple queries in BEGIN and COMMIT so they succeed or fail together.",
+              "example": "BEGIN; INSERT INTO sessions (id, learner_id, day, minutes) VALUES (5, 2, 1, 30); COMMIT;",
+              "trace": [
+                "Start transaction",
+                "Perform insert",
+                "Commit to save"
+              ]
+            },
+            {
+              "title": "Rollback deliberately without a foreign-key failure",
+              "idea": "In this disposable database, delete only sessions inside the transaction, then ROLLBACK. Deleting learners while child records exist is rejected by foreign keys. A constraint failure does not universally roll back all earlier statements; the caller must handle the transaction.",
+              "example": "BEGIN;\nDELETE FROM sessions;\nROLLBACK;\nSELECT COUNT(*) FROM sessions;\n-- 3",
+              "trace": [
+                "Start a transaction.",
+                "Delete three session rows temporarily.",
+                "ROLLBACK undoes the delete; the original count3 remains."
+              ]
+            }
+          ],
+          "mission": "Insert a fictional session (id=4, learner_id=1, day=3, minutes=15) using BEGIN and COMMIT. As your LAST query, SELECT the COUNT(*) as total_sessions and SUM(minutes) as total_minutes from sessions.",
+          "code": "BEGIN;\nINSERT INTO sessions (id, learner_id, day, minutes) VALUES (4, 1, 3, 15);\nCOMMIT;\n\nSELECT COUNT(*) AS total_sessions, SUM(minutes) AS total_minutes FROM sessions;",
+          "solution": "BEGIN; INSERT INTO sessions (id, learner_id, day, minutes) VALUES (4, 1, 3, 15); COMMIT; SELECT COUNT(*) AS total_sessions, SUM(minutes) AS total_minutes FROM sessions;",
+          "cases": [
+            {
+              "id": "sq05_c1",
+              "label": "Successful transaction",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "total_sessions",
+                  "total_minutes",
+                  "inserted_learner",
+                  "inserted_day",
+                  "inserted_minutes"
+                ],
+                "values": [
+                  [
+                    4,
+                    85,
+                    1,
+                    3,
+                    15
+                  ]
+                ]
+              },
+              "why": "The checker reads the actual post-write database: session4 must exist with learner1,day3 and15minutes, and totals must match. Computing adjusted totals without inserting the session will fail.",
+              "verifyQuery": "SELECT COUNT(*) AS total_sessions,SUM(minutes) AS total_minutes,(SELECT learner_id FROM sessions WHERE id=4) AS inserted_learner,(SELECT day FROM sessions WHERE id=4) AS inserted_day,(SELECT minutes FROM sessions WHERE id=4) AS inserted_minutes FROM sessions;"
+            },
+            {
+              "id": "sq05_c2",
+              "label": "With existing extra session",
+              "seedExtra": "INSERT INTO sessions (id, learner_id, day, minutes) VALUES (9, 2, 1, 5);",
+              "expected": {
+                "columns": [
+                  "total_sessions",
+                  "total_minutes",
+                  "inserted_learner",
+                  "inserted_day",
+                  "inserted_minutes"
+                ],
+                "values": [
+                  [
+                    5,
+                    90,
+                    1,
+                    3,
+                    15
+                  ]
+                ]
+              },
+              "why": "The checker reads the actual post-write database: session4 must exist with learner1,day3 and15minutes, and totals must match. Computing adjusted totals without inserting the session will fail.",
+              "verifyQuery": "SELECT COUNT(*) AS total_sessions,SUM(minutes) AS total_minutes,(SELECT learner_id FROM sessions WHERE id=4) AS inserted_learner,(SELECT day FROM sessions WHERE id=4) AS inserted_day,(SELECT minutes FROM sessions WHERE id=4) AS inserted_minutes FROM sessions;"
+            },
+            {
+              "id": "sq05_c3",
+              "label": "Empty starting sessions",
+              "seedExtra": "DELETE FROM sessions;",
+              "expected": {
+                "columns": [
+                  "total_sessions",
+                  "total_minutes",
+                  "inserted_learner",
+                  "inserted_day",
+                  "inserted_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    15,
+                    1,
+                    3,
+                    15
+                  ]
+                ]
+              },
+              "why": "The checker reads the actual post-write database: session4 must exist with learner1,day3 and15minutes, and totals must match. Computing adjusted totals without inserting the session will fail.",
+              "verifyQuery": "SELECT COUNT(*) AS total_sessions,SUM(minutes) AS total_minutes,(SELECT learner_id FROM sessions WHERE id=4) AS inserted_learner,(SELECT day FROM sessions WHERE id=4) AS inserted_day,(SELECT minutes FROM sessions WHERE id=4) AS inserted_minutes FROM sessions;"
+            }
+          ],
+          "hints": [
+            "Start with BEGIN;",
+            "INSERT INTO sessions ... VALUES (4, 1, 3, 15);",
+            "COMMIT; then SELECT the aggregate data"
+          ],
+          "variation": {
+            "prompt": "What happens if we insert a session for learner_id 99 (invalid FK) or minutes -10 (boundary)? The database would raise an error and we would ROLLBACK.",
+            "tests": [
+              "Standard successful insert check with post-state totals. Expected: {\"columns\": [\"total_sessions\", \"total_minutes\"], \"values\": [[4, 85]]}"
+            ]
+          },
+          "milestone": false,
+          "evidencePrompt": "Record a changed fixture, its expected rows, actual rows and one query fix."
+        },
+        {
+          "id": "sq06",
+          "title": "Study Dashboard",
+          "requires": [
+            "sq05"
+          ],
+          "modules": [
+            "m12"
+          ],
+          "outcome": "Combine aggregated CTEs into a unified dashboard.",
+          "recap": "Using multiple CTEs to independently aggregate distinct child tables, then joining them safely to the parent table.",
+          "blocks": [
+            {
+              "title": "Multiple CTEs",
+              "idea": "Separate CTEs with commas in a single WITH clause.",
+              "example": "WITH task_totals AS (SELECT learner_id,SUM(planned_minutes) AS n FROM tasks WHERE done=0 GROUP BY learner_id),\nsession_totals AS (SELECT learner_id,SUM(minutes) AS n FROM sessions GROUP BY learner_id)\nSELECT * FROM task_totals ORDER BY learner_id;\n-- one row per learner with unfinished tasks",
+              "trace": [
+                "Define CTE A",
+                "Define CTE B",
+                "Join safely"
+              ]
+            },
+            {
+              "title": "Calculating Remaining Time",
+              "idea": "This SQLite example uses scalar MAX(x,0) to clamp a negative difference to0. MySQL uses GREATEST(x,0) for this scalar comparison. Planned-minus-studied is a practice reporting rule, not actual completion of a specific task.",
+              "example": "SELECT MAX(planned - studied, 0) AS remaining;",
+              "trace": [
+                "Subtract studied from planned",
+                "If negative, use 0",
+                "Return remaining"
+              ]
+            }
+          ],
+          "mission": "Create a coherent dashboard for each learner. Use CTEs to find total_planned (unfinished tasks only) and total_studied (all sessions). Join these to the learners table. Select learners.id, learners.name, total_planned (default 0), total_studied (default 0), and remaining_minutes calculated as MAX(total_planned - total_studied, 0). Order by learners.id.",
+          "code": "WITH TaskSums AS (\n  -- Sum unfinished planned_minutes\n),\nSessionSums AS (\n  -- Sum session minutes\n)\nSELECT \n  -- calculate remaining_minutes using MAX(COALESCE(t.total,0) - COALESCE(s.total,0), 0)\nFROM learners l\nORDER BY l.id;",
+          "solution": "WITH TaskSums AS (SELECT learner_id, SUM(planned_minutes) AS total_planned FROM tasks WHERE done = 0 GROUP BY learner_id), SessionSums AS (SELECT learner_id, SUM(minutes) AS total_studied FROM sessions GROUP BY learner_id) SELECT l.id, l.name, COALESCE(t.total_planned, 0) AS total_planned, COALESCE(s.total_studied, 0) AS total_studied, MAX(COALESCE(t.total_planned, 0) - COALESCE(s.total_studied, 0), 0) AS remaining_minutes FROM learners l LEFT JOIN TaskSums t ON l.id = t.learner_id LEFT JOIN SessionSums s ON l.id = s.learner_id ORDER BY l.id;",
+          "cases": [
+            {
+              "id": "sq06_c1",
+              "label": "Default state",
+              "seedExtra": "",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned",
+                  "total_studied",
+                  "remaining_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30,
+                    30,
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40,
+                    40,
+                    0
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0,
+                    0,
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq06_c2",
+              "label": "More planned than studied",
+              "seedExtra": "INSERT INTO tasks (id, learner_id, title, planned_minutes, done) VALUES (4, 3, 'Science', 50, 0); INSERT INTO sessions (id, learner_id, day, minutes) VALUES (4, 3, 1, 20);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned",
+                  "total_studied",
+                  "remaining_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30,
+                    30,
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40,
+                    40,
+                    0
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    50,
+                    20,
+                    30
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "sq06_c3",
+              "label": "More studied than planned",
+              "seedExtra": "INSERT INTO sessions (id, learner_id, day, minutes) VALUES (4, 1, 1, 100);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned",
+                  "total_studied",
+                  "remaining_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30,
+                    130,
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40,
+                    40,
+                    0
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    0,
+                    0,
+                    0
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            },
+            {
+              "id": "multiply",
+              "label": "Two tasks and two sessions do not multiply",
+              "seedExtra": "INSERT INTO tasks VALUES(4,3,'Art',15,0),(5,3,'Music',25,0);INSERT INTO sessions VALUES(4,3,1,10),(5,3,2,20);",
+              "expected": {
+                "columns": [
+                  "id",
+                  "name",
+                  "total_planned",
+                  "total_studied",
+                  "remaining_minutes"
+                ],
+                "values": [
+                  [
+                    1,
+                    "Asha",
+                    30,
+                    30,
+                    0
+                  ],
+                  [
+                    2,
+                    "Ravi",
+                    40,
+                    40,
+                    0
+                  ],
+                  [
+                    3,
+                    "Meera",
+                    40,
+                    30,
+                    10
+                  ]
+                ]
+              },
+              "why": "Compare column names, every row and their order. Preserve unmatched learners and aggregate each child table before combining summaries."
+            }
+          ],
+          "hints": [
+            "Define TaskSums and SessionSums CTEs separated by a comma",
+            "LEFT JOIN both CTEs to learners",
+            "Calculate MAX(total_planned - total_studied, 0)"
+          ],
+          "variation": {
+            "prompt": "Add two tasks and two sessions for Meera, then prove the dashboard does not multiply totals.",
+            "tests": [
+              "Insert unfinished tasks15 and25, sessions10 and20: expected Meera total_planned40,total_studied30,remaining10.",
+              "An INNER JOIN must not hide a learner with no tasks or sessions.",
+              "If studied exceeds planned, remaining is0; this rule does not mark tasks completed."
+            ]
+          },
+          "milestone": true,
+          "evidencePrompt": "Provide an example scenario where remaining_minutes would be clamped to 0 using the MAX function."
+        }
+      ]
+    }
+  ]
+}
