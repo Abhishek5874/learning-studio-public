@@ -45,22 +45,46 @@
  }
  $$('[data-focus]').forEach(button=>button.addEventListener('click',()=>{if(!prefersStill.matches)$('#focus-panel')?.animate([{opacity:.4,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'ease-out'});}));
  const form=$('#guide-form');if(!form)return;
- let guide=null;
- async function getGuide(){if(guide)return guide;const response=await fetch('folio/guide.json?v=1');if(!response.ok)throw Error('The guide could not load.');guide=await response.json();return guide;}
+ // Only public endpoint/site-key values belong here. Enable after owner setup.
+ const aiConfig={endpoint:'',siteKey:''};
+ let guide=null,guideRequest=null,answerVersion=0,aiToken='',aiWidget=null,aiController=null;
+ if(aiConfig.endpoint&&aiConfig.siteKey){
+  const controls=document.createElement('div');controls.className='guide-ai-controls';
+  const label=document.createElement('label'),toggle=document.createElement('input');toggle.type='checkbox';toggle.id='guide-ai-enabled';label.append(toggle,document.createTextNode(' Use real AI for my question'));
+  const disclosure=document.createElement('p');disclosure.className='small-note';disclosure.textContent='AI mode sends your question and public portfolio facts to Cloudflare. Do not enter private information. AI can make mistakes; check the linked portfolio sections.';
+  const verification=document.createElement('div');verification.id='guide-verification';controls.append(label,disclosure,verification);form.before(controls);
+  toggle.onchange=()=>{answerVersion++;aiController?.abort();aiToken='';if(!toggle.checked){if(aiWidget!==null){window.turnstile?.remove(aiWidget);aiWidget=null;}$('#guide-status').textContent='Local portfolio answers selected.';return;}
+   const mount=()=>{if(!toggle.checked)return;aiWidget=window.turnstile.render(verification,{sitekey:aiConfig.siteKey,action:'portfolio-guide',callback:token=>{aiToken=token;$('#guide-status').textContent='AI verification ready. Submit your question.';},'expired-callback':()=>{aiToken='';},'error-callback':()=>{aiToken='';$('#guide-status').textContent='AI verification unavailable. Switch off AI to use local answers.';}});};
+   if(window.turnstile)mount();else{const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.onload=mount;script.onerror=()=>{$('#guide-status').textContent='AI verification could not load. Local answers remain available.';};document.head.append(script);}
+  };
+ }
+ async function getGuide(){if(guide)return guide;if(!guideRequest)guideRequest=fetch('folio/guide.json?v=2').then(response=>{if(!response.ok)throw Error('The guide could not load.');return response.json();}).then(data=>{guide=data;return data;}).catch(error=>{guideRequest=null;throw error;});return guideRequest;}
  function showAnswer(item){const box=$('#guide-answer');box.replaceChildren();const p=document.createElement('p');p.textContent=item.answer;box.append(p);if(item.link){const a=document.createElement('a');a.href=item.link;a.className='text-link';a.textContent=item.linkLabel+' ↗';if(item.link.startsWith('https:')){a.target='_blank';a.rel='noopener';}box.append(a);}$('#guide-status').textContent='Answer from the professional portfolio.';}
  async function answer(question,id){
-  try{const entries=await getGuide();let item;
+  const version=++answerVersion;let usedFallback=false;$('#guide-status').textContent='Looking through the portfolio…';
+  try{const entries=await getGuide();if(version!==answerVersion)return;let item;
+   if(!id&&$('#guide-ai-enabled')?.checked){
+    if(/[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\s()-]*){9,}|password|api\s*key|secret|token|salary|home\s*address|personal\s*email|phone\s*number|mobile\s*number/i.test(question)){showAnswer({answer:'Please ask about the public portfolio without including private details. Use LinkedIn for professional contact.',link:'#connect',linkLabel:'Professional contact'});return;}
+    if(!aiToken){$('#guide-status').textContent='Complete the AI verification, then submit again. You can switch off AI for local answers.';return;}
+    const token=aiToken;aiToken='';aiController?.abort();const controller=new AbortController();aiController=controller;const timer=setTimeout(()=>controller.abort(),8000);
+    try{const response=await fetch(aiConfig.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,turnstileToken:token}),signal:controller.signal});if(!response.ok)throw Error('unavailable');const result=await response.json();if(version!==answerVersion)return;if(typeof result.answer!=='string'||!result.answer.trim())throw Error('empty');showAnswer({answer:result.answer.slice(0,1600),link:'#experience',linkLabel:'Verify against the portfolio'});$('#guide-status').textContent='AI-generated from public portfolio facts. Check important details.';return;}
+    catch{if(version!==answerVersion)return;usedFallback=true;}
+    finally{clearTimeout(timer);if(controller===aiController)aiController=null;if(aiWidget!==null&&$('#guide-ai-enabled')?.checked)window.turnstile?.reset(aiWidget);}
+   }
    if(id)item=entries.find(x=>x.id===id);
    else{
-    const text=question.toLowerCase().replace(/[^a-z0-9/ -]/g,' '),words=text.split(/\s+/).filter(w=>w.length>1);
+    const text=question.toLowerCase().replace(/[^a-z0-9/ -]/g,' '),ignored=new Set(['abhishek','kumar','by','the','his','he','her','him','is','are','can','you','me','tell','what','does','of','for','and','please']);
+    const words=text.split(/\s+/).filter(w=>w.length>1&&!ignored.has(w));
     if(/salary|phone number|mobile number|home address|password|private|personal email|financial/.test(text)){showAnswer({answer:'Private contact details and personal information are not included in this guide. Use LinkedIn for a professional conversation.',link:'https://www.linkedin.com/in/abhishek-kumar-047b45229/',linkLabel:'Connect on LinkedIn'});return;}
-    const scores=entries.map(entry=>({entry,score:entry.keywords.split(' ').reduce((n,w)=>n+(words.includes(w)?1:0),0)})).sort((a,b)=>b.score-a.score);
+    const scores=entries.map(entry=>({entry,score:new Set(entry.keywords.split(' ')).size?entry.keywords.split(' ').reduce((n,w)=>n+(words.includes(w)?1:0),0):0})).sort((a,b)=>b.score-a.score);
     if(scores[0]?.score)item=scores[0].entry;
+    else if(/^(abhishek(?: kumar)?|who is abhishek(?: kumar)?)$/.test(text.trim()))item=entries.find(x=>x.id==='overview');
    }
    showAnswer(item||{answer:'I don’t have a documented answer to that question. Try asking about current work, Python projects, the learning studio, research or professional contact.',link:'#work',linkLabel:'Browse the selected work'});
+   if(usedFallback)$('#guide-status').textContent='AI unavailable. This is a local portfolio answer.';
    $$('[data-guide]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.guide===item?.id)));
-  }catch{$('#guide-status').textContent='The guide is unavailable. Work, Experience and Research are still available above.';}
+  }catch{if(version!==answerVersion)return;$('#guide-answer').textContent='The portfolio guide could not load. Check your connection and submit again, or use the section links above.';$('#guide-status').textContent='Guide unavailable. Your question was not sent to an AI service.';}
  }
  $$('[data-guide]').forEach(b=>b.onclick=()=>answer('',b.dataset.guide));
- form.onsubmit=e=>{e.preventDefault();const q=$('#guide-question').value.trim();if(q)answer(q);};
+ form.onsubmit=e=>{e.preventDefault();const q=$('#guide-question').value.trim();if(q)answer(q);else $('#guide-status').textContent='Type a portfolio question first, or choose a suggestion above.';};
 })();
