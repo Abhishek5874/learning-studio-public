@@ -46,15 +46,16 @@
  $$('[data-focus]').forEach(button=>button.addEventListener('click',()=>{if(!prefersStill.matches)$('#focus-panel')?.animate([{opacity:.4,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'ease-out'});}));
  const form=$('#guide-form');if(!form)return;
  // Only public endpoint/site-key values belong here. Enable after owner setup.
- const aiConfig={endpoint:'',siteKey:''};
+ const aiConfig={"endpoint":"https://abhishek-portfolio-ai.abhishek5874-studio.workers.dev/ask","siteKey":"0x4AAAAAAFTlzq_LNeK9AmMU"};
  let guide=null,guideRequest=null,answerVersion=0,aiToken='',aiWidget=null,aiController=null;
  if(aiConfig.endpoint&&aiConfig.siteKey){
   const controls=document.createElement('div');controls.className='guide-ai-controls';
   const label=document.createElement('label'),toggle=document.createElement('input');toggle.type='checkbox';toggle.id='guide-ai-enabled';label.append(toggle,document.createTextNode(' Use real AI for my question'));
   const disclosure=document.createElement('p');disclosure.className='small-note';disclosure.textContent='AI mode sends your question and public portfolio facts to Cloudflare. Do not enter private information. AI can make mistakes; check the linked portfolio sections.';
-  const verification=document.createElement('div');verification.id='guide-verification';controls.append(label,disclosure,verification);form.before(controls);
+  const verification=document.createElement('div');verification.id='guide-verification';const verificationStatus=document.createElement('p');verificationStatus.id='guide-verification-status';verificationStatus.setAttribute('role','status');verificationStatus.className='small-note';controls.append(label,disclosure,verification,verificationStatus);form.before(controls);
+  const localNote=$('#guide .guide-layout>div>.small-note');if(localNote)localNote.textContent='Local answers stay in your browser. Optional AI mode sends your question to Cloudflare.';
   toggle.onchange=()=>{answerVersion++;aiController?.abort();aiToken='';if(!toggle.checked){if(aiWidget!==null){window.turnstile?.remove(aiWidget);aiWidget=null;}$('#guide-status').textContent='Local portfolio answers selected.';return;}
-   const mount=()=>{if(!toggle.checked)return;aiWidget=window.turnstile.render(verification,{sitekey:aiConfig.siteKey,action:'portfolio-guide',callback:token=>{aiToken=token;$('#guide-status').textContent='AI verification ready. Submit your question.';},'expired-callback':()=>{aiToken='';},'error-callback':()=>{aiToken='';$('#guide-status').textContent='AI verification unavailable. Switch off AI to use local answers.';}});};
+   verificationStatus.textContent='Checking AI request verification…';const mount=()=>{if(!toggle.checked||aiWidget!==null)return;aiWidget=window.turnstile.render(verification,{sitekey:aiConfig.siteKey,action:'portfolio-guide',size:'compact',callback:token=>{aiToken=token;verificationStatus.textContent='Verification ready. Submit your question.';},'expired-callback':()=>{aiToken='';verificationStatus.textContent='Verification expired; verify again before submitting.';},'error-callback':()=>{aiToken='';verificationStatus.textContent='Verification unavailable. Switch off AI for local answers.';}});};
    if(window.turnstile)mount();else{const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.onload=mount;script.onerror=()=>{$('#guide-status').textContent='AI verification could not load. Local answers remain available.';};document.head.append(script);}
   };
  }
@@ -64,7 +65,7 @@
   const version=++answerVersion;let usedFallback=false;$('#guide-status').textContent='Looking through the portfolio…';
   try{const entries=await getGuide();if(version!==answerVersion)return;let item;
    if(!id&&$('#guide-ai-enabled')?.checked){
-    if(/[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\s()-]*){9,}|password|api\s*key|secret|token|salary|home\s*address|personal\s*email|phone\s*number|mobile\s*number/i.test(question)){showAnswer({answer:'Please ask about the public portfolio without including private details. Use LinkedIn for professional contact.',link:'#connect',linkLabel:'Professional contact'});return;}
+    if(/[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\s()-]*){9,}|(?:sk-|sb_secret_|AIza)[\w-]{16,}|BEGIN.*PRIVATE KEY|(?:my|his|your|personal|private)\s+(?:password|api\s*key|secret|token)|salary|home\s*address|personal\s*email|phone\s*number|mobile\s*number/i.test(question)){showAnswer({answer:'Please ask about the public portfolio without including private details. Use LinkedIn for professional contact.',link:'#connect',linkLabel:'Professional contact'});return;}
     if(!aiToken){$('#guide-status').textContent='Complete the AI verification, then submit again. You can switch off AI for local answers.';return;}
     const token=aiToken;aiToken='';aiController?.abort();const controller=new AbortController();aiController=controller;const timer=setTimeout(()=>controller.abort(),8000);
     try{const response=await fetch(aiConfig.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,turnstileToken:token}),signal:controller.signal});if(!response.ok)throw Error('unavailable');const result=await response.json();if(version!==answerVersion)return;if(typeof result.answer!=='string'||!result.answer.trim())throw Error('empty');showAnswer({answer:result.answer.slice(0,1600),link:'#experience',linkLabel:'Verify against the portfolio'});$('#guide-status').textContent='AI-generated from public portfolio facts. Check important details.';return;}
